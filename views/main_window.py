@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui',
-# licensing of 'mainwindow.ui' applies.
+# Form implementation generated from reading ui file 'main_window.ui',
+# licensing of 'main_window.ui' applies.
 #
-# Created: Tue Oct  8 12:01:38 2019
+# Created: Tue Oct  8 13:31:49 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_2, "")
         self.horizontalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar = QtWidgets.QMenuBar()
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menuBar.setObjectName("menuBar")
         self.menuOutils = QtWidgets.QMenu(self.menuBar)
