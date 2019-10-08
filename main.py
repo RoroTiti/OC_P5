@@ -1,13 +1,23 @@
 import sys
-from PySide2.QtWidgets import QApplication, QMainWindow
-from PySide2.QtCore import QFile
-from mainwindow import Ui_MainWindow
+
+from PySide2 import QtCore
+from PySide2.QtCore import SIGNAL, SLOT
+from PySide2.QtWidgets import QApplication, QMainWindow, QDialog
+
+from views import updaterdialog, mainwindow, dataupdater
+
+
+class UpdaterWindow(QMainWindow):
+    def __init__(self):
+        super(UpdaterWindow, self).__init__()
+        self.ui = dataupdater.Ui_MainWindow()
+        self.ui.setupUi(self)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = mainwindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
         self.ui.listWidget.clear()
@@ -19,6 +29,8 @@ class MainWindow(QMainWindow):
 
         print(self.ui.listWidget.items)
 
+        self.connect(self.ui.action_update, SIGNAL("triggered()"), self, SLOT("open_dialog()"))
+
     def push_button_clicked(self):
         pass
 
@@ -29,6 +41,13 @@ class MainWindow(QMainWindow):
 
     def setName(self, name):
         print(name)
+
+    def open_dialog(self):
+        dialog = QDialog()
+        dialog.ui = updaterdialog.Ui_Dialog()
+        dialog.ui.setupUi(dialog)
+        dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        dialog.exec_()
 
 
 if __name__ == "__main__":
