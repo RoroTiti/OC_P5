@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'main_window.ui',
 # licensing of 'main_window.ui' applies.
 #
-# Created: Tue Oct  8 13:31:49 2019
+# Created: Tue Oct  8 13:45:02 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,6 @@ class Ui_MainWindow(object):
         self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
         self.listWidget = QtWidgets.QListWidget(self.tab)
         self.listWidget.setObjectName("listWidget")
-        QtWidgets.QListWidgetItem(self.listWidget)
         self.gridLayout.addWidget(self.listWidget, 0, 0, 1, 1)
         self.lineEdit = QtWidgets.QLineEdit(self.tab)
         self.lineEdit.setObjectName("lineEdit")
@@ -40,7 +39,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtWidgets.QMenuBar()
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
         self.menuBar.setObjectName("menuBar")
         self.menuOutils = QtWidgets.QMenu(self.menuBar)
         self.menuOutils.setObjectName("menuOutils")
@@ -62,10 +61,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "NutriChecker by @RoroTiti", None, -1))
-        __sortingEnabled = self.listWidget.isSortingEnabled()
-        self.listWidget.setSortingEnabled(False)
-        self.listWidget.item(0).setText(QtWidgets.QApplication.translate("MainWindow", "lol", None, -1))
-        self.listWidget.setSortingEnabled(__sortingEnabled)
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))
