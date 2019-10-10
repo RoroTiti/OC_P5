@@ -1,7 +1,6 @@
 import typing
 
 import PySide2
-from PySide2 import QtGui
 from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QItemSelection, QSortFilterProxyModel
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
@@ -22,7 +21,6 @@ class UpdaterDialogController(QDialog):
         self.fetch_categories_manager.finished.connect(self.handle_api_categories)
 
         self.ui = updater_dialog.Ui_Dialog()
-        self.table_model: MyTableModel
 
         self.ui.setupUi(self)
 
@@ -37,9 +35,9 @@ class UpdaterDialogController(QDialog):
         self.fetch_categories_manager.get(request)
 
     def handle_api_categories(self, reply: QNetworkReply):
-        er = reply.error()
+        error = reply.error()
 
-        if er == QNetworkReply.NoError:
+        if error == QNetworkReply.NoError:
             bytes_string = reply.readAll()
 
             json = QJsonDocument.fromJson(bytes_string)
@@ -49,58 +47,60 @@ class UpdaterDialogController(QDialog):
 
             for item in obj:
                 if item["products"] >= 5000:
-                    categories_gt_5000.append(Item(item["name"], item["products"], item["id"]))
+                    categories_gt_5000.append(Category(item["name"], item["products"], item["id"]))
 
             categories_gt_5000.sort(key=lambda x: x.name)
 
-            self.table_model = MyTableModel(self, categories_gt_5000, ["Catégorie", "Nombre de produits"])
+            table_model = CategoriesTableModel(self, categories_gt_5000, ["Catégorie", "Nombre de produits"])
 
             filter_proxy_model = QSortFilterProxyModel()
-            filter_proxy_model.setSourceModel(self.table_model)
+            filter_proxy_model.setSourceModel(table_model)
 
             self.ui.table_categories.setModel(filter_proxy_model)
             self.ui.table_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
             self.ui.table_categories.setSelectionMode(QAbstractItemView.SingleSelection)
             self.ui.table_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
             self.ui.table_categories.setSortingEnabled(True)
-            self.ui.table_categories.sortByColumn(0, Qt.AscendingOrder)
+            self.ui.table_categories.sortByColumn(1, Qt.DescendingOrder)
 
             selection_model = self.ui.table_categories.selectionModel()
-            selection_model.selectionChanged.connect(self.lol)
+            selection_model.selectionChanged.connect(self.on_category_selected)
 
         else:
-            print("Error occured: ", er)
+            print("Error occured: ", error)
             print(reply.errorString())
 
         self.progress.close()
 
-    def lol(self, selected: QItemSelection, deselected: QItemSelection):
-        index = self.ui.table_categories.selectionModel().currentIndex().row()
-        print(self.table_model.my_list[index].id)
+    def on_category_selected(self, selected: QItemSelection, deselected: QItemSelection):
+        selected_index = self.ui.table_categories.selectionModel().currentIndex().row()
+        proxy_model: QSortFilterProxyModel = self.ui.table_categories.model()
+        model_index = proxy_model.index(selected_index, 0)
+        source_model: CategoriesTableModel = proxy_model.sourceModel()
+        source_index = proxy_model.mapToSource(model_index)
+        print(source_model.items_list[source_index.row()].id)
 
 
-class MyTableModel(QAbstractTableModel):
+class CategoriesTableModel(QAbstractTableModel):
     def __init__(self, parent, my_list, my_header):
         QAbstractTableModel.__init__(self, parent)
-        self.my_list: [Item] = my_list
+        self.items_list: [Category] = my_list
         self.header = my_header
 
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
-        return len(self.my_list)
+        return len(self.items_list)
 
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         return 2
 
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
-        if not index.isValid():
-            return None
-        elif role != Qt.DisplayRole:
+        if not index.isValid() or role != Qt.DisplayRole:
             return None
 
         if index.column() == 0:
-            return self.my_list[index.row()].name
+            return self.items_list[index.row()].name
         elif index.column() == 1:
-            return self.my_list[index.row()].products
+            return self.items_list[index.row()].products
 
     def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> typing.Any:
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
@@ -108,8 +108,8 @@ class MyTableModel(QAbstractTableModel):
         return None
 
 
-class Item:
-    def __init__(self, name, products, id):
+class Category:
+    def __init__(self, name, products, category_id):
         self.name: str = name
         self.products: int = products
-        self.id = id
+        self.id = category_id
