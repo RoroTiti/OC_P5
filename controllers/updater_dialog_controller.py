@@ -1,10 +1,9 @@
-import operator
 import typing
 
 import PySide2
-from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, SIGNAL
+from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QItemSelection
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
-from PySide2.QtWidgets import QDialog, QProgressDialog, QHeaderView, QAbstractItemView
+from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
 
 from views import updater_dialog
 
@@ -53,19 +52,25 @@ class UpdaterDialogController(QDialog):
 
             table_model = MyTableModel(self, categories_gt_5000, ["Catégorie", "Nombre de produits"])
 
-            width = self.ui.table_categories.width() - 10
-
             self.ui.table_categories.setModel(table_model)
             self.ui.table_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
+            self.ui.table_categories.setSelectionMode(QAbstractItemView.SingleSelection)
+            self.ui.table_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            self.ui.table_categories.setSortingEnabled(True)
+            self.ui.table_categories.sortByColumn(0, Qt.AscendingOrder)
 
-            self.ui.table_categories.setColumnWidth(0, int(width * 0.7))
-            self.ui.table_categories.setColumnWidth(1, int(width * 0.3))
+            selection_model = self.ui.table_categories.selectionModel()
+            selection_model.selectionChanged.connect(self.lol)
 
         else:
             print("Error occured: ", er)
             print(reply.errorString())
 
         self.progress.close()
+
+    def lol(self, selected: QItemSelection, deselected: QItemSelection):
+        for lol in self.ui.table_categories.selectionModel().selectedRows():
+            print(lol.row())
 
 
 class MyTableModel(QAbstractTableModel):
@@ -96,14 +101,20 @@ class MyTableModel(QAbstractTableModel):
             return self.header[section]
         return None
 
-    # def sort(self, column: int, order: PySide2.QtCore.Qt.SortOrder = ...):
-    #     # """sort table by given column number col"""
-    #     # self.emit(SIGNAL("layoutAboutToBeChanged()"))
-    #     # self.my_list = sorted(self.my_list, key=operator.itemgetter(column))
-    #     # if order == Qt.DescendingOrder:
-    #     #     self.my_list.reverse()
-    #     # self.emit(SIGNAL("layoutChanged()"))
-    #     pass
+    def sort(self, column: int, order: PySide2.QtCore.Qt.SortOrder = ...):
+        self.layoutAboutToBeChanged.emit()
+
+        def test(elem: Item):
+            if column == 0:
+                return elem.name
+            elif column == 1:
+                return elem.products
+
+        self.my_list = sorted(self.my_list, key=test)
+        if order == Qt.DescendingOrder:
+            self.my_list.reverse()
+
+        self.layoutChanged.emit()
 
 
 class Item:
