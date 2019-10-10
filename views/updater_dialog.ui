@@ -53,9 +53,6 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QListWidget" name="listWidget"/>
-      </item>
       <item row="2" column="0" colspan="2">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -64,7 +61,10 @@
        </widget>
       </item>
       <item row="0" column="0" colspan="2">
-       <widget class="QTableView" name="table_categories"/>
+       <widget class="QTableView" name="table_all_categories"/>
+      </item>
+      <item row="3" column="0" colspan="2">
+       <widget class="QTableView" name="table_selected_categories"/>
       </item>
      </layout>
     </widget>

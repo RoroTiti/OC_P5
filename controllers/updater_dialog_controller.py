@@ -56,15 +56,17 @@ class UpdaterDialogController(QDialog):
 
             filter_proxy_model = QSortFilterProxyModel()
             filter_proxy_model.setSourceModel(table_model)
+            filter_proxy_model.setDynamicSortFilter(False)
+            filter_proxy_model.sort(1, Qt.DescendingOrder)
 
-            self.ui.table_categories.setModel(filter_proxy_model)
-            self.ui.table_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.ui.table_categories.setSelectionMode(QAbstractItemView.SingleSelection)
-            self.ui.table_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-            self.ui.table_categories.setSortingEnabled(True)
-            self.ui.table_categories.sortByColumn(1, Qt.DescendingOrder)
+            self.ui.table_all_categories.setModel(filter_proxy_model)
+            self.ui.table_all_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
+            self.ui.table_all_categories.setSelectionMode(QAbstractItemView.SingleSelection)
+            self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            self.ui.table_all_categories.setSortingEnabled(True)
+            self.ui.table_all_categories.sortByColumn(1, Qt.DescendingOrder)
 
-            selection_model = self.ui.table_categories.selectionModel()
+            selection_model = self.ui.table_all_categories.selectionModel()
             selection_model.selectionChanged.connect(self.on_category_selected)
 
         else:
@@ -74,8 +76,8 @@ class UpdaterDialogController(QDialog):
         self.progress.close()
 
     def on_category_selected(self, selected: QItemSelection, deselected: QItemSelection):
-        selected_index = self.ui.table_categories.selectionModel().currentIndex().row()
-        proxy_model: QSortFilterProxyModel = self.ui.table_categories.model()
+        selected_index = self.ui.table_all_categories.selectionModel().currentIndex().row()
+        proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
         model_index = proxy_model.index(selected_index, 0)
         source_model: CategoriesTableModel = proxy_model.sourceModel()
         source_index = proxy_model.mapToSource(model_index)

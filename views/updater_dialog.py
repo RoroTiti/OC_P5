@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'updater_dialog.ui',
 # licensing of 'updater_dialog.ui' applies.
 #
-# Created: Thu Oct 10 09:26:25 2019
+# Created: Thu Oct 10 16:25:14 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,15 +36,15 @@ class Ui_Dialog(object):
         self.btn_load_list.setAutoDefault(False)
         self.btn_load_list.setObjectName("btn_load_list")
         self.gridLayout_2.addWidget(self.btn_load_list, 1, 0, 1, 1)
-        self.listWidget = QtWidgets.QListWidget(self.groupBox)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout_2.addWidget(self.listWidget, 3, 0, 1, 2)
         self.label = QtWidgets.QLabel(self.groupBox)
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 2, 0, 1, 2)
-        self.table_categories = QtWidgets.QTableView(self.groupBox)
-        self.table_categories.setObjectName("table_categories")
-        self.gridLayout_2.addWidget(self.table_categories, 0, 0, 1, 2)
+        self.table_all_categories = QtWidgets.QTableView(self.groupBox)
+        self.table_all_categories.setObjectName("table_all_categories")
+        self.gridLayout_2.addWidget(self.table_all_categories, 0, 0, 1, 2)
+        self.table_selected_categories = QtWidgets.QTableView(self.groupBox)
+        self.table_selected_categories.setObjectName("table_selected_categories")
+        self.gridLayout_2.addWidget(self.table_selected_categories, 3, 0, 1, 2)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
 
         self.retranslateUi(Dialog)
