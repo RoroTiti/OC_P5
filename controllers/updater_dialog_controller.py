@@ -1,7 +1,8 @@
 import typing
 
 import PySide2
-from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QItemSelection
+from PySide2 import QtGui
+from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QItemSelection, QSortFilterProxyModel
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
 
@@ -21,6 +22,8 @@ class UpdaterDialogController(QDialog):
         self.fetch_categories_manager.finished.connect(self.handle_api_categories)
 
         self.ui = updater_dialog.Ui_Dialog()
+        self.table_model: MyTableModel
+
         self.ui.setupUi(self)
 
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -46,13 +49,16 @@ class UpdaterDialogController(QDialog):
 
             for item in obj:
                 if item["products"] >= 5000:
-                    categories_gt_5000.append(Item(item["name"], item["products"]))
+                    categories_gt_5000.append(Item(item["name"], item["products"], item["id"]))
 
             categories_gt_5000.sort(key=lambda x: x.name)
 
-            table_model = MyTableModel(self, categories_gt_5000, ["Catégorie", "Nombre de produits"])
+            self.table_model = MyTableModel(self, categories_gt_5000, ["Catégorie", "Nombre de produits"])
 
-            self.ui.table_categories.setModel(table_model)
+            filter_proxy_model = QSortFilterProxyModel()
+            filter_proxy_model.setSourceModel(self.table_model)
+
+            self.ui.table_categories.setModel(filter_proxy_model)
             self.ui.table_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
             self.ui.table_categories.setSelectionMode(QAbstractItemView.SingleSelection)
             self.ui.table_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -69,8 +75,8 @@ class UpdaterDialogController(QDialog):
         self.progress.close()
 
     def lol(self, selected: QItemSelection, deselected: QItemSelection):
-        for lol in self.ui.table_categories.selectionModel().selectedRows():
-            print(lol.row())
+        index = self.ui.table_categories.selectionModel().currentIndex().row()
+        print(self.table_model.my_list[index].id)
 
 
 class MyTableModel(QAbstractTableModel):
@@ -101,23 +107,9 @@ class MyTableModel(QAbstractTableModel):
             return self.header[section]
         return None
 
-    def sort(self, column: int, order: PySide2.QtCore.Qt.SortOrder = ...):
-        self.layoutAboutToBeChanged.emit()
-
-        def test(elem: Item):
-            if column == 0:
-                return elem.name
-            elif column == 1:
-                return elem.products
-
-        self.my_list = sorted(self.my_list, key=test)
-        if order == Qt.DescendingOrder:
-            self.my_list.reverse()
-
-        self.layoutChanged.emit()
-
 
 class Item:
-    def __init__(self, name, products):
+    def __init__(self, name, products, id):
         self.name: str = name
         self.products: int = products
+        self.id = id
