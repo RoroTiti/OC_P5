@@ -5,6 +5,7 @@ from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QItemSe
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
 
+from models.api.Category import Category
 from views import updater_dialog
 
 
@@ -106,10 +107,3 @@ class CategoriesTableModel(QAbstractTableModel):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return self.header[section]
         return None
-
-
-class Category:
-    def __init__(self, name, products, category_id):
-        self.name: str = name
-        self.products: int = products
-        self.id = category_id
