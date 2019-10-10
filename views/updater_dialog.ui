@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>500</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,11 +33,15 @@
       <string>Catégories</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0" colspan="2">
-       <widget class="QListWidget" name="list_categories"/>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QListWidget" name="listWidget"/>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btn_add_category">
+        <property name="text">
+         <string>Ajouter</string>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="btn_load_list">
@@ -49,15 +53,8 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="btn_add_category">
-        <property name="text">
-         <string>Ajouter</string>
-        </property>
-        <property name="autoDefault">
-         <bool>false</bool>
-        </property>
-       </widget>
+      <item row="3" column="0" colspan="2">
+       <widget class="QListWidget" name="listWidget"/>
       </item>
       <item row="2" column="0" colspan="2">
        <widget class="QLabel" name="label">
@@ -65,6 +62,9 @@
          <string>Catégories sélectionnées</string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QTableView" name="table_categories"/>
       </item>
      </layout>
     </widget>
