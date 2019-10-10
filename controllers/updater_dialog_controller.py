@@ -61,7 +61,7 @@ class UpdaterDialogController(QDialog):
 
             self.ui.table_all_categories.setModel(filter_proxy_model)
             self.ui.table_all_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
-            self.ui.table_all_categories.setSelectionMode(QAbstractItemView.SingleSelection)
+            # self.ui.table_all_categories.setSelectionMode(QAbstractItemView.SingleSelection)
             self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
             self.ui.table_all_categories.setSortingEnabled(True)
             self.ui.table_all_categories.sortByColumn(1, Qt.DescendingOrder)
@@ -76,12 +76,14 @@ class UpdaterDialogController(QDialog):
         self.progress.close()
 
     def on_category_selected(self, selected: QItemSelection, deselected: QItemSelection):
-        selected_index = self.ui.table_all_categories.selectionModel().currentIndex().row()
-        proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
-        model_index = proxy_model.index(selected_index, 0)
-        source_model: CategoriesTableModel = proxy_model.sourceModel()
-        source_index = proxy_model.mapToSource(model_index)
-        print(source_model.items_list[source_index.row()].id)
+        print("Selected items:")
+        for row in self.ui.table_all_categories.selectionModel().selectedRows():
+            # selected_index = self.ui.table_all_categories.selectionModel().currentIndex().row()
+            proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
+            model_index = proxy_model.index(row.row(), 0)
+            source_model: CategoriesTableModel = proxy_model.sourceModel()
+            source_index = proxy_model.mapToSource(model_index)
+            print(source_model.items_list[source_index.row()].id)
 
 
 class CategoriesTableModel(QAbstractTableModel):
