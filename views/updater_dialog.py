@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/updater_dialog.ui',
 # licensing of 'views/updater_dialog.ui' applies.
 #
-# Created: Mon Oct 14 16:54:25 2019
+# Created: Mon Oct 14 17:32:55 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,6 +38,11 @@ class Ui_Dialog(object):
         self.table_selected_categories = QtWidgets.QTableView(self.groupBox)
         self.table_selected_categories.setObjectName("table_selected_categories")
         self.gridLayout_2.addWidget(self.table_selected_categories, 5, 0, 1, 2)
+        self.label_3 = QtWidgets.QLabel(self.groupBox)
+        self.label_3.setAutoFillBackground(False)
+        self.label_3.setWordWrap(True)
+        self.label_3.setObjectName("label_3")
+        self.gridLayout_2.addWidget(self.label_3, 1, 0, 1, 2)
         self.table_all_categories = QtWidgets.QTableView(self.groupBox)
         self.table_all_categories.setObjectName("table_all_categories")
         self.gridLayout_2.addWidget(self.table_all_categories, 2, 0, 1, 2)
@@ -48,11 +53,10 @@ class Ui_Dialog(object):
         self.label_2 = QtWidgets.QLabel(self.groupBox)
         self.label_2.setObjectName("label_2")
         self.gridLayout_2.addWidget(self.label_2, 0, 0, 1, 2)
-        self.label_3 = QtWidgets.QLabel(self.groupBox)
-        self.label_3.setAutoFillBackground(False)
-        self.label_3.setWordWrap(True)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout_2.addWidget(self.label_3, 1, 0, 1, 2)
+        self.btn_delete_category = QtWidgets.QPushButton(self.groupBox)
+        self.btn_delete_category.setAutoDefault(False)
+        self.btn_delete_category.setObjectName("btn_delete_category")
+        self.gridLayout_2.addWidget(self.btn_delete_category, 6, 0, 1, 2)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
 
         self.retranslateUi(Dialog)
@@ -64,7 +68,8 @@ class Ui_Dialog(object):
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Dialog", "Catégories", None, -1))
         self.btn_load_list.setText(QtWidgets.QApplication.translate("Dialog", "Charger la liste", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("Dialog", "Catégories sélectionnées", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("Dialog", "Lors du téléchargement des données, seuls les 50 produit les plus populaires de chaque catégorie seront récupérés.", None, -1))
         self.btn_add_category.setText(QtWidgets.QApplication.translate("Dialog", "Ajouter", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("Dialog", "Seules les catégories contenant plus de 5000 produits sont affichées.", None, -1))
-        self.label_3.setText(QtWidgets.QApplication.translate("Dialog", "Lors du téléchargement des données, seuls les 50 produit les plus populaires de chaque catégorie seront récupérés.", None, -1))
+        self.btn_delete_category.setText(QtWidgets.QApplication.translate("Dialog", "Supprimer", None, -1))
 

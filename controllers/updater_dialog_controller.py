@@ -30,6 +30,7 @@ class UpdaterDialogController(QDialog):
 
         self.ui.btn_load_list.clicked.connect(self.fetch_categories)
         self.ui.btn_add_category.clicked.connect(self.add_category)
+        self.ui.btn_delete_category.clicked.connect(self.delete_category)
 
         headers = ["Catégorie", "Nombre de produits"]
 
@@ -45,7 +46,6 @@ class UpdaterDialogController(QDialog):
 
         self.ui.table_all_categories.setModel(all_categories_proxy)
         self.ui.table_all_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.ui.table_all_categories.setSortingEnabled(True)
         self.ui.table_all_categories.sortByColumn(1, Qt.DescendingOrder)
 
@@ -61,7 +61,6 @@ class UpdaterDialogController(QDialog):
 
         self.ui.table_selected_categories.setModel(selected_categories_proxy)
         self.ui.table_selected_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.ui.table_selected_categories.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.ui.table_selected_categories.setSortingEnabled(True)
         self.ui.table_selected_categories.sortByColumn(1, Qt.DescendingOrder)
 
@@ -143,8 +142,8 @@ class UpdaterDialogController(QDialog):
 
         for row in self.ui.table_all_categories.selectionModel().selectedRows():
             model_index = proxy_model.index(row.row(), 0)
-            source_index = proxy_model.mapToSource(model_index)
-            new_categories.append(source_model.items_list[source_index.row()])
+            source_index = proxy_model.mapToSource(model_index).row()
+            new_categories.append(source_model.items_list[source_index])
 
         self.selected_categories_table_model.beginInsertRows(
             QModelIndex(),
@@ -154,6 +153,19 @@ class UpdaterDialogController(QDialog):
         self.selected_categories.extend(new_categories)
         self.selected_categories_table_model.endInsertRows()
         self.ui.table_selected_categories.resizeColumnsToContents()
+
+    def delete_category(self):
+        proxy_model: QSortFilterProxyModel = self.ui.table_selected_categories.model()
+
+        self.selected_categories_table_model.beginResetModel()
+
+        for row in self.ui.table_selected_categories.selectionModel().selectedRows():
+            model_index = proxy_model.index(row.row(), 0)
+            source_index = proxy_model.mapToSource(model_index).row()
+            self.selected_categories.pop(source_index)
+            self.ui.table_selected_categories.resizeColumnsToContents()
+
+        self.selected_categories_table_model.endResetModel()
 
 
 class CategoriesTableModel(QAbstractTableModel):
