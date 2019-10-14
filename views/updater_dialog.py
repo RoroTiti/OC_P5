@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/updater_dialog.ui',
 # licensing of 'views/updater_dialog.ui' applies.
 #
-# Created: Mon Oct 14 17:32:55 2019
+# Created: Mon Oct 14 18:03:43 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,9 +21,9 @@ class Ui_Dialog(object):
         Dialog.setSizePolicy(sizePolicy)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
-        self.pushButton = QtWidgets.QPushButton(Dialog)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 1, 0, 1, 1)
+        self.btn_download = QtWidgets.QPushButton(Dialog)
+        self.btn_download.setObjectName("btn_download")
+        self.gridLayout.addWidget(self.btn_download, 1, 0, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
@@ -64,11 +64,11 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtWidgets.QApplication.translate("Dialog", "Mise à jour des données", None, -1))
-        self.pushButton.setText(QtWidgets.QApplication.translate("Dialog", "Télécharger les produits", None, -1))
+        self.btn_download.setText(QtWidgets.QApplication.translate("Dialog", "Télécharger les produits", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Dialog", "Catégories", None, -1))
         self.btn_load_list.setText(QtWidgets.QApplication.translate("Dialog", "Charger la liste", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("Dialog", "Catégories sélectionnées", None, -1))
-        self.label_3.setText(QtWidgets.QApplication.translate("Dialog", "Lors du téléchargement des données, seuls les 50 produit les plus populaires de chaque catégorie seront récupérés.", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("Dialog", "Lors du téléchargement des données, seuls les 50 produits les plus populaires de chaque catégorie seront récupérés.", None, -1))
         self.btn_add_category.setText(QtWidgets.QApplication.translate("Dialog", "Ajouter", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("Dialog", "Seules les catégories contenant plus de 5000 produits sont affichées.", None, -1))
         self.btn_delete_category.setText(QtWidgets.QApplication.translate("Dialog", "Supprimer", None, -1))

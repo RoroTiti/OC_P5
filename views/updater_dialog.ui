@@ -21,7 +21,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="0">
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="btn_download">
      <property name="text">
       <string>Télécharger les produits</string>
      </property>
@@ -59,7 +59,7 @@
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Lors du téléchargement des données, seuls les 50 produit les plus populaires de chaque catégorie seront récupérés.</string>
+         <string>Lors du téléchargement des données, seuls les 50 produits les plus populaires de chaque catégorie seront récupérés.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
