@@ -1,9 +1,9 @@
 from typing import Any
 
 import PySide2
-from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QSortFilterProxyModel, QModelIndex
+from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QSortFilterProxyModel, QModelIndex, QTimer
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
-from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView, QAbstractScrollArea
+from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
 
 from models.api.Category import Category
 from views import updater_dialog
@@ -12,14 +12,14 @@ from views import updater_dialog
 class UpdaterDialogController(QDialog):
     def __init__(self):
         super(UpdaterDialogController, self).__init__()
-        self.progress = QProgressDialog("Récupération des catégories...", "", 0, 0, self)
-        self.progress.setFixedWidth(300)
 
-        # noinspection PyTypeChecker
-        self.progress.setCancelButton(None)
+        print("called")
+
+        self.progress = QProgressDialog("Récupération des catégories...", "Annuler", 0, 3, self)
+        self.progress.setFixedWidth(300)
+        self.progress.canceled.connect(self.handle_cancel_request)
 
         self.fetch_categories_manager = QNetworkAccessManager()
-        self.fetch_categories_manager.finished.connect(self.handle_api_categories)
 
         self.ui = updater_dialog.Ui_Dialog()
 
@@ -67,22 +67,36 @@ class UpdaterDialogController(QDialog):
         self.ui.table_selected_categories.setSortingEnabled(True)
         self.ui.table_selected_categories.sortByColumn(1, Qt.DescendingOrder)
 
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.handle_api_timeout)
+
+        self.api_reply = None
+
     def fetch_categories(self):
         self.progress.open()
+        self.progress.setValue(1)
+
+        self.timer.setSingleShot(True)
+        self.timer.setInterval(3000)
 
         request = QNetworkRequest(QUrl("https://fr.openfoodfacts.org/categories.json"))
-        self.fetch_categories_manager.get(request)
+        self.timer.start()
 
-    def handle_api_categories(self, reply: QNetworkReply):
-        error = reply.error()
+        self.api_reply = self.fetch_categories_manager.get(request)
+        self.api_reply.finished.connect(self.handle_api_reply)
+
+    def handle_api_reply(self):
+        self.timer.stop()
+
+        self.progress.setValue(2)
+
+        error = self.api_reply.error()
 
         if error == QNetworkReply.NoError:
-            bytes_string = reply.readAll()
+            bytes_string = self.api_reply.readAll()
 
             json = QJsonDocument.fromJson(bytes_string)
             obj = json.object()["tags"]
-
-            # categories_gt_5000 = []
 
             self.all_categories_table_model.beginResetModel()
 
@@ -95,11 +109,24 @@ class UpdaterDialogController(QDialog):
             self.all_categories_table_model.endResetModel()
             self.ui.table_all_categories.resizeColumnsToContents()
 
+            self.progress.setValue(3)
+
         else:
             print("Error occured: ", error)
-            print(reply.errorString())
+            print(self.api_reply.errorString())
 
-        self.progress.close()
+    def handle_api_timeout(self):
+        self.api_reply.finished.disconnect()
+        self.api_reply.abort()
+        self.progress.cancel()
+        # print("timeout")
+
+    def handle_cancel_request(self):
+        self.api_reply.finished.disconnect()
+        self.timer.stop()
+        self.api_reply.abort()
+        self.progress.cancel()
+        # print("canceled")
 
     def add_category(self):
         proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
