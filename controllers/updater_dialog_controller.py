@@ -132,7 +132,7 @@ class CategoriesTableModel(QAbstractTableModel):
         return len(self.items_list)
 
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
-        return 2
+        return len(self.header)
 
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> Any:
         if not index.isValid() or role != Qt.DisplayRole:
