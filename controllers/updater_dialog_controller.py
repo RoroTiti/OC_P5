@@ -13,8 +13,6 @@ class UpdaterDialogController(QDialog):
     def __init__(self):
         super(UpdaterDialogController, self).__init__()
 
-        print("called")
-
         self.progress = QProgressDialog("Récupération des catégories...", "Annuler", 0, 3, self)
         self.progress.setFixedWidth(300)
         self.progress.canceled.connect(self.handle_cancel_request)
