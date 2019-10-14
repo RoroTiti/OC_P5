@@ -143,7 +143,9 @@ class UpdaterDialogController(QDialog):
         for row in self.ui.table_all_categories.selectionModel().selectedRows():
             model_index = proxy_model.index(row.row(), 0)
             source_index = proxy_model.mapToSource(model_index).row()
-            new_categories.append(source_model.items_list[source_index])
+
+            if source_model.items_list[source_index] not in self.selected_categories:
+                new_categories.append(source_model.items_list[source_index])
 
         self.selected_categories_table_model.beginInsertRows(
             QModelIndex(),
