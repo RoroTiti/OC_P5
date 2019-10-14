@@ -3,15 +3,15 @@ from typing import Any
 import PySide2
 from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QSortFilterProxyModel, QModelIndex, QTimer
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
-from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView
+from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView, QMessageBox
 
 from models.api.Category import Category
 from views import updater_dialog
 
 
 class UpdaterDialogController(QDialog):
-    def __init__(self):
-        super(UpdaterDialogController, self).__init__()
+    def __init__(self, parent):
+        super(UpdaterDialogController, self).__init__(parent)
 
         self.progress = QProgressDialog("Récupération des catégories...", "Annuler", 0, 3, self)
         self.progress.setFixedWidth(300)
@@ -23,7 +23,7 @@ class UpdaterDialogController(QDialog):
 
         self.ui.setupUi(self)
 
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setWindowModality(Qt.WindowModal)
 
         self.all_categories = []
         self.selected_categories = []
@@ -75,7 +75,7 @@ class UpdaterDialogController(QDialog):
         self.progress.setValue(1)
 
         self.timer.setSingleShot(True)
-        self.timer.setInterval(3000)
+        self.timer.setInterval(10000)
 
         request = QNetworkRequest(QUrl("https://fr.openfoodfacts.org/categories.json"))
         self.timer.start()
@@ -117,14 +117,23 @@ class UpdaterDialogController(QDialog):
         self.api_reply.finished.disconnect()
         self.api_reply.abort()
         self.progress.cancel()
-        # print("timeout")
+
+        dialog = QMessageBox(
+            QMessageBox.Critical,
+            "Erreur",
+            "OpenFoodFacts prend trop de temps pour répondre. Veuillez réessayer plus tard.",
+            QMessageBox.Ok,
+            self
+        )
+
+        dialog.setWindowModality(Qt.WindowModal)
+        dialog.show()
 
     def handle_cancel_request(self):
         self.api_reply.finished.disconnect()
         self.timer.stop()
         self.api_reply.abort()
         self.progress.cancel()
-        # print("canceled")
 
     def add_category(self):
         proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()

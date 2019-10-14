@@ -14,5 +14,5 @@ class MainWindowController(QMainWindow):
         self.connect(self.ui.action_update, SIGNAL("triggered()"), self, SLOT("open_updater_dialog()"))
 
     def open_updater_dialog(self):
-        dialog = UpdaterDialogController()
+        dialog = UpdaterDialogController(self)
         dialog.exec_()
