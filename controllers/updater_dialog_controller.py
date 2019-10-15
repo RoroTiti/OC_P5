@@ -3,7 +3,7 @@ from typing import Any
 import PySide2
 from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QSortFilterProxyModel, QModelIndex, QTimer
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
-from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QHeaderView, QMessageBox
+from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QMessageBox
 
 from models.api.Category import Category
 from views import updater_dialog
@@ -138,22 +138,16 @@ class UpdaterDialogController(QDialog):
         proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
         source_model: CategoriesTableModel = proxy_model.sourceModel()
 
-        new_categories = []
+        self.selected_categories_table_model.beginResetModel()
 
         for row in self.ui.table_all_categories.selectionModel().selectedRows():
             model_index = proxy_model.index(row.row(), 0)
             source_index = proxy_model.mapToSource(model_index).row()
 
             if source_model.items_list[source_index] not in self.selected_categories:
-                new_categories.append(source_model.items_list[source_index])
+                self.selected_categories.append(source_model.items_list[source_index])
 
-        self.selected_categories_table_model.beginInsertRows(
-            QModelIndex(),
-            len(self.selected_categories),
-            len(self.selected_categories) + len(new_categories) - 1
-        )
-        self.selected_categories.extend(new_categories)
-        self.selected_categories_table_model.endInsertRows()
+        self.selected_categories_table_model.endResetModel()
         self.ui.table_selected_categories.resizeColumnsToContents()
 
     def delete_category(self):
