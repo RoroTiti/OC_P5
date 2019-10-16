@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_window.ui',
-# licensing of 'main_window.ui' applies.
+# Form implementation generated from reading ui file 'views/main_window.ui',
+# licensing of 'views/main_window.ui' applies.
 #
-# Created: Tue Oct  8 13:45:02 2019
+# Created: Wed Oct 16 10:31:52 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/updater_dialog.ui',
 # licensing of 'views/updater_dialog.ui' applies.
 #
-# Created: Mon Oct 14 18:03:43 2019
+# Created: Wed Oct 16 10:32:09 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,9 +21,9 @@ class Ui_Dialog(object):
         Dialog.setSizePolicy(sizePolicy)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setObjectName("gridLayout")
-        self.btn_download = QtWidgets.QPushButton(Dialog)
-        self.btn_download.setObjectName("btn_download")
-        self.gridLayout.addWidget(self.btn_download, 1, 0, 1, 1)
+        self.btn_download_products = QtWidgets.QPushButton(Dialog)
+        self.btn_download_products.setObjectName("btn_download_products")
+        self.gridLayout.addWidget(self.btn_download_products, 1, 0, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(Dialog)
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
@@ -64,7 +64,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtWidgets.QApplication.translate("Dialog", "Mise à jour des données", None, -1))
-        self.btn_download.setText(QtWidgets.QApplication.translate("Dialog", "Télécharger les produits", None, -1))
+        self.btn_download_products.setText(QtWidgets.QApplication.translate("Dialog", "Télécharger les produits", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Dialog", "Catégories", None, -1))
         self.btn_load_list.setText(QtWidgets.QApplication.translate("Dialog", "Charger la liste", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("Dialog", "Catégories sélectionnées", None, -1))
