@@ -6,7 +6,8 @@ from PySide2.QtCore import QJsonDocument, QAbstractTableModel, Qt, QUrl, QSortFi
 from PySide2.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QMessageBox
 
-from models.api.Category import Category
+from models.api.category import Category
+from models.database.models import Brand, Store, Food
 from views import updater_dialog
 
 
@@ -84,6 +85,7 @@ class UpdaterDialogController(QDialog):
 
         self.threads = []
         self.objects = []
+        self.operations_done = 0
 
     def fetch_categories(self):
         self.categories_progress.open()
@@ -188,7 +190,7 @@ class UpdaterDialogController(QDialog):
 
             thread = QThread()
             self.threads.append(thread)
-            obj = DownloaderThread(url)
+            obj = DownloaderThread(url, category)
             self.objects.append(obj)
 
             obj.moveToThread(thread)
@@ -199,69 +201,98 @@ class UpdaterDialogController(QDialog):
             thread.start()
 
     def notify_done(self):
-        print("done")
+        self.operations_done += 1
+        print("DONE >>>>> " + str(self.operations_done) + "/" + str(len(self.threads)))
 
 
 class DownloaderThread(QObject):
     finished = Signal()
 
-    def __init__(self, url):
+    def __init__(self, url, category):
         super().__init__()
-        self.url = url
+        self.url: str = url
+        self.category: Category = category
 
     def run(self):
         request = requests.get(self.url)
 
+        expected_product_keys = [
+            "product_name",
+            "ingredients_text_fr",
+            "allergens_from_ingredients",
+            "nutriments",
+            "brands_tags",
+            "brands",
+            "stores_tags",
+            "stores"
+        ]
+
+        expected_nutriments_keys = [
+            "nutrition-score-fr",
+            "energy_100g",
+            "carbohydrates_100g",
+            "sugars_100g",
+            "saturated-fat_100g",
+            "sodium_100g",
+            "salt_100g",
+            "fiber_100g",
+            "proteins_100g"
+        ]
+
         for product in request.json()["products"]:
-            print(product)
+            if all(key in product for key in expected_product_keys):
+                nutriments = product["nutriments"]
+                if all(key in nutriments for key in expected_nutriments_keys):
+                    if len(product["brands_tags"]) > 0 and len(product["stores_tags"]) > 0:
+                        # The product has all required characteristics to be integrated into the database
+                        print("ok")
 
-            if "product_name" in product:
-                print("Nom : " + product["product_name"])
+                        # Getting the individual brands
+                        brands: str = product["brands"]
+                        brands_list = brands.split(",")
 
-            if "ingredients_text_fr" in product:
-                print("Ingrédients : " + product["ingredients_text_fr"])
+                        for index, brand in enumerate(brands_list):
+                            brands_list[index] = brand.upper().lstrip().rstrip()
+                            if Brand.select().where(Brand.brand_name == brands_list[index]).count() == 0:
+                                Brand.create(company_name=brands_list[index])
 
-            if "allergens_from_ingredients" in product:
-                print("Allergènes : " + product["allergens_from_ingredients"])
+                        print(brands_list)
 
-            nutriments = product["nutriments"]
+                        # Getting the individual stores
+                        stores: str = product["stores"]
+                        stores_list = stores.split(",")
 
-            if "nutrition-score-fr" in nutriments:
-                print("Nutriscore : " + str(nutriments["nutrition-score-fr"]))
+                        for index, store in enumerate(stores_list):
+                            stores_list[index] = store.upper().lstrip().rstrip()
+                            if Store.select().where(Store.store_name == stores_list[index]).count() == 0:
+                                Store.create(store_name=stores_list[index])
 
-            if "energy_100g" in nutriments:
-                print("Energie : " + str(nutriments["energy_100g"]))
+                        print(stores_list)
 
-            if "carbohydrates_100g" in nutriments:
-                print("Glucides : " + str(nutriments["carbohydrates_100g"]))
+                        # Inserting the food product into the database
+                        Food.create(
+                            allergens=product["allergens_from_ingredients"],
+                            carbohydrates_100g=nutriments["carbohydrates_100g"],
+                            energy_100g=nutriments["energy_100g"],
+                            fat_100g=nutriments["fat_100g"],
+                            fiber_100g=nutriments["fiber_100g"],
+                            food_name=product["product_name"],
+                            ingredients=product["ingredients_text_fr"],
+                            name=product["product_name"],
+                            nutriscore=nutriments["nutrition-score-fr"],
+                            proteins_100g=nutriments["proteins_100g"],
+                            salt_100g=nutriments["salt_100g"],
+                            saturated_fat_100g=nutriments["saturated-fat_100g"],
+                            sodium_100g=nutriments["sodium_100g"],
+                            sugars_100g=nutriments["sugars_100g"],
+                        )
 
-            if "sugars_100g" in nutriments:
-                print("Sucres : " + str(nutriments["sugars_100g"]))
-
-            if "saturated-fat_100g" in nutriments:
-                print("Acides gras saturés : " + str(nutriments["saturated-fat_100g"]))
-
-            if "sodium_100g" in nutriments:
-                print("Sodium : " + str(nutriments["sodium_100g"]))
-
-            if "salt_100g" in nutriments:
-                print("Sel : " + str(nutriments["salt_100g"]))
-
-            if "fiber_100g" in nutriments:
-                print("Fibres : " + str(nutriments["fiber_100g"]))
-
-            if "proteins_100g" in nutriments:
-                print("Protéines : " + str(nutriments["proteins_100g"]))
-
-            if "brands_tags" in product:
-                print("Marques : ")
-                print(product["brands_tags"])
-
-            if "stores_tags" in product:
-                print("Magasins : ")
-                print(product["stores_tags"])
-
-            print("lol")
+                    else:
+                        print("not ok brands or stores")
+                else:
+                    print("not ok nutriments")
+            else:
+                print("not ok product")
 
         self.finished.emit()
 
