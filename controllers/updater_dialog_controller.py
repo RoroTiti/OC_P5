@@ -85,8 +85,8 @@ class UpdaterDialogController(QDialog):
         self.api_category_products_reply = None
         self.api_products_details_reply = None
 
-        self.threads = []
-        self.objects = []
+        self.downloader_thread = None
+        self.downloader_object = None
         self.operations_done = 0
 
     def fetch_categories(self):
@@ -180,7 +180,47 @@ class UpdaterDialogController(QDialog):
         self.selected_categories_table_model.endResetModel()
 
     def download_products(self):
+        self.downloader_thread = QThread()
+        self.downloader_object = DownloaderThread(self.selected_categories)
+
+        self.downloader_object.moveToThread(self.downloader_thread)
+        self.downloader_object.finished.connect(self.downloader_thread.quit)
+
+        self.downloader_thread.started.connect(self.downloader_object.run)
+        self.downloader_thread.finished.connect(self.notify_done)
+        self.downloader_thread.start()
+
+    def notify_done(self):
+        self.operations_done += 1
+        print("DONE")
+
+
+class DownloaderThread(QObject):
+    finished = Signal()
+
+    def __init__(self, selected_categories):
+        super().__init__()
+        self.selected_categories = selected_categories
+
+    def run(self):
+        print("here")
+
+        CategoryFood.delete().execute()
+        BrandFood.delete().execute()
+        StoreFood.delete().execute()
+
+        models.Category.delete().execute()
+        Brand.delete().execute()
+        Store.delete().execute()
+
+        Food.delete().execute()
+
+        print(self.selected_categories)
+
         for category in self.selected_categories:
+            db_category = models.Category(category_name=category.name)
+            db_category.save()
+
             url = ("https://fr.openfoodfacts.org/cgi/search.pl?"
                    "action=process&"
                    "tagtype_0=categories&"
@@ -190,119 +230,90 @@ class UpdaterDialogController(QDialog):
                    "page_size=50&"
                    "json=1")
 
-            thread = QThread()
-            self.threads.append(thread)
-            obj = DownloaderThread(url, category)
-            self.objects.append(obj)
+            request = requests.get(url)
 
-            obj.moveToThread(thread)
-            obj.finished.connect(thread.quit)
+            expected_product_keys = [
+                "product_name",
+                "code",
+                "ingredients_text_fr",
+                "allergens_from_ingredients",
+                "nutriments",
+                "brands_tags",
+                "brands",
+                "stores_tags",
+                "stores"
+            ]
 
-            thread.started.connect(obj.run)
-            thread.finished.connect(self.notify_done)
-            thread.start()
+            expected_nutriments_keys = [
+                "nutrition-score-fr",
+                "energy_100g",
+                "carbohydrates_100g",
+                "sugars_100g",
+                "saturated-fat_100g",
+                "sodium_100g",
+                "salt_100g",
+                "fiber_100g",
+                "proteins_100g"
+            ]
 
-    def notify_done(self):
-        self.operations_done += 1
-        print("DONE >>>>> " + str(self.operations_done) + "/" + str(len(self.threads)))
+            for product in request.json()["products"]:
+                if all(key in product for key in expected_product_keys):
+                    nutriments = product["nutriments"]
+                    if all(key in nutriments for key in expected_nutriments_keys):
+                        if len(product["brands_tags"]) > 0 and len(product["stores_tags"]) > 0 and bool(product["ingredients_text_fr"].strip()):
+                            # The product has all required characteristics to be integrated into the database
+                            print("OK")
 
+                            # Inserting the food product into the database
+                            food = Food(
+                                allergens=product["allergens_from_ingredients"],
+                                carbohydrates_100g=nutriments["carbohydrates_100g"],
+                                energy_100g=nutriments["energy_100g"],
+                                fat_100g=nutriments["fat_100g"],
+                                fiber_100g=nutriments["fiber_100g"],
+                                food_code=product["code"],
+                                food_name=product["product_name"],
+                                ingredients=product["ingredients_text_fr"],
+                                nutriscore=nutriments["nutrition-score-fr"],
+                                proteins_100g=nutriments["proteins_100g"],
+                                salt_100g=nutriments["salt_100g"],
+                                saturated_fat_100g=nutriments["saturated-fat_100g"],
+                                sodium_100g=nutriments["sodium_100g"],
+                                sugars_100g=nutriments["sugars_100g"]
+                            )
 
-class DownloaderThread(QObject):
-    finished = Signal()
+                            food.save()
 
-    def __init__(self, url, category):
-        super().__init__()
-        self.url: str = url
-        self.category: Category = category
+                            CategoryFood.create(id_category=db_category.id_category, id_food=food.id_food)
 
-    def run(self):
-        request = requests.get(self.url)
+                            # Getting the individual brands
+                            brands: str = product["brands"]
+                            brands_list = brands.split(",")
 
-        category = models.Category(category_name=self.category.name)
-        category.save()
+                            # Getting the individual stores
+                            stores: str = product["stores"]
+                            stores_list = stores.split(",")
 
-        expected_product_keys = [
-            "product_name",
-            "code",
-            "ingredients_text_fr",
-            "allergens_from_ingredients",
-            "nutriments",
-            "brands_tags",
-            "brands",
-            "stores_tags",
-            "stores"
-        ]
+                            for index, (brand_name, store_name) in enumerate(zip_longest(brands_list, stores_list)):
+                                if brand_name is not None:
+                                    brand_name = brand_name.upper().lstrip().rstrip()
+                                    brand, created = Brand.get_or_create(brand_name=brand_name)
+                                    BrandFood.create(id_brand=brand.id_brand, id_food=food.id_food)
 
-        expected_nutriments_keys = [
-            "nutrition-score-fr",
-            "energy_100g",
-            "carbohydrates_100g",
-            "sugars_100g",
-            "saturated-fat_100g",
-            "sodium_100g",
-            "salt_100g",
-            "fiber_100g",
-            "proteins_100g"
-        ]
+                                if store_name is not None:
+                                    store_name = store_name.upper().lstrip().rstrip()
+                                    store, created = Store.get_or_create(store_name=store_name)
+                                    StoreFood.create(id_store=store.id_store, id_food=food.id_food)
 
-        for product in request.json()["products"]:
-            if all(key in product for key in expected_product_keys):
-                nutriments = product["nutriments"]
-                if all(key in nutriments for key in expected_nutriments_keys):
-                    if len(product["brands_tags"]) > 0 and len(product["stores_tags"]) > 0 and bool(product["ingredients_text_fr"].strip()):
-                        # The product has all required characteristics to be integrated into the database
-                        print("OK")
-
-                        # Inserting the food product into the database
-                        food = Food(
-                            allergens=product["allergens_from_ingredients"],
-                            carbohydrates_100g=nutriments["carbohydrates_100g"],
-                            energy_100g=nutriments["energy_100g"],
-                            fat_100g=nutriments["fat_100g"],
-                            fiber_100g=nutriments["fiber_100g"],
-                            food_code=product["code"],
-                            food_name=product["product_name"],
-                            ingredients=product["ingredients_text_fr"],
-                            nutriscore=nutriments["nutrition-score-fr"],
-                            proteins_100g=nutriments["proteins_100g"],
-                            salt_100g=nutriments["salt_100g"],
-                            saturated_fat_100g=nutriments["saturated-fat_100g"],
-                            sodium_100g=nutriments["sodium_100g"],
-                            sugars_100g=nutriments["sugars_100g"]
-                        )
-
-                        food.save()
-
-                        CategoryFood.create(id_category=category.id_category, id_food=food.id_food)
-
-                        # Getting the individual brands
-                        brands: str = product["brands"]
-                        brands_list = brands.split(",")
-
-                        # Getting the individual stores
-                        stores: str = product["stores"]
-                        stores_list = stores.split(",")
-
-                        for index, (brand_name, store_name) in enumerate(zip_longest(brands_list, stores_list)):
-                            if brand_name is not None:
-                                brand_name = brand_name.upper().lstrip().rstrip()
-                                brand, created = Brand.get_or_create(brand_name=brand_name)
-                                BrandFood.create(id_brand=brand.id_brand, id_food=food.id_food)
-
-                            if store_name is not None:
-                                store_name = store_name.upper().lstrip().rstrip()
-                                store, created = Store.get_or_create(store_name=store_name)
-                                StoreFood.create(id_store=store.id_store, id_food=food.id_food)
+                        else:
+                            print("not ok brands or stores")
 
                     else:
-                        print("not ok brands or stores")
-
+                        print("not ok nutriments")
                 else:
-                    print("not ok nutriments")
-            else:
-                print("not ok product")
+                    print("not ok product")
 
-        self.finished.emit()
+            self.finished.emit()
 
 
 class CategoriesTableModel(QAbstractTableModel):
