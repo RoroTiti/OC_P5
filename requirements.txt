@@ -1,3 +1,9 @@
-peewee
-PySide2
-requests
+certifi==2019.9.11
+chardet==3.0.4
+idna==2.8
+peewee==3.11.2
+PyMySQL==0.9.3
+PySide2==5.13.1
+requests==2.22.0
+shiboken2==5.13.1
+urllib3==1.25.6
