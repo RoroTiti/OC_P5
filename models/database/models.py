@@ -22,6 +22,7 @@ class Food(BaseModel):
     energy_100g = FloatField(null=True)
     fat_100g = FloatField(null=True)
     fiber_100g = FloatField(null=True)
+    food_code = TextField(null=True)
     food_name = TextField(null=True)
     id_food = AutoField()
     ingredients = TextField(null=True)
