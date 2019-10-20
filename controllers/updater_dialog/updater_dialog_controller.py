@@ -115,6 +115,7 @@ class UpdaterDialogController(QDialog):
     def download_products(self):
         self.products_downloader = ProductsDownloaderThread(self.selected_categories)
         self.products_downloader.progress.connect(self.set_products_downloader_progress)
+        self.products_downloader.finished.connect(self.products_downloader_finished)
         self.products_progress.setMaximum(self.products_downloader.max_progress)
         self.products_progress.show()
         self.products_downloader.start()
@@ -123,4 +124,7 @@ class UpdaterDialogController(QDialog):
         self.products_progress.setValue(current_progress)
 
     def cancel_products_downloader(self):
-        self.products_downloader.quit()
+        self.products_downloader.requestInterruption()
+
+    def products_downloader_finished(self):
+        self.products_progress.reset()

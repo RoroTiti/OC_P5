@@ -124,5 +124,8 @@ class ProductsDownloaderThread(QThread):
                 else:
                     print("not ok product")
 
-                self.current_progress += 1
-                self.progress.emit(self.current_progress)
+                if self.isInterruptionRequested():
+                    return
+                else:
+                    self.current_progress += 1
+                    self.progress.emit(self.current_progress)
