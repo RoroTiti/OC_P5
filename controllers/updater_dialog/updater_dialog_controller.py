@@ -15,11 +15,13 @@ class UpdaterDialogController(QDialog):
         self.categories_progress.reset()
         self.categories_progress.setFixedWidth(300)
         self.categories_progress.canceled.connect(self.cancel_categories_downloader)
+        self.categories_progress.setWindowModality(Qt.WindowModal)
 
         self.products_progress = QProgressDialog("Téléchargement des produits...", "Annuler", 0, 0, self)
         self.products_progress.reset()
         self.products_progress.setFixedWidth(300)
         self.products_progress.canceled.connect(self.cancel_products_downloader)
+        self.products_progress.setWindowModality(Qt.WindowModal)
 
         self.ui = updater_dialog.Ui_Dialog()
 
@@ -95,6 +97,7 @@ class UpdaterDialogController(QDialog):
         self.categories_downloader = CategoriesDownloaderThread()
         self.categories_downloader.result.connect(self.set_all_categories)
         self.categories_downloader.progress.connect(self.set_categories_downloader_progress)
+        self.categories_progress.finished.connect(self.categories_downloader_finished)
         self.categories_progress.setMaximum(self.categories_downloader.max_progress)
         self.categories_progress.show()
         self.categories_downloader.start()
@@ -103,7 +106,10 @@ class UpdaterDialogController(QDialog):
         self.categories_progress.setValue(current_progress)
 
     def cancel_categories_downloader(self):
-        self.categories_downloader.quit()
+        self.categories_downloader.requestInterruption()
+
+    def categories_downloader_finished(self):
+        self.categories_progress.reset()
 
     def set_all_categories(self, all_categories):
         self.all_categories_table_model.beginResetModel()

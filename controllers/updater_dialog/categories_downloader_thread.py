@@ -13,12 +13,18 @@ class CategoriesDownloaderThread(QThread):
         self.max_progress = 3
 
     def run(self):
-        self.progress.emit(1)
+        if self.isInterruptionRequested():
+            return
+        else:
+            self.progress.emit(1)
 
         url = "https://fr.openfoodfacts.org/categories.json"
         request = requests.get(url)
 
-        self.progress.emit(2)
+        if self.isInterruptionRequested():
+            return
+        else:
+            self.progress.emit(2)
 
         tags = request.json()["tags"]
 
@@ -28,5 +34,8 @@ class CategoriesDownloaderThread(QThread):
             if tag["products"] >= 5000:
                 all_categories.append(Category(tag["name"], tag["products"], tag["id"]))
 
-        self.progress.emit(3)
-        self.result.emit(all_categories)
+        if self.isInterruptionRequested():
+            return
+        else:
+            self.progress.emit(3)
+            self.result.emit(all_categories)
