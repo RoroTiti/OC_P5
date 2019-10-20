@@ -24,7 +24,6 @@ class UpdaterDialogController(QDialog):
         self.products_progress.setWindowModality(Qt.WindowModal)
 
         self.ui = updater_dialog.Ui_Dialog()
-
         self.ui.setupUi(self)
 
         self.setWindowModality(Qt.WindowModal)
@@ -61,8 +60,14 @@ class UpdaterDialogController(QDialog):
         self.ui.table_selected_categories.setSortingEnabled(True)
         self.ui.table_selected_categories.sortByColumn(1, Qt.DescendingOrder)
 
-        self.categories_downloader = None
-        self.products_downloader = None
+        self.categories_downloader = CategoriesDownloaderThread()
+        self.categories_downloader.progress.connect(self.set_categories_downloader_progress)
+        self.categories_downloader.result.connect(self.set_all_categories)
+        self.categories_progress.finished.connect(self.categories_downloader_finished)
+
+        self.products_downloader = ProductsDownloaderThread()
+        self.products_downloader.progress.connect(self.set_products_downloader_progress)
+        self.products_downloader.finished.connect(self.products_downloader_finished)
 
     def add_category(self):
         proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
@@ -94,10 +99,6 @@ class UpdaterDialogController(QDialog):
         self.selected_categories_table_model.endResetModel()
 
     def download_categories(self):
-        self.categories_downloader = CategoriesDownloaderThread()
-        self.categories_downloader.result.connect(self.set_all_categories)
-        self.categories_downloader.progress.connect(self.set_categories_downloader_progress)
-        self.categories_progress.finished.connect(self.categories_downloader_finished)
         self.categories_progress.setMaximum(self.categories_downloader.max_progress)
         self.categories_progress.show()
         self.categories_downloader.start()
@@ -119,9 +120,7 @@ class UpdaterDialogController(QDialog):
         self.ui.table_all_categories.resizeColumnsToContents()
 
     def download_products(self):
-        self.products_downloader = ProductsDownloaderThread(self.selected_categories)
-        self.products_downloader.progress.connect(self.set_products_downloader_progress)
-        self.products_downloader.finished.connect(self.products_downloader_finished)
+        self.products_downloader.selected_categories = self.selected_categories
         self.products_progress.setMaximum(self.products_downloader.max_progress)
         self.products_progress.show()
         self.products_downloader.start()

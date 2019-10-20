@@ -9,11 +9,10 @@ from models.database.models import CategoryFood, BrandFood, StoreFood, Brand, St
 class ProductsDownloaderThread(QThread):
     progress = Signal(int)
 
-    def __init__(self, selected_categories):
+    def __init__(self):
         super().__init__()
-        self.selected_categories = selected_categories
-        self.max_progress = len(selected_categories) * 50
         self.current_progress = 0
+        self.selected_categories = None
 
     def run(self):
         CategoryFood.delete().execute()
@@ -129,3 +128,7 @@ class ProductsDownloaderThread(QThread):
                 else:
                     self.current_progress += 1
                     self.progress.emit(self.current_progress)
+
+    @property
+    def max_progress(self):
+        return len(self.selected_categories) * 50
