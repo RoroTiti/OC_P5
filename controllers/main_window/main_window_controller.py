@@ -1,7 +1,7 @@
 from PySide2.QtCore import SIGNAL, SLOT
 from PySide2.QtWidgets import QMainWindow
 
-from controllers.updater_dialog_controller import UpdaterDialogController
+from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from views import main_window
 
 
