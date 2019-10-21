@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Wed Oct 16 10:31:52 2019
+# Created: Mon Oct 21 11:05:47 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,13 +25,10 @@ class Ui_MainWindow(object):
         self.gridLayout = QtWidgets.QGridLayout(self.tab)
         self.gridLayout.setObjectName("gridLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
-        self.listWidget = QtWidgets.QListWidget(self.tab)
-        self.listWidget.setObjectName("listWidget")
-        self.gridLayout.addWidget(self.listWidget, 0, 0, 1, 1)
-        self.lineEdit = QtWidgets.QLineEdit(self.tab)
-        self.lineEdit.setObjectName("lineEdit")
-        self.gridLayout.addWidget(self.lineEdit, 1, 0, 1, 1)
+        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
+        self.tree_products = QtWidgets.QTreeView(self.tab)
+        self.tree_products.setObjectName("tree_products")
+        self.gridLayout.addWidget(self.tree_products, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")

@@ -6,8 +6,8 @@ from PySide2.QtCore import QAbstractTableModel, Qt
 
 class CategoriesTableModel(QAbstractTableModel):
     def __init__(self, parent, my_list, my_header):
-        QAbstractTableModel.__init__(self, parent)
-        self.items_list: [] = my_list
+        super().__init__(parent)
+        self.items_list: list = my_list
         self.header = my_header
 
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:

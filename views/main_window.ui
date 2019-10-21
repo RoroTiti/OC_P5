@@ -25,7 +25,7 @@
         <string>Nouvelle recherche</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="2">
+        <item row="0" column="1">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -39,10 +39,7 @@
          </spacer>
         </item>
         <item row="0" column="0">
-         <widget class="QListWidget" name="listWidget"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QTreeView" name="tree_products"/>
         </item>
        </layout>
       </widget>
