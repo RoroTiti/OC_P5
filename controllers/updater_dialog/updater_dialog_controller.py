@@ -63,7 +63,7 @@ class UpdaterDialogController(QDialog):
         self.categories_downloader = CategoriesDownloaderThread()
         self.categories_downloader.progress.connect(self.set_categories_downloader_progress)
         self.categories_downloader.result.connect(self.set_all_categories)
-        self.categories_progress.finished.connect(self.categories_downloader_finished)
+        self.categories_downloader.finished.connect(self.categories_downloader_finished)
 
         self.products_downloader = ProductsDownloaderThread()
         self.products_downloader.progress.connect(self.set_products_downloader_progress)
