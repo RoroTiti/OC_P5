@@ -46,8 +46,8 @@ class MainWindowController(QMainWindow):
 
     def product_selection_changed(self, current, previous):
         food: Food = self.ui.lst_products.model().data(current, Qt.UserRole)
-        self.ui.lbl_ingredients.setText(markdown.markdown(food.ingredients))
-        self.ui.lbl_allergens.setText(markdown.markdown(food.allergens))
+        self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
+        self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
