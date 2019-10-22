@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Mon Oct 21 11:05:47 2019
+# Created: Tue Oct 22 10:19:43 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,9 +26,17 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName("gridLayout")
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
-        self.tree_products = QtWidgets.QTreeView(self.tab)
-        self.tree_products.setObjectName("tree_products")
-        self.gridLayout.addWidget(self.tree_products, 0, 0, 1, 1)
+        self.groupBox = QtWidgets.QGroupBox(self.tab)
+        self.groupBox.setObjectName("groupBox")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.lst_products = QtWidgets.QListView(self.groupBox)
+        self.lst_products.setObjectName("lst_products")
+        self.gridLayout_2.addWidget(self.lst_products, 2, 0, 1, 1)
+        self.cmb_categories = QtWidgets.QComboBox(self.groupBox)
+        self.cmb_categories.setObjectName("cmb_categories")
+        self.gridLayout_2.addWidget(self.cmb_categories, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -58,6 +66,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "NutriChecker by @RoroTiti", None, -1))
+        self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", "Produits", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))

@@ -39,7 +39,19 @@
          </spacer>
         </item>
         <item row="0" column="0">
-         <widget class="QTreeView" name="tree_products"/>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>Produits</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="2" column="0">
+            <widget class="QListView" name="lst_products"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QComboBox" name="cmb_categories"/>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
