@@ -13,7 +13,7 @@ class ProductsFetcherThread(QThread):
     def run(self):
         try:
             query = BrandFood \
-                .select(Food.food_name, Brand.brand_name, Food.ingredients, Food.allergenss) \
+                .select(Food.food_name, Brand.brand_name, Food.ingredients, Food.allergens) \
                 .join(Food) \
                 .switch(BrandFood) \
                 .join(Brand) \
