@@ -1,3 +1,4 @@
+import markdown
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QMainWindow
 
@@ -5,7 +6,7 @@ from controllers.main_window.categories_combobox_model import CategoriesComboBox
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
-from models.database.models import Category
+from models.database.models import Category, Food
 from views import main_window
 
 
@@ -39,12 +40,13 @@ class MainWindowController(QMainWindow):
         self.ui.lst_products.selectionModel().currentChanged.connect(self.product_selection_changed)
 
         index = model.index(0, 0)
-        
+
         if index.isValid():
             self.ui.lst_products.setCurrentIndex(index)
 
     def product_selection_changed(self, current, previous):
-        print(self.ui.lst_products.model().data(current, Qt.UserRole).food_name)
+        food: Food = self.ui.lst_products.model().data(current, Qt.UserRole)
+        self.ui.lbl_ingredients.setText(markdown.markdown(food.ingredients))
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Tue Oct 22 10:19:43 2019
+# Created: Tue Oct 22 12:58:17 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,8 +24,6 @@ class Ui_MainWindow(object):
         self.tab.setObjectName("tab")
         self.gridLayout = QtWidgets.QGridLayout(self.tab)
         self.gridLayout.setObjectName("gridLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 1, 1, 1)
         self.groupBox = QtWidgets.QGroupBox(self.tab)
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.groupBox)
@@ -37,6 +35,27 @@ class Ui_MainWindow(object):
         self.cmb_categories.setObjectName("cmb_categories")
         self.gridLayout_2.addWidget(self.cmb_categories, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.groupBox_2 = QtWidgets.QGroupBox(self.tab)
+        self.groupBox_2.setObjectName("groupBox_2")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_2)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        spacerItem = QtWidgets.QSpacerItem(424, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.gridLayout_3.addItem(spacerItem, 3, 0, 1, 1)
+        self.lbl_ingredients = QtWidgets.QLabel(self.groupBox_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lbl_ingredients.sizePolicy().hasHeightForWidth())
+        self.lbl_ingredients.setSizePolicy(sizePolicy)
+        self.lbl_ingredients.setWordWrap(True)
+        self.lbl_ingredients.setObjectName("lbl_ingredients")
+        self.gridLayout_3.addWidget(self.lbl_ingredients, 1, 0, 1, 1)
+        self.label = QtWidgets.QLabel(self.groupBox_2)
+        self.label.setObjectName("label")
+        self.gridLayout_3.addWidget(self.label, 0, 0, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.gridLayout_3.addItem(spacerItem1, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.groupBox_2, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -67,6 +86,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "NutriChecker by @RoroTiti", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", "Produits", None, -1))
+        self.groupBox_2.setTitle(QtWidgets.QApplication.translate("MainWindow", "Description", None, -1))
+        self.lbl_ingredients.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Ingrédients</b>", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))
