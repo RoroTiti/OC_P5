@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Tue Oct 22 12:58:17 2019
+# Created: Tue Oct 22 13:05:59 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,7 +40,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName("gridLayout_3")
         spacerItem = QtWidgets.QSpacerItem(424, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.gridLayout_3.addItem(spacerItem, 3, 0, 1, 1)
+        self.gridLayout_3.addItem(spacerItem, 5, 0, 1, 1)
         self.lbl_ingredients = QtWidgets.QLabel(self.groupBox_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -54,7 +54,19 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.gridLayout_3.addWidget(self.label, 0, 0, 1, 1)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.gridLayout_3.addItem(spacerItem1, 2, 0, 1, 1)
+        self.gridLayout_3.addItem(spacerItem1, 4, 0, 1, 1)
+        self.label_2 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout_3.addWidget(self.label_2, 2, 0, 1, 1)
+        self.lbl_allergens = QtWidgets.QLabel(self.groupBox_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Ignored, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lbl_allergens.sizePolicy().hasHeightForWidth())
+        self.lbl_allergens.setSizePolicy(sizePolicy)
+        self.lbl_allergens.setWordWrap(True)
+        self.lbl_allergens.setObjectName("lbl_allergens")
+        self.gridLayout_3.addWidget(self.lbl_allergens, 3, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox_2, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
@@ -89,6 +101,8 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(QtWidgets.QApplication.translate("MainWindow", "Description", None, -1))
         self.lbl_ingredients.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Ingrédients</b>", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Allergènes</b>", None, -1))
+        self.lbl_allergens.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))
