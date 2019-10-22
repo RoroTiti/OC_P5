@@ -36,6 +36,15 @@ class MainWindowController(QMainWindow):
     def set_list_products_model(self, products):
         model = ProductsListModel(products)
         self.ui.lst_products.setModel(model)
+        self.ui.lst_products.selectionModel().currentChanged.connect(self.product_selection_changed)
+
+        index = model.index(0, 0)
+        
+        if index.isValid():
+            self.ui.lst_products.setCurrentIndex(index)
+
+    def product_selection_changed(self, current, previous):
+        print(self.ui.lst_products.model().data(current, Qt.UserRole).food_name)
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
