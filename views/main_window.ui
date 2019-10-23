@@ -61,56 +61,11 @@
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="1" column="0" colspan="2">
-                <widget class="QLabel" name="lbl_ingredients">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>TextLabel</string>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="0" colspan="2">
                 <widget class="QLabel" name="label">
                  <property name="text">
                   <string>&lt;b&gt;Ingrédients&lt;/b&gt;</string>
                  </property>
-                </widget>
-               </item>
-               <item row="2" column="0" rowspan="2" colspan="2">
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>&lt;b&gt;Allergènes&lt;/b&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="7" column="0" colspan="2">
-                <widget class="QTableView" name="table_nutriments">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="selectionMode">
-                  <enum>QAbstractItemView::SingleSelection</enum>
-                 </property>
-                 <property name="selectionBehavior">
-                  <enum>QAbstractItemView::SelectRows</enum>
-                 </property>
-                 <attribute name="horizontalHeaderVisible">
-                  <bool>false</bool>
-                 </attribute>
-                 <attribute name="verticalHeaderVisible">
-                  <bool>false</bool>
-                 </attribute>
                 </widget>
                </item>
                <item row="8" column="0" colspan="2">
@@ -126,13 +81,6 @@
                  </property>
                 </spacer>
                </item>
-               <item row="5" column="0" colspan="2">
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>&lt;b&gt;Valeurs nutritionnelles&lt;/b&gt;</string>
-                 </property>
-                </widget>
-               </item>
                <item row="4" column="0" colspan="2">
                 <widget class="QLabel" name="lbl_allergens">
                  <property name="sizePolicy">
@@ -146,6 +94,58 @@
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
+                 </property>
+                 <property name="textInteractionFlags">
+                  <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QLabel" name="lbl_ingredients">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                 <property name="textInteractionFlags">
+                  <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" rowspan="2" colspan="2">
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>&lt;b&gt;Allergènes&lt;/b&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0" colspan="2">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>&lt;b&gt;Valeurs nutritionnelles pour 100g&lt;/b&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0" colspan="2">
+                <widget class="QLabel" name="lbl_nutriments">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>TextLabel</string>
+                 </property>
+                 <property name="textInteractionFlags">
+                  <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
                  </property>
                 </widget>
                </item>

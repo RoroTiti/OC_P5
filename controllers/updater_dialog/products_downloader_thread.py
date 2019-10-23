@@ -55,7 +55,8 @@ class ProductsDownloaderThread(QThread):
 
             expected_nutriments_keys = [
                 "nutrition-score-fr",
-                "energy_100g",
+                "energy_value",
+                "energy_unit",
                 "carbohydrates_100g",
                 "sugars_100g",
                 "saturated-fat_100g",
@@ -103,7 +104,8 @@ class ProductsDownloaderThread(QThread):
                                 food, created = Food.get_or_create(
                                     allergens=product["allergens_from_ingredients"],
                                     carbohydrates_100g=nutriments["carbohydrates_100g"],
-                                    energy_100g=nutriments["energy_100g"],
+                                    energy_100g=nutriments["energy_value"],
+                                    energy_unit=nutriments["energy_unit"],
                                     fat_100g=nutriments["fat_100g"],
                                     fiber_100g=nutriments["fiber_100g"],
                                     food_code=product["code"],

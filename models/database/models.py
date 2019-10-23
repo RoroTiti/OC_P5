@@ -20,6 +20,7 @@ class Food(BaseModel):
     allergens = TextField(null=True)
     carbohydrates_100g = FloatField(null=True)
     energy_100g = FloatField(null=True)
+    energy_unit = TextField(null=True)
     fat_100g = FloatField(null=True)
     fiber_100g = FloatField(null=True)
     food_code = TextField(null=True)

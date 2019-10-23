@@ -1,9 +1,8 @@
 import markdown
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QMainWindow, QHeaderView
+from PySide2.QtWidgets import QMainWindow
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
-from controllers.main_window.nutriments_table_model import NutrimentsTableModel
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
@@ -14,6 +13,7 @@ from views import main_window
 class MainWindowController(QMainWindow):
     def __init__(self):
         super(MainWindowController, self).__init__()
+
         self.ui = main_window.Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -50,36 +50,39 @@ class MainWindowController(QMainWindow):
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
         self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
 
-        lst = [
-            ["Energie", food["energy_100g"]],
-            ["Glucides", food["carbohydrates_100g"]],
-            ["Sucres", food["sugars_100g"]],
+        if food["energy_unit"] == "kcal":
+            kj = round(food["energy_100g"] * 4.18, 1)
+            energy_string = f"{food['energy_100g']} kcal ({kj} kj)"
+        else:
+            kcal = round(food["energy_100g"] / 4.18, 1)
+            energy_string = f"{kcal} kcal ({food['energy_100g']} kj)"
 
-            ["Energie", food["energy_100g"]],
-            ["Glucides", food["carbohydrates_100g"]],
-            ["Sucres", food["sugars_100g"]],
-            ["Energie", food["energy_100g"]],
-            ["Glucides", food["carbohydrates_100g"]],
-            ["Sucres", food["sugars_100g"]],
+        lst = [
+            ["Energie", energy_string],
+            ["Glucides", f"{food['carbohydrates_100g']} g"],
+            ["Sucres", f"{food['sugars_100g']} g"],
+            ["Matières grasses", f"{food['fat_100g']} g"],
+            ["Acides gras saturés", f"{food['saturated_fat_100g']} g"],
+            ["Sel", f"{food['salt_100g']} g"],
+            ["Sodium", f"{food['sodium_100g']} g"],
+            ["Fibres", f"{food['fiber_100g']} g"],
+            ["Protéines", f"{food['proteins_100g']} g"]
         ]
 
-        model = NutrimentsTableModel(lst)
-        self.ui.table_nutriments.setModel(model)
-        self.ui.table_nutriments.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        self.vertical_resize_table_view_to_contents(self.ui.table_nutriments)
+        tbl = "<table width=100% border=1 cellspacing=0 cellpadding=0>"
+
+        for item in lst:
+            tbl += "<tr>"
+            for sub_item in item:
+                tbl += "<td>"
+                tbl += str(sub_item)
+                tbl += "</td>"
+            tbl += "</tr>"
+
+        tbl += "</table>"
+
+        self.ui.lbl_nutriments.setText(tbl)
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
         dialog.exec_()
-
-    @staticmethod
-    def vertical_resize_table_view_to_contents(table_view):
-        count = table_view.verticalHeader().count()
-        scroll_bar_height = table_view.horizontalScrollBar().height()
-        horizontal_header_height = table_view.horizontalHeader().height()
-        row_total_height = 0
-
-        for i in range(count):
-            row_total_height += table_view.verticalHeader().sectionSize(i)
-
-        table_view.setFixedHeight(horizontal_header_height + row_total_height + scroll_bar_height)
