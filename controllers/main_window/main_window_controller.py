@@ -57,31 +57,35 @@ class MainWindowController(QMainWindow):
             kcal = round(food["energy_100g"] / 4.18, 1)
             energy_string = f"{kcal} kcal ({food['energy_100g']} kj)"
 
-        lst = [
-            ["Energie", energy_string],
-            ["Glucides", f"{food['carbohydrates_100g']} g"],
-            ["Sucres", f"{food['sugars_100g']} g"],
-            ["Matières grasses", f"{food['fat_100g']} g"],
-            ["Acides gras saturés", f"{food['saturated_fat_100g']} g"],
-            ["Sel", f"{food['salt_100g']} g"],
-            ["Sodium", f"{food['sodium_100g']} g"],
-            ["Fibres", f"{food['fiber_100g']} g"],
-            ["Protéines", f"{food['proteins_100g']} g"]
+        html_spaces = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+        nutriments = [
+            ["<b>Energie</b>", energy_string],
+            ["<b>Glucides</b>", f"{food['carbohydrates_100g']} g"],
+            [f"{html_spaces}Sucres", f"{food['sugars_100g']} g"],
+            ["<b>Matières grasses</b>", f"{food['fat_100g']} g"],
+            [f"{html_spaces}Acides gras saturés", f"{food['saturated_fat_100g']} g"],
+            ["<b>Sel</b>", f"{food['salt_100g']} g"],
+            [f"{html_spaces}Sodium", f"{food['sodium_100g']} g"],
+            ["<b>Fibres</b>", f"{food['fiber_100g']} g"],
+            ["<b>Protéines</b>", f"{food['proteins_100g']} g"]
         ]
 
-        tbl = "<table width=100% border=1 cellspacing=0 cellpadding=0>"
+        nutriments_table_content = "<style>td { padding: 3px; }</style>"
 
-        for item in lst:
-            tbl += "<tr>"
-            for sub_item in item:
-                tbl += "<td>"
-                tbl += str(sub_item)
-                tbl += "</td>"
-            tbl += "</tr>"
+        nutriments_table_content += "<table width=100% border=1 cellspacing=0 cellpadding=0>"
 
-        tbl += "</table>"
+        for nutriment in nutriments:
+            nutriments_table_content += "<tr>"
+            for column in nutriment:
+                nutriments_table_content += "<td>"
+                nutriments_table_content += str(column)
+                nutriments_table_content += "</td>"
+            nutriments_table_content += "</tr>"
 
-        self.ui.lbl_nutriments.setText(tbl)
+        nutriments_table_content += "</table>"
+
+        self.ui.lbl_nutriments.setText(nutriments_table_content)
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
