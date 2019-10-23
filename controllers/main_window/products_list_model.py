@@ -10,11 +10,9 @@ class ProductsListModel(QAbstractListModel):
         super().__init__()
         self.products = products
 
-
-
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole:
-            return f"{self.products[index.row()]['food_name']},  {self.products[index.row()]['brand_name']}"
+            return f"{self.products[index.row()]['food_name']}, {self.products[index.row()]['brand_name']}"
 
         elif role == Qt.UserRole:
             return self.products[index.row()]
