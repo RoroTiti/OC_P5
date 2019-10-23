@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Wed Oct 23 12:52:06 2019
+# Created: Wed Oct 23 13:35:25 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,15 +35,17 @@ class Ui_MainWindow(object):
         self.lst_products.setObjectName("lst_products")
         self.gridLayout_2.addWidget(self.lst_products, 2, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.groupBox_2 = QtWidgets.QGroupBox(self.tab)
-        self.groupBox_2.setObjectName("groupBox_2")
-        self.gridLayout_3 = QtWidgets.QGridLayout(self.groupBox_2)
-        self.gridLayout_3.setObjectName("gridLayout_3")
-        self.scrollArea = QtWidgets.QScrollArea(self.groupBox_2)
+        self.tabWidget_2 = QtWidgets.QTabWidget(self.tab)
+        self.tabWidget_2.setObjectName("tabWidget_2")
+        self.tab_3 = QtWidgets.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.gridLayout_5 = QtWidgets.QGridLayout(self.tab_3)
+        self.gridLayout_5.setObjectName("gridLayout_5")
+        self.scrollArea = QtWidgets.QScrollArea(self.tab_3)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 425, 434))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 409, 412))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_4.setObjectName("gridLayout_4")
@@ -92,8 +94,12 @@ class Ui_MainWindow(object):
         self.lbl_nutriscore.setObjectName("lbl_nutriscore")
         self.gridLayout_4.addWidget(self.lbl_nutriscore, 7, 0, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-        self.gridLayout_3.addWidget(self.scrollArea, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox_2, 0, 1, 1, 1)
+        self.gridLayout_5.addWidget(self.scrollArea, 0, 0, 1, 1)
+        self.tabWidget_2.addTab(self.tab_3, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.tabWidget_2.addTab(self.tab_4, "")
+        self.gridLayout.addWidget(self.tabWidget_2, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -119,12 +125,12 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
+        self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "NutriChecker by @RoroTiti", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("MainWindow", "Produits", None, -1))
-        self.groupBox_2.setTitle(QtWidgets.QApplication.translate("MainWindow", "Description", None, -1))
         self.label.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Ingrédients</b>", None, -1))
         self.lbl_nutriments.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.lbl_allergens.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
@@ -132,6 +138,8 @@ class Ui_MainWindow(object):
         self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Allergènes</b>", None, -1))
         self.lbl_ingredients.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.lbl_nutriscore.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), QtWidgets.QApplication.translate("MainWindow", "Description", None, -1))
+        self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), QtWidgets.QApplication.translate("MainWindow", "Substituts", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))
