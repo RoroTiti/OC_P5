@@ -1,6 +1,9 @@
+import os
+
 import markdown
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QMainWindow
+from PySide2.QtGui import QPixmap, QImage
+from PySide2.QtWidgets import QMainWindow, QSizePolicy
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
@@ -86,6 +89,15 @@ class MainWindowController(QMainWindow):
         nutriments_table_content += "</table>"
 
         self.ui.lbl_nutriments.setText(nutriments_table_content)
+
+        current_directory = os.path.dirname(__file__)
+        filename = os.path.join(current_directory, "..", "..", "assets", f"nutriscore_{food['nutrition_grade']}.png")
+
+        image = QImage(filename)
+        pix_map = QPixmap()
+        pix_map.convertFromImage(image.scaledToHeight(100, Qt.SmoothTransformation))
+
+        self.ui.lbl_nutriscore.setPixmap(pix_map)
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)

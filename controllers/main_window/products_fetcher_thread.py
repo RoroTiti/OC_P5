@@ -18,6 +18,7 @@ class ProductsFetcherThread(QThread):
                 Food.ingredients,
                 Food.allergens,
                 Food.nutriscore,
+                Food.nutrition_grade,
                 Food.energy_100g,
                 Food.energy_unit,
                 Food.carbohydrates_100g,
