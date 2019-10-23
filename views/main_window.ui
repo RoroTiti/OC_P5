@@ -61,14 +61,27 @@
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_4">
-               <item row="0" column="0" colspan="2">
+               <item row="0" column="0">
                 <widget class="QLabel" name="label">
                  <property name="text">
                   <string>&lt;b&gt;Ingrédients&lt;/b&gt;</string>
                  </property>
                 </widget>
                </item>
-               <item row="7" column="0" colspan="2">
+               <item row="10" column="0">
+                <spacer name="verticalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="8" column="0">
                 <widget class="QLabel" name="lbl_nutriments">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -84,20 +97,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="9" column="0" colspan="2">
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="4" column="0" colspan="2">
+               <item row="4" column="0">
                 <widget class="QLabel" name="lbl_allergens">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -116,7 +116,21 @@
                  </property>
                 </widget>
                </item>
-               <item row="1" column="0" colspan="2">
+               <item row="6" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>&lt;b&gt;Valeurs nutritionnelles pour 100g&lt;/b&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" rowspan="2">
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>&lt;b&gt;Allergènes&lt;/b&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
                 <widget class="QLabel" name="lbl_ingredients">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -135,21 +149,7 @@
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0" rowspan="2" colspan="2">
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>&lt;b&gt;Allergènes&lt;/b&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="0" colspan="2">
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>&lt;b&gt;Valeurs nutritionnelles pour 100g&lt;/b&gt;</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="0" colspan="2">
+               <item row="7" column="0">
                 <widget class="QLabel" name="lbl_nutriscore">
                  <property name="text">
                   <string>TextLabel</string>
