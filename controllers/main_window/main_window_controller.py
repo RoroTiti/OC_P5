@@ -49,6 +49,8 @@ class MainWindowController(QMainWindow):
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
+        self.ui.btn_show_product.clicked.connect(self.show_product)
+
     def category_selection_changed(self, index):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
         self.fetcher_thread.category = category
@@ -65,10 +67,29 @@ class MainWindowController(QMainWindow):
             self.ui.lst_products.setCurrentIndex(index)
 
     def product_selection_changed(self, current, previous):
+        self.ui.tabWidget_2.setCurrentIndex(0)
+        self.ui.lst_products.setFocus()
+
+        self.ui.table_substitutes.model().beginResetModel()
+        self.substitutes.clear()
+        self.ui.table_substitutes.model().endResetModel()
+
         food = self.ui.lst_products.model().data(current, Qt.UserRole)
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
-        self.ui.lbl_palm_oil.setVisible(food["ingredients_from_palm_oil_n"] > 0)
+        palm_oil_presence = food["ingredients_from_palm_oil_n"] > 0
+
+        self.ui.lbl_palm_oil.setStyleSheet(
+            "* { background-color: red; color: white; padding: 3 px; }"
+            if palm_oil_presence else
+            "* { background-color: green; color: white; padding: 3 px; }"
+        )
+
+        self.ui.lbl_palm_oil.setText(
+            "Contient de l'huile de palme"
+            if palm_oil_presence else
+            "Ne contient pas d'huile de palme"
+        )
 
         self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
 
@@ -137,3 +158,23 @@ class MainWindowController(QMainWindow):
         self.substitutes.clear()
         self.substitutes += substitutes
         self.ui.table_substitutes.model().endResetModel()
+
+    def show_product(self):
+        selected_index = self.ui.table_substitutes.selectionModel().currentIndex()
+        selected_product = self.ui.table_substitutes.model().data(selected_index, Qt.UserRole)
+
+        all_products = self.ui.lst_products.model().products
+
+        index_to_select = None
+
+        for index, item in enumerate(all_products):
+            if item["id_food"] == selected_product["id_food"]:
+                index_to_select = index
+                break
+
+        print(index_to_select)
+
+        index = self.ui.lst_products.model().index(index_to_select, 0)
+
+        if index.isValid():
+            self.ui.lst_products.setCurrentIndex(index)

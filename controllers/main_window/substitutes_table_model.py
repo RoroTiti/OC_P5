@@ -19,7 +19,8 @@ class SubstitutesTableModel(QAbstractTableModel):
                 return "Oui" if self.substitutes[index.row()]["ingredients_from_palm_oil_n"] > 0 else "Non"
 
         elif role == Qt.UserRole:
-            return None
+            return self.substitutes[index.row()]
+
         else:
             return None
 

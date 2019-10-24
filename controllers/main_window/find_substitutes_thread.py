@@ -13,8 +13,6 @@ class FindSubstitutesThread(QThread):
         self.category = None
 
     def run(self):
-        print(self.product["food_name"])
-
         products = Category.select(
             Food.id_food,
             Food.food_name,
@@ -46,12 +44,8 @@ class FindSubstitutesThread(QThread):
             )
 
         distances = filter(lambda x: x["id_food"] != self.product["id_food"], distances)
-
         distances = filter(lambda x: x["similarity"] >= 700, distances)
-
         distances = sorted(distances, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
-
-        print(distances)
 
         self.result.emit(distances)
 

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'views/main_window.ui',
-# licensing of 'views/main_window.ui' applies.
+# Form implementation generated from reading ui file 'main_window.ui',
+# licensing of 'main_window.ui' applies.
 #
-# Created: Thu Oct 24 14:42:57 2019
+# Created: Thu Oct 24 16:16:01 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,7 +45,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 409, 412))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 450, 451))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_4.setObjectName("gridLayout_4")
@@ -130,8 +130,8 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_2, "")
         self.horizontalLayout.addWidget(self.tabWidget)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menuBar = QtWidgets.QMenuBar()
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1000, 22))
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menuBar.setObjectName("menuBar")
         self.menuOutils = QtWidgets.QMenu(self.menuBar)
         self.menuOutils.setObjectName("menuOutils")
@@ -149,7 +149,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
