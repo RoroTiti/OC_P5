@@ -49,7 +49,7 @@ class FindSubstitutesThread(QThread):
 
         distances = filter(lambda x: x["similarity"] >= 700, distances)
 
-        distances = sorted(distances, key=lambda x: (x["nutriscore"], -x["similarity"]))
+        distances = sorted(distances, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
 
         print(distances)
 
