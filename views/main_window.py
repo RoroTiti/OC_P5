@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'main_window.ui',
 # licensing of 'main_window.ui' applies.
 #
-# Created: Thu Oct 24 16:24:17 2019
+# Created: Thu Oct 24 16:40:55 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -112,13 +112,10 @@ class Ui_MainWindow(object):
         self.table_substitutes = QtWidgets.QTableView(self.tab_4)
         self.table_substitutes.setObjectName("table_substitutes")
         self.table_substitutes.verticalHeader().setVisible(False)
-        self.gridLayout_3.addWidget(self.table_substitutes, 0, 0, 1, 2)
+        self.gridLayout_3.addWidget(self.table_substitutes, 0, 0, 1, 1)
         self.btn_save_substitute = QtWidgets.QPushButton(self.tab_4)
         self.btn_save_substitute.setObjectName("btn_save_substitute")
-        self.gridLayout_3.addWidget(self.btn_save_substitute, 1, 1, 1, 1)
-        self.btn_show_product = QtWidgets.QPushButton(self.tab_4)
-        self.btn_show_product.setObjectName("btn_show_product")
-        self.gridLayout_3.addWidget(self.btn_show_product, 1, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.btn_save_substitute, 1, 0, 1, 1)
         self.tabWidget_2.addTab(self.tab_4, "")
         self.gridLayout.addWidget(self.tabWidget_2, 0, 1, 1, 1)
         self.tabWidget.addTab(self.tab, "")
@@ -146,7 +143,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
-        self.tabWidget_2.setCurrentIndex(1)
+        self.tabWidget_2.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -163,7 +160,6 @@ class Ui_MainWindow(object):
         self.lbl_nutriscore_number.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_3), QtWidgets.QApplication.translate("MainWindow", "Description", None, -1))
         self.btn_save_substitute.setText(QtWidgets.QApplication.translate("MainWindow", "Enregistrer dans les favoris", None, -1))
-        self.btn_show_product.setText(QtWidgets.QApplication.translate("MainWindow", "Afficher le produit", None, -1))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_4), QtWidgets.QApplication.translate("MainWindow", "Substituts", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtWidgets.QApplication.translate("MainWindow", "Nouvelle recherche", None, -1))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mon historique de recherche", None, -1))

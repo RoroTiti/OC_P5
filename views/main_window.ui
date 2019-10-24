@@ -43,7 +43,7 @@
         <item row="0" column="1">
          <widget class="QTabWidget" name="tabWidget_2">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -197,24 +197,17 @@
             <string>Substituts</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="0" colspan="2">
+            <item row="0" column="0">
              <widget class="QTableView" name="table_substitutes">
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
               </attribute>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="1" column="0">
              <widget class="QPushButton" name="btn_save_substitute">
               <property name="text">
                <string>Enregistrer dans les favoris</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="btn_show_product">
-              <property name="text">
-               <string>Afficher le produit</string>
               </property>
              </widget>
             </item>

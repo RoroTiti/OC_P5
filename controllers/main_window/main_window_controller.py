@@ -42,12 +42,10 @@ class MainWindowController(QMainWindow):
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
-
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-
-        self.ui.btn_show_product.clicked.connect(self.show_product)
+        self.ui.table_substitutes.doubleClicked.connect(self.show_product)
 
         self.ui.tabWidget_2.currentChanged.connect(self.find_substitutes)
 
@@ -160,8 +158,7 @@ class MainWindowController(QMainWindow):
         self.substitutes += substitutes
         self.ui.table_substitutes.model().endResetModel()
 
-    def show_product(self):
-        selected_index = self.ui.table_substitutes.selectionModel().currentIndex()
+    def show_product(self, selected_index):
         selected_product = self.ui.table_substitutes.model().data(selected_index, Qt.UserRole)
 
         all_products = self.ui.lst_products.model().products
