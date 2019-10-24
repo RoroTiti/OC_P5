@@ -172,8 +172,6 @@ class MainWindowController(QMainWindow):
                 index_to_select = index
                 break
 
-        print(index_to_select)
-
         index = self.ui.lst_products.model().index(index_to_select, 0)
 
         if index.isValid():
