@@ -1,3 +1,4 @@
+from PySide2 import QtWidgets
 from PySide2.QtCore import Qt, QSortFilterProxyModel
 from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView
 
@@ -48,6 +49,8 @@ class UpdaterDialogController(QDialog):
         self.ui.table_all_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_all_categories.setSortingEnabled(True)
         self.ui.table_all_categories.sortByColumn(1, Qt.DescendingOrder)
+        self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
 
         # Selected categories list initialization
         self.selected_categories_table_model = CategoriesTableModel(self, self.selected_categories, headers)
@@ -59,6 +62,8 @@ class UpdaterDialogController(QDialog):
         self.ui.table_selected_categories.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_selected_categories.setSortingEnabled(True)
         self.ui.table_selected_categories.sortByColumn(1, Qt.DescendingOrder)
+        self.ui.table_selected_categories.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_selected_categories.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
 
         self.categories_downloader = CategoriesDownloaderThread()
         self.categories_downloader.progress.connect(self.set_categories_downloader_progress)
@@ -83,7 +88,6 @@ class UpdaterDialogController(QDialog):
                 self.selected_categories.append(source_model.items_list[source_index])
 
         self.selected_categories_table_model.endResetModel()
-        self.ui.table_selected_categories.resizeColumnsToContents()
 
     def delete_category(self):
         proxy_model: QSortFilterProxyModel = self.ui.table_selected_categories.model()
@@ -96,7 +100,6 @@ class UpdaterDialogController(QDialog):
             self.selected_categories.pop(source_index)
 
         self.selected_categories_table_model.endResetModel()
-        self.ui.table_selected_categories.resizeColumnsToContents()
 
     def download_categories(self):
         self.categories_progress.setMaximum(self.categories_downloader.max_progress)
@@ -117,7 +120,6 @@ class UpdaterDialogController(QDialog):
         self.all_categories.clear()
         self.all_categories += all_categories
         self.all_categories_table_model.endResetModel()
-        self.ui.table_all_categories.resizeColumnsToContents()
 
     def download_products(self):
         self.products_downloader.selected_categories = self.selected_categories

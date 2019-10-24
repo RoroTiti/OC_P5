@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'views/updater_dialog.ui',
-# licensing of 'views/updater_dialog.ui' applies.
+# Form implementation generated from reading ui file 'updater_dialog.ui',
+# licensing of 'updater_dialog.ui' applies.
 #
-# Created: Wed Oct 16 10:32:09 2019
+# Created: Thu Oct 24 16:34:35 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,6 +37,7 @@ class Ui_Dialog(object):
         self.gridLayout_2.addWidget(self.label, 4, 0, 1, 2)
         self.table_selected_categories = QtWidgets.QTableView(self.groupBox)
         self.table_selected_categories.setObjectName("table_selected_categories")
+        self.table_selected_categories.verticalHeader().setVisible(False)
         self.gridLayout_2.addWidget(self.table_selected_categories, 5, 0, 1, 2)
         self.label_3 = QtWidgets.QLabel(self.groupBox)
         self.label_3.setAutoFillBackground(False)
@@ -45,6 +46,7 @@ class Ui_Dialog(object):
         self.gridLayout_2.addWidget(self.label_3, 1, 0, 1, 2)
         self.table_all_categories = QtWidgets.QTableView(self.groupBox)
         self.table_all_categories.setObjectName("table_all_categories")
+        self.table_all_categories.verticalHeader().setVisible(False)
         self.gridLayout_2.addWidget(self.table_all_categories, 2, 0, 1, 2)
         self.btn_add_category = QtWidgets.QPushButton(self.groupBox)
         self.btn_add_category.setAutoDefault(False)
