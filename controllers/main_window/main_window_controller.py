@@ -39,8 +39,6 @@ class MainWindowController(QMainWindow):
         self.find_substitutes_thread = FindSubstitutesThread()
         self.find_substitutes_thread.result.connect(self.set_list_substitutes_model)
 
-        self.ui.btn_find_substitutes.clicked.connect(self.find_substitutes)
-
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -50,6 +48,8 @@ class MainWindowController(QMainWindow):
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
         self.ui.btn_show_product.clicked.connect(self.show_product)
+
+        self.ui.tabWidget_2.currentChanged.connect(self.find_substitutes)
 
     def category_selection_changed(self, index):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
@@ -144,14 +144,15 @@ class MainWindowController(QMainWindow):
         dialog = UpdaterDialogController(self)
         dialog.exec_()
 
-    def find_substitutes(self):
-        product_index = self.ui.lst_products.selectionModel().selectedIndexes()[0]
-        self.find_substitutes_thread.product = self.ui.lst_products.model().data(product_index, Qt.UserRole)
+    def find_substitutes(self, tab_index):
+        if tab_index == 1:
+            product_index = self.ui.lst_products.selectionModel().selectedIndexes()[0]
+            self.find_substitutes_thread.product = self.ui.lst_products.model().data(product_index, Qt.UserRole)
 
-        category = self.ui.cmb_categories.currentData(Qt.UserRole)
-        self.find_substitutes_thread.category = category
+            category = self.ui.cmb_categories.currentData(Qt.UserRole)
+            self.find_substitutes_thread.category = category
 
-        self.find_substitutes_thread.run()
+            self.find_substitutes_thread.run()
 
     def set_list_substitutes_model(self, substitutes):
         self.ui.table_substitutes.model().beginResetModel()
