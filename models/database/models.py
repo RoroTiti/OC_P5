@@ -27,6 +27,7 @@ class Food(BaseModel):
     food_name = TextField(null=True)
     id_food = AutoField()
     ingredients = TextField(null=True)
+    ingredients_from_palm_oil_n = IntegerField(null=True)
     nutriscore = IntegerField(null=True)
     nutrition_grade = CharField(null=True)
     proteins_100g = FloatField(null=True)

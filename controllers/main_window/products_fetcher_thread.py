@@ -17,6 +17,7 @@ class ProductsFetcherThread(QThread):
                 Food.food_name,
                 Brand.brand_name,
                 Food.ingredients,
+                Food.ingredients_from_palm_oil_n,
                 Food.allergens,
                 Food.nutriscore,
                 Food.nutrition_grade,

@@ -56,6 +56,9 @@ class MainWindowController(QMainWindow):
     def product_selection_changed(self, current, previous):
         food = self.ui.lst_products.model().data(current, Qt.UserRole)
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
+
+        self.ui.lbl_palm_oil.setVisible(food["ingredients_from_palm_oil_n"] > 0)
+
         self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
 
         if food["energy_unit"] == "kcal":
