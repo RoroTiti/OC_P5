@@ -12,7 +12,7 @@ class CategoriesComboBoxModel(QAbstractListModel):
 
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole:
-            return self.categories[index.row()].category_name
+            return self.categories[index.row()]["category_name"]
 
         elif role == Qt.UserRole:
             return self.categories[index.row()]

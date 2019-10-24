@@ -13,6 +13,7 @@ class ProductsFetcherThread(QThread):
     def run(self):
         try:
             query = BrandFood.select(
+                Food.id_food,
                 Food.food_name,
                 Brand.brand_name,
                 Food.ingredients,
@@ -35,7 +36,7 @@ class ProductsFetcherThread(QThread):
                 .join(Brand) \
                 .switch(Food) \
                 .join(CategoryFood) \
-                .where(CategoryFood.id_category == self.category.id_category) \
+                .where(CategoryFood.id_category == self.category["id_category"]) \
                 .group_by(Food.id_food) \
                 .dicts()
 

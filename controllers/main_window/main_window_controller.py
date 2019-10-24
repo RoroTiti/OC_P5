@@ -3,9 +3,10 @@ import os
 import markdown
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QPixmap, QImage
-from PySide2.QtWidgets import QMainWindow, QSizePolicy
+from PySide2.QtWidgets import QMainWindow
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
+from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
@@ -27,11 +28,15 @@ class MainWindowController(QMainWindow):
         self.fetcher_thread = ProductsFetcherThread()
         self.fetcher_thread.result.connect(self.set_list_products_model)
 
-        query = Category.select()
+        query = Category.select().dicts()
         categories = list(query)
-        categories.sort(key=lambda x: x.category_name)
+        categories.sort(key=lambda x: x["category_name"])
         model = CategoriesComboBoxModel(categories)
         self.ui.cmb_categories.setModel(model)
+
+        self.find_substitutes_thread = FindSubstitutesThread()
+
+        self.ui.btn_find_substitutes.clicked.connect(self.find_substitutes)
 
     def category_selection_changed(self, index):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
@@ -49,7 +54,7 @@ class MainWindowController(QMainWindow):
             self.ui.lst_products.setCurrentIndex(index)
 
     def product_selection_changed(self, current, previous):
-        food: Food = self.ui.lst_products.model().data(current, Qt.UserRole)
+        food = self.ui.lst_products.model().data(current, Qt.UserRole)
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
         self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
 
@@ -102,3 +107,12 @@ class MainWindowController(QMainWindow):
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
         dialog.exec_()
+
+    def find_substitutes(self):
+        product_index = self.ui.lst_products.selectionModel().selectedIndexes()[0]
+        self.find_substitutes_thread.product = self.ui.lst_products.model().data(product_index, Qt.UserRole)
+
+        category = self.ui.cmb_categories.currentData(Qt.UserRole)
+        self.find_substitutes_thread.category = category
+
+        self.find_substitutes_thread.run()
