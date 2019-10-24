@@ -43,7 +43,7 @@
         <item row="0" column="1">
          <widget class="QTabWidget" name="tabWidget_2">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -65,7 +65,7 @@
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_4">
-                <item row="9" column="0">
+                <item row="10" column="0">
                  <widget class="QLabel" name="lbl_nutriments">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -119,7 +119,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="11" column="0">
+                <item row="12" column="0">
                  <spacer name="verticalSpacer">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
@@ -136,6 +136,19 @@
                  <widget class="QLabel" name="label_3">
                   <property name="text">
                    <string>&lt;b&gt;Valeurs nutritionnelles pour 100g&lt;/b&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="lbl_palm_oil">
+                  <property name="styleSheet">
+                   <string notr="true">* { background-color: red; color: white; padding: 3 px; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Contient de l'huile de palme</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -163,13 +176,10 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="lbl_palm_oil">
-                  <property name="styleSheet">
-                   <string notr="true">* { background-color: red; color: white; padding: 3 px; }</string>
-                  </property>
+                <item row="9" column="0">
+                 <widget class="QLabel" name="lbl_nutriscore_number">
                   <property name="text">
-                   <string>Contient de l'huile de palme</string>
+                   <string>TextLabel</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -194,6 +204,13 @@
               </property>
              </widget>
             </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QPushButton" name="btn_find_substitutes">
+              <property name="text">
+               <string>Obtenir la liste des substituts</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="1">
              <widget class="QPushButton" name="btn_save_substitute">
               <property name="text">
@@ -202,13 +219,10 @@
              </widget>
             </item>
             <item row="1" column="0" colspan="2">
-             <widget class="QListView" name="lst_substitutes"/>
-            </item>
-            <item row="0" column="0" colspan="2">
-             <widget class="QPushButton" name="btn_find_substitutes">
-              <property name="text">
-               <string>Obtenir la liste des substituts</string>
-              </property>
+             <widget class="QTableView" name="table_substitutes">
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
              </widget>
             </item>
            </layout>

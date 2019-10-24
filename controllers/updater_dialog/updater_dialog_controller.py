@@ -94,9 +94,9 @@ class UpdaterDialogController(QDialog):
             model_index = proxy_model.index(row.row(), 0)
             source_index = proxy_model.mapToSource(model_index).row()
             self.selected_categories.pop(source_index)
-            self.ui.table_selected_categories.resizeColumnsToContents()
 
         self.selected_categories_table_model.endResetModel()
+        self.ui.table_selected_categories.resizeColumnsToContents()
 
     def download_categories(self):
         self.categories_progress.setMaximum(self.categories_downloader.max_progress)

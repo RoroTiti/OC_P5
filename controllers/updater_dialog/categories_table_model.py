@@ -26,6 +26,8 @@ class CategoriesTableModel(QAbstractTableModel):
             return self.items_list[index.row()].products
 
     def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> Any:
-        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
-            return self.header[section]
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return self.header[section]
+            return None
         return None

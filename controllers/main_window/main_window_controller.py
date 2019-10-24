@@ -1,16 +1,18 @@
 import os
 
 import markdown
+from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QPixmap, QImage
-from PySide2.QtWidgets import QMainWindow
+from PySide2.QtWidgets import QMainWindow, QAbstractItemView
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
+from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
-from models.database.models import Category, Food
+from models.database.models import Category
 from views import main_window
 
 
@@ -35,8 +37,17 @@ class MainWindowController(QMainWindow):
         self.ui.cmb_categories.setModel(model)
 
         self.find_substitutes_thread = FindSubstitutesThread()
+        self.find_substitutes_thread.result.connect(self.set_list_substitutes_model)
 
         self.ui.btn_find_substitutes.clicked.connect(self.find_substitutes)
+
+        self.substitutes = []
+        self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
+        self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
+
+        self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
     def category_selection_changed(self, index):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
@@ -106,6 +117,7 @@ class MainWindowController(QMainWindow):
         pix_map.convertFromImage(image.scaledToHeight(100, Qt.SmoothTransformation))
 
         self.ui.lbl_nutriscore.setPixmap(pix_map)
+        self.ui.lbl_nutriscore_number.setText(f"<b>Indice NUTRI-SCORE:</b> {food['nutriscore']}")
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
@@ -119,3 +131,9 @@ class MainWindowController(QMainWindow):
         self.find_substitutes_thread.category = category
 
         self.find_substitutes_thread.run()
+
+    def set_list_substitutes_model(self, substitutes):
+        self.ui.table_substitutes.model().beginResetModel()
+        self.substitutes.clear()
+        self.substitutes += substitutes
+        self.ui.table_substitutes.model().endResetModel()
