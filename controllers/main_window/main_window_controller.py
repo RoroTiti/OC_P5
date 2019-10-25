@@ -13,7 +13,7 @@ from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
-from models.database.models import Category, Substitute
+from models.database.models import Category
 from views import main_window
 
 
