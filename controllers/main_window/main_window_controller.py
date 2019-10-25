@@ -2,7 +2,7 @@ import os
 
 import markdown
 from PySide2 import QtWidgets
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, QModelIndex
 from PySide2.QtGui import QPixmap, QImage
 from PySide2.QtWidgets import QMainWindow, QAbstractItemView
 
@@ -49,7 +49,7 @@ class MainWindowController(QMainWindow):
 
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
 
-    def category_selection_changed(self, index):
+    def category_selection_changed(self):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
         self.fetcher_thread.category = category
         self.fetcher_thread.start()
@@ -64,14 +64,17 @@ class MainWindowController(QMainWindow):
         if index.isValid():
             self.ui.lst_products.setCurrentIndex(index)
 
-    def product_selection_changed(self, current, previous):
+    def product_selection_changed(self, current_index):
         food = None
 
         if self.sender() == self.ui.lst_products.selectionModel():
-            food = self.ui.lst_products.model().data(current, Qt.UserRole)
+            if current_index.row() == -1:
+                return
+            food = self.ui.lst_products.model().data(current_index, Qt.UserRole)
 
         elif self.sender() == self.ui.table_substitutes.selectionModel():
-            food = self.ui.table_substitutes.model().data(current, Qt.UserRole)
+            food = self.ui.table_substitutes.model().data(current_index, Qt.UserRole)
+            self.ui.lst_products.setCurrentIndex(QModelIndex())
 
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 

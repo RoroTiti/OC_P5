@@ -25,31 +25,45 @@
         <string>Nouvelle recherche</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="4" column="0">
+        <item row="6" column="0">
          <widget class="QPushButton" name="btn_save_substitute">
           <property name="text">
            <string>Enregistrer le substitut</string>
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QListView" name="lst_products"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Produits</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
          <widget class="QComboBox" name="cmb_categories"/>
         </item>
-        <item row="2" column="0">
+        <item row="4" column="0">
          <widget class="QTableView" name="table_substitutes">
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QListView" name="lst_products"/>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Substituts</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Mon historique de recherche</string>
+        <string>Mes substituts enregistrés</string>
        </attribute>
       </widget>
      </widget>
