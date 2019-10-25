@@ -86,3 +86,14 @@ class StoreFood(BaseModel):
         )
         primary_key = CompositeKey('id_food', 'id_store')
 
+class Substitute(BaseModel):
+    id_food = ForeignKeyField(column_name='id_food', field='id_food', model=Food)
+    id_food_substitute = ForeignKeyField(backref='food_id_food_substitute_set', column_name='id_food_substitute', field='id_food', model=Food)
+
+    class Meta:
+        table_name = 'substitute'
+        indexes = (
+            (('id_food', 'id_food_substitute'), True),
+        )
+        primary_key = CompositeKey('id_food', 'id_food_substitute')
+

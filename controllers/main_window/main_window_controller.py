@@ -12,7 +12,7 @@ from controllers.main_window.products_fetcher_thread import ProductsFetcherThrea
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
-from models.database.models import Category
+from models.database.models import Category, Substitute
 from views import main_window
 
 
@@ -47,7 +47,7 @@ class MainWindowController(QMainWindow):
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         self.ui.table_substitutes.doubleClicked.connect(self.show_product)
 
-        self.ui.tabWidget_2.currentChanged.connect(self.find_substitutes)
+        self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
 
     def category_selection_changed(self, index):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
@@ -65,9 +65,6 @@ class MainWindowController(QMainWindow):
             self.ui.lst_products.setCurrentIndex(index)
 
     def product_selection_changed(self, current, previous):
-        self.ui.tabWidget_2.setCurrentIndex(0)
-        self.ui.lst_products.setFocus()
-
         self.ui.table_substitutes.model().beginResetModel()
         self.substitutes.clear()
         self.ui.table_substitutes.model().endResetModel()
@@ -138,6 +135,11 @@ class MainWindowController(QMainWindow):
         self.ui.lbl_nutriscore.setPixmap(pix_map)
         self.ui.lbl_nutriscore_number.setText(f"<b>Indice NUTRI-SCORE:</b> {food['nutriscore']}")
 
+        self.find_substitutes_thread.product = food
+        category = self.ui.cmb_categories.currentData(Qt.UserRole)
+        self.find_substitutes_thread.category = category
+        self.find_substitutes_thread.run()
+
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
         dialog.exec_()
@@ -174,3 +176,15 @@ class MainWindowController(QMainWindow):
 
         if index.isValid():
             self.ui.lst_products.setCurrentIndex(index)
+
+    def save_substitute(self):
+        selected_substitute_index = self.ui.table_substitutes.currentIndex()
+        selected_substitute = self.ui.table_substitutes.model().data(selected_substitute_index, Qt.UserRole)
+
+        selected_product_index = self.ui.lst_products.currentIndex()
+        selected_product = self.ui.lst_products.model().data(selected_product_index, Qt.UserRole)
+
+        print(selected_substitute["brand_name"])
+        print(selected_product["brand_name"])
+
+        Substitute.create(id_food=selected_product["id_food"], id_food_substitute=selected_substitute["id_food"])

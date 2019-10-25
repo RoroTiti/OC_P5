@@ -12,7 +12,7 @@ class SubstitutesTableModel(QAbstractTableModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole:
             if index.column() == 0:
-                return self.substitutes[index.row()]["food_name"]
+                return f"{self.substitutes[index.row()]['food_name']}, {self.substitutes[index.row()]['brand_name']}"
             if index.column() == 1:
                 return self.substitutes[index.row()]["nutriscore"]
             if index.column() == 2:
