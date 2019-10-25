@@ -35,7 +35,7 @@ class MainWindowController(QMainWindow):
         self.fetcher_thread = ProductsFetcherThread()
         self.fetcher_thread.result.connect(self.set_list_products_model)
 
-        query = Category.select().dicts()
+        query = Category.select().dicts().execute()
         categories = list(query)
         categories.sort(key=lambda x: x["category_name"])
         model = CategoriesComboBoxModel(categories)

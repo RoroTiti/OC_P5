@@ -39,7 +39,8 @@ class ProductsFetcherThread(QThread):
                 .join(CategoryFood) \
                 .where(CategoryFood.id_category == self.category["id_category"]) \
                 .group_by(Food.id_food) \
-                .dicts()
+                .dicts() \
+                .execute()
 
             products = list(query)
             products.sort(key=lambda x: x["food_name"])

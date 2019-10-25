@@ -40,7 +40,8 @@ class FindSubstitutesThread(QThread):
             .switch(Food) \
             .where(Category.id_category == self.category["id_category"]) \
             .group_by(Food.id_food) \
-            .dicts()
+            .dicts() \
+            .execute()
 
         for product in products:
             product["similarity"] = self.round_by_hundred(jellyfish.jaro_distance(self.product["food_name"], product["food_name"]) * 1000)
