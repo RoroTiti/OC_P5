@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Fri Oct 25 10:40:56 2019
+# Created: Fri Oct 25 13:20:13 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,6 +46,12 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.tab_2)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.table_saved_substitutes = QtWidgets.QTableView(self.tab_2)
+        self.table_saved_substitutes.setObjectName("table_saved_substitutes")
+        self.table_saved_substitutes.verticalHeader().setVisible(False)
+        self.gridLayout_2.addWidget(self.table_saved_substitutes, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
         self.horizontalLayout.addWidget(self.tabWidget)
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)

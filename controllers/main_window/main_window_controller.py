@@ -11,6 +11,8 @@ from controllers.main_window.find_substitutes_thread import FindSubstitutesThrea
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
+from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
+from controllers.main_window.saved_substitutes_fetcher_thread import SavedSubstitutesFetcherThread
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database.models import Category
@@ -25,6 +27,8 @@ class MainWindowController(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.action_update.triggered.connect(self.open_updater_dialog)
+
+        self.ui.tabWidget.currentChanged.connect(self.tab_changed)
 
         self.ui.cmb_categories.currentIndexChanged.connect(self.category_selection_changed)
 
@@ -43,6 +47,9 @@ class MainWindowController(QMainWindow):
         self.save_substitute_thread = SaveSubstituteThread()
         self.save_substitute_thread.already_saved.connect(self.notify_already_saved)
 
+        self.substitutes_fetcher_thread = SavedSubstitutesFetcherThread()
+        self.substitutes_fetcher_thread.result.connect(self.set_table_saved_substitutes_model)
+
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
         self.ui.table_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
@@ -51,7 +58,22 @@ class MainWindowController(QMainWindow):
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
+        self.saved_substitutes = []
+        self.ui.table_saved_substitutes.setModel(SavedSubstitutesTableModel(self.saved_substitutes))
+        self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
+
+    def tab_changed(self, index):
+        if index == 1:
+            self.substitutes_fetcher_thread.run()
+
+    def set_table_saved_substitutes_model(self, substitutes):
+        self.ui.table_saved_substitutes.model().beginResetModel()
+        self.saved_substitutes.clear()
+        self.saved_substitutes += substitutes
+        self.ui.table_saved_substitutes.model().endResetModel()
 
     def notify_already_saved(self):
         msg = QMessageBox(QMessageBox.Information, "Information", "Ce substitut est déjà enregistré dans la base de données", QMessageBox.Ok, self)
