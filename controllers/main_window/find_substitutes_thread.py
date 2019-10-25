@@ -16,9 +16,22 @@ class FindSubstitutesThread(QThread):
         products = Category.select(
             Food.id_food,
             Food.food_name,
-            Food.nutriscore,
+            Brand.brand_name,
+            Food.ingredients,
             Food.ingredients_from_palm_oil_n,
-            Brand.brand_name
+            Food.allergens,
+            Food.nutriscore,
+            Food.nutrition_grade,
+            Food.energy_100g,
+            Food.energy_unit,
+            Food.carbohydrates_100g,
+            Food.sugars_100g,
+            Food.fat_100g,
+            Food.saturated_fat_100g,
+            Food.salt_100g,
+            Food.sodium_100g,
+            Food.fiber_100g,
+            Food.proteins_100g
         ) \
             .join(CategoryFood) \
             .join(Food) \
@@ -29,25 +42,14 @@ class FindSubstitutesThread(QThread):
             .group_by(Food.id_food) \
             .dicts()
 
-        distances = []
-
         for product in products:
-            distances.append(
-                {
-                    "id_food": product["id_food"],
-                    "food_name": product["food_name"],
-                    "nutriscore": product["nutriscore"],
-                    "ingredients_from_palm_oil_n": product["ingredients_from_palm_oil_n"],
-                    "brand_name": product["brand_name"],
-                    "similarity": self.round_by_hundred(jellyfish.jaro_distance(self.product["food_name"], product["food_name"]) * 1000)
-                }
-            )
+            product["similarity"] = self.round_by_hundred(jellyfish.jaro_distance(self.product["food_name"], product["food_name"]) * 1000)
 
-        distances = filter(lambda x: x["id_food"] != self.product["id_food"], distances)
-        distances = filter(lambda x: x["similarity"] >= 700, distances)
-        distances = sorted(distances, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
+        products = filter(lambda x: x["id_food"] != self.product["id_food"], products)
+        products = filter(lambda x: x["similarity"] >= 700, products)
+        products = sorted(products, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
 
-        self.result.emit(distances)
+        self.result.emit(products)
 
     @staticmethod
     def round_by_hundred(n):

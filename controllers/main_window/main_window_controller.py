@@ -41,11 +41,11 @@ class MainWindowController(QMainWindow):
 
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
+        self.ui.table_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        self.ui.table_substitutes.doubleClicked.connect(self.show_product)
 
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
 
@@ -65,11 +65,14 @@ class MainWindowController(QMainWindow):
             self.ui.lst_products.setCurrentIndex(index)
 
     def product_selection_changed(self, current, previous):
-        self.ui.table_substitutes.model().beginResetModel()
-        self.substitutes.clear()
-        self.ui.table_substitutes.model().endResetModel()
+        food = None
 
-        food = self.ui.lst_products.model().data(current, Qt.UserRole)
+        if self.sender() == self.ui.lst_products.selectionModel():
+            food = self.ui.lst_products.model().data(current, Qt.UserRole)
+
+        elif self.sender() == self.ui.table_substitutes.selectionModel():
+            food = self.ui.table_substitutes.model().data(current, Qt.UserRole)
+
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
         palm_oil_presence = food["ingredients_from_palm_oil_n"] > 0
@@ -135,47 +138,21 @@ class MainWindowController(QMainWindow):
         self.ui.lbl_nutriscore.setPixmap(pix_map)
         self.ui.lbl_nutriscore_number.setText(f"<b>Indice NUTRI-SCORE:</b> {food['nutriscore']}")
 
-        self.find_substitutes_thread.product = food
-        category = self.ui.cmb_categories.currentData(Qt.UserRole)
-        self.find_substitutes_thread.category = category
-        self.find_substitutes_thread.run()
+        if self.sender() == self.ui.lst_products.selectionModel():
+            self.find_substitutes_thread.product = food
+            category = self.ui.cmb_categories.currentData(Qt.UserRole)
+            self.find_substitutes_thread.category = category
+            self.find_substitutes_thread.run()
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
         dialog.exec_()
-
-    def find_substitutes(self, tab_index):
-        if tab_index == 1:
-            product_index = self.ui.lst_products.selectionModel().selectedIndexes()[0]
-            self.find_substitutes_thread.product = self.ui.lst_products.model().data(product_index, Qt.UserRole)
-
-            category = self.ui.cmb_categories.currentData(Qt.UserRole)
-            self.find_substitutes_thread.category = category
-
-            self.find_substitutes_thread.run()
 
     def set_list_substitutes_model(self, substitutes):
         self.ui.table_substitutes.model().beginResetModel()
         self.substitutes.clear()
         self.substitutes += substitutes
         self.ui.table_substitutes.model().endResetModel()
-
-    def show_product(self, selected_index):
-        selected_product = self.ui.table_substitutes.model().data(selected_index, Qt.UserRole)
-
-        all_products = self.ui.lst_products.model().products
-
-        index_to_select = None
-
-        for index, item in enumerate(all_products):
-            if item["id_food"] == selected_product["id_food"]:
-                index_to_select = index
-                break
-
-        index = self.ui.lst_products.model().index(index_to_select, 0)
-
-        if index.isValid():
-            self.ui.lst_products.setCurrentIndex(index)
 
     def save_substitute(self):
         selected_substitute_index = self.ui.table_substitutes.currentIndex()
