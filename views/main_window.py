@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Fri Oct 25 10:06:36 2019
+# Created: Fri Oct 25 10:40:56 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 528, 625))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 528, 652))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_4.setObjectName("gridLayout_4")
@@ -118,9 +118,6 @@ class Ui_MainWindow(object):
         self.menuOutils = QtWidgets.QMenu(self.menuBar)
         self.menuOutils.setObjectName("menuOutils")
         MainWindow.setMenuBar(self.menuBar)
-        self.statusBar = QtWidgets.QStatusBar(MainWindow)
-        self.statusBar.setObjectName("statusBar")
-        MainWindow.setStatusBar(self.statusBar)
         self.action_update = QtWidgets.QAction(MainWindow)
         self.action_update.setObjectName("action_update")
         self.action_preview = QtWidgets.QAction(MainWindow)

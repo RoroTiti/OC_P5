@@ -79,7 +79,7 @@
          <x>0</x>
          <y>0</y>
          <width>528</width>
-         <height>625</height>
+         <height>652</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
@@ -228,7 +228,6 @@
    </widget>
    <addaction name="menuOutils"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="action_update">
    <property name="text">
     <string>Mise à jour des données...</string>
