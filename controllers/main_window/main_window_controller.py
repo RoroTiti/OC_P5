@@ -2,14 +2,15 @@ import os
 
 import markdown
 from PySide2 import QtWidgets
-from PySide2.QtCore import Qt, QModelIndex
+from PySide2.QtCore import Qt
 from PySide2.QtGui import QPixmap, QImage
-from PySide2.QtWidgets import QMainWindow, QAbstractItemView
+from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
+from controllers.main_window.save_substitute_thread import SaveSubstituteThread
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database.models import Category, Substitute
@@ -39,6 +40,9 @@ class MainWindowController(QMainWindow):
         self.find_substitutes_thread = FindSubstitutesThread()
         self.find_substitutes_thread.result.connect(self.set_list_substitutes_model)
 
+        self.save_substitute_thread = SaveSubstituteThread()
+        self.save_substitute_thread.already_saved.connect(self.notify_already_saved)
+
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
         self.ui.table_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
@@ -48,6 +52,11 @@ class MainWindowController(QMainWindow):
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
 
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
+
+    def notify_already_saved(self):
+        msg = QMessageBox(QMessageBox.Information, "Information", "Ce substitut est déjà enregistré dans la base de données", QMessageBox.Ok, self)
+        msg.setWindowModality(Qt.WindowModal)
+        msg.exec_()
 
     def category_selection_changed(self):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
@@ -68,13 +77,10 @@ class MainWindowController(QMainWindow):
         food = None
 
         if self.sender() == self.ui.lst_products.selectionModel():
-            if current_index.row() == -1:
-                return
             food = self.ui.lst_products.model().data(current_index, Qt.UserRole)
 
         elif self.sender() == self.ui.table_substitutes.selectionModel():
             food = self.ui.table_substitutes.model().data(current_index, Qt.UserRole)
-            self.ui.lst_products.setCurrentIndex(QModelIndex())
 
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
@@ -164,7 +170,6 @@ class MainWindowController(QMainWindow):
         selected_product_index = self.ui.lst_products.currentIndex()
         selected_product = self.ui.lst_products.model().data(selected_product_index, Qt.UserRole)
 
-        print(selected_substitute["brand_name"])
-        print(selected_product["brand_name"])
-
-        Substitute.create(id_food=selected_product["id_food"], id_food_substitute=selected_substitute["id_food"])
+        self.save_substitute_thread.id_food = selected_product["id_food"]
+        self.save_substitute_thread.id_food_substitute = selected_substitute["id_food"]
+        self.save_substitute_thread.run()
