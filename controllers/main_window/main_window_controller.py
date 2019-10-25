@@ -98,7 +98,7 @@ class MainWindowController(QMainWindow):
             "Ne contient pas d'huile de palme"
         )
 
-        self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else markdown.markdown("_Aucun_"))
+        self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else "<i>Aucun</i>")
 
         if food["energy_unit"] == "kcal":
             kj = round(food["energy_100g"] * 4.18, 1)
