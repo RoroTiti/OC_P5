@@ -1,6 +1,7 @@
-from PySide2 import QtWidgets
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox
+import PySide2
+from PySide2 import QtWidgets, QtCore
+from PySide2.QtCore import Qt, QObject, Signal, QModelIndex
+from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox, QTableView
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
@@ -50,7 +51,7 @@ class MainWindowController(QMainWindow):
 
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
-        self.ui.table_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
+        self.ui.table_substitutes.doubleClicked.connect(self.product_selection_changed)
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
@@ -58,11 +59,25 @@ class MainWindowController(QMainWindow):
 
         self.saved_substitutes = []
         self.ui.table_saved_substitutes.setModel(SavedSubstitutesTableModel(self.saved_substitutes))
-        self.ui.table_saved_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
+        self.ui.table_saved_substitutes.doubleClicked.connect(self.product_selection_changed)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
+
+        event = PressEnterEventFilter(self.ui.lst_products)
+        self.ui.lst_products.installEventFilter(event)
+        event.result.connect(self.product_selection_changed)
+
+        event = PressEnterEventFilter(self.ui.table_substitutes)
+        self.ui.table_substitutes.installEventFilter(event)
+        event.result.connect(self.product_selection_changed)
+
+        event = PressEnterEventFilter(self.ui.table_saved_substitutes)
+        self.ui.table_saved_substitutes.installEventFilter(event)
+        event.result.connect(self.product_selection_changed)
+
+        self.ui.lst_products.setFocus()
 
     def tab_changed(self, index):
         if index == 1:
@@ -87,37 +102,26 @@ class MainWindowController(QMainWindow):
     def set_list_products_model(self, products):
         model = ProductsListModel(products)
         self.ui.lst_products.setModel(model)
-        self.ui.lst_products.selectionModel().currentChanged.connect(self.product_selection_changed)
+        # self.ui.lst_products.selectionModel().currentChanged.connect(self.product_selection_changed)
+        self.ui.lst_products.doubleClicked.connect(self.product_selection_changed)
 
         index = model.index(0, 0)
 
         if index.isValid():
             self.ui.lst_products.setCurrentIndex(index)
 
-    def product_selection_changed(self, current_index):
-        food = None
-        sender = self.sender()
-
-        if sender == self.ui.lst_products.selectionModel():
-            food = self.ui.lst_products.model().data(current_index, Qt.UserRole)
-
-        elif sender == self.ui.table_substitutes.selectionModel():
-            food = self.ui.table_substitutes.model().data(current_index, Qt.UserRole)
-
-        elif sender == self.ui.table_saved_substitutes.selectionModel():
-            food = self.ui.table_saved_substitutes.model().data(current_index, Qt.UserRole)
-
-        food_id = food["id_food"]
+    def product_selection_changed(self, current_index: QModelIndex):
+        food = current_index.data(Qt.UserRole)
         product_fetcher = SingleProductFetcherThread()
-        product_fetcher.food_id = food_id
+        product_fetcher.food_id = food["id_food"]
         product_fetcher.result.connect(self.open_product_details_dialog)
         product_fetcher.run()
 
-        if sender == self.ui.lst_products.selectionModel():
-            self.find_substitutes_thread.product = food
-            category = self.ui.cmb_categories.currentData(Qt.UserRole)
-            self.find_substitutes_thread.category = category
-            self.find_substitutes_thread.run()
+        # if sender == self.ui.lst_products.selectionModel():
+        #     self.find_substitutes_thread.product = food
+        #     category = self.ui.cmb_categories.currentData(Qt.UserRole)
+        #     self.find_substitutes_thread.category = category
+        #     self.find_substitutes_thread.run()
 
     def open_product_details_dialog(self, product_details):
         dialog = ProductDetailsDialogController(self, product_details)
@@ -143,3 +147,18 @@ class MainWindowController(QMainWindow):
         self.save_substitute_thread.id_food = selected_product["id_food"]
         self.save_substitute_thread.id_food_substitute = selected_substitute["id_food"]
         self.save_substitute_thread.run()
+
+
+class PressEnterEventFilter(QObject):
+    result = Signal(QModelIndex)
+
+    def eventFilter(self, watched: PySide2.QtCore.QObject, event: PySide2.QtCore.QEvent) -> bool:
+        if event.type() == QtCore.QEvent.KeyPress:
+            if event.key() == QtCore.Qt.Key_Return:
+                source: QTableView = watched
+                self.result.emit((source.selectionModel().currentIndex()))
+                return True
+            else:
+                return super().eventFilter(watched, event)
+
+        return super().eventFilter(watched, event)
