@@ -156,7 +156,7 @@ class PressEnterEventFilter(QObject):
 
     def eventFilter(self, watched: PySide2.QtCore.QObject, event: PySide2.QtCore.QEvent) -> bool:
         if event.type() == QtCore.QEvent.KeyPress:
-            if event.key() == QtCore.Qt.Key_Return:
+            if event.key() == QtCore.Qt.Key_Return or event.key() == QtCore.Qt.Key_Enter:
                 source: QTableView = watched
                 self.result.emit((source.selectionModel().currentIndex()))
                 return True
