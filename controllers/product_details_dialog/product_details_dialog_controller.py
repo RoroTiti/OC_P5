@@ -21,6 +21,8 @@ class ProductDetailsDialogController(QDialog):
 
         food = self.product_details
 
+        self.setWindowTitle(food["food_name"])
+
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
         palm_oil_presence = food["ingredients_from_palm_oil_n"] > 0

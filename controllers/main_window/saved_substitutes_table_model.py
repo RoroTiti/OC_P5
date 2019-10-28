@@ -12,15 +12,15 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole:
             if index.column() == 0:
-                return self.products_with_substitutes[index.row()]["food_name"]
+                return self.products_with_substitutes[index.row()]["product"]["food_name"]
             if index.column() == 1:
-                return self.products_with_substitutes[index.row()]["substitute_name"]
+                return self.products_with_substitutes[index.row()]["substitute"]["food_name"]
 
         elif role == Qt.UserRole:
             if index.column() == 0:
-                return self.products_with_substitutes[index.row()]
+                return self.products_with_substitutes[index.row()]["product"]
             if index.column() == 1:
-                return self.products_with_substitutes[index.row()]
+                return self.products_with_substitutes[index.row()]["substitute"]
 
         return None
 

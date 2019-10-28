@@ -25,4 +25,14 @@ class SavedSubstitutesFetcherThread(QThread):
             .dicts() \
             .execute()
 
-        self.result.emit(substitutes)
+        products_with_substitutes = []
+        
+        for substitute in substitutes:
+            lol = {
+                "product": {"id_food": substitute["id_food"], "food_name": substitute["food_name"]},
+                "substitute": {"id_food": substitute["id_substitute"], "food_name": substitute["substitute_name"]}
+            }
+
+            products_with_substitutes.append(lol)
+
+        self.result.emit(products_with_substitutes)

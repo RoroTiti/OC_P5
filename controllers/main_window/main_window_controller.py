@@ -26,13 +26,12 @@ class MainWindowController(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.action_update.triggered.connect(self.open_updater_dialog)
-
         self.ui.tabWidget.currentChanged.connect(self.tab_changed)
-
         self.ui.cmb_categories.currentIndexChanged.connect(self.category_selection_changed)
+        self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
 
         self.fetcher_thread = ProductsFetcherThread()
-        self.fetcher_thread.result.connect(self.set_list_products_model)
+        self.fetcher_thread.result.connect(self.set_list_products)
 
         query = Category.select().dicts().execute()
         categories = list(query)
@@ -41,17 +40,23 @@ class MainWindowController(QMainWindow):
         self.ui.cmb_categories.setModel(model)
 
         self.find_substitutes_thread = FindSubstitutesThread()
-        self.find_substitutes_thread.result.connect(self.set_list_substitutes_model)
+        self.find_substitutes_thread.result.connect(self.set_list_substitutes)
 
         self.save_substitute_thread = SaveSubstituteThread()
         self.save_substitute_thread.already_saved.connect(self.notify_already_saved)
 
-        self.substitutes_fetcher_thread = SavedSubstitutesFetcherThread()
-        self.substitutes_fetcher_thread.result.connect(self.set_table_saved_substitutes_model)
+        self.saved_substitutes_fetcher_thread = SavedSubstitutesFetcherThread()
+        self.saved_substitutes_fetcher_thread.result.connect(self.set_table_saved_substitutes_model)
+
+        self.products = []
+        self.ui.lst_products.setModel(ProductsListModel(self.products))
+        self.ui.lst_products.doubleClicked.connect(self.product_details_requested)
+        self.ui.lst_products.selectionModel().currentChanged.connect(self.load_substitutes)
+        self.ui.lst_products.setFocus()
 
         self.substitutes = []
         self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
-        self.ui.table_substitutes.doubleClicked.connect(self.product_selection_changed)
+        self.ui.table_substitutes.doubleClicked.connect(self.product_details_requested)
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
@@ -59,79 +64,61 @@ class MainWindowController(QMainWindow):
 
         self.saved_substitutes = []
         self.ui.table_saved_substitutes.setModel(SavedSubstitutesTableModel(self.saved_substitutes))
-        self.ui.table_saved_substitutes.doubleClicked.connect(self.product_selection_changed)
+        self.ui.table_saved_substitutes.doubleClicked.connect(self.product_details_requested)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
-        self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
-
         event = PressEnterEventFilter(self.ui.lst_products)
         self.ui.lst_products.installEventFilter(event)
-        event.result.connect(self.product_selection_changed)
+        event.result.connect(self.product_details_requested)
 
         event = PressEnterEventFilter(self.ui.table_substitutes)
         self.ui.table_substitutes.installEventFilter(event)
-        event.result.connect(self.product_selection_changed)
+        event.result.connect(self.product_details_requested)
 
         event = PressEnterEventFilter(self.ui.table_saved_substitutes)
         self.ui.table_saved_substitutes.installEventFilter(event)
-        event.result.connect(self.product_selection_changed)
-
-        self.ui.lst_products.setFocus()
+        event.result.connect(self.product_details_requested)
 
     def tab_changed(self, index):
         if index == 1:
-            self.substitutes_fetcher_thread.run()
-
-    def set_table_saved_substitutes_model(self, substitutes):
-        self.ui.table_saved_substitutes.model().beginResetModel()
-        self.saved_substitutes.clear()
-        self.saved_substitutes += substitutes
-        self.ui.table_saved_substitutes.model().endResetModel()
-
-    def notify_already_saved(self):
-        msg = QMessageBox(QMessageBox.Information, "Information", "Ce substitut est déjà enregistré dans la base de données", QMessageBox.Ok, self)
-        msg.setWindowModality(Qt.WindowModal)
-        msg.exec_()
+            self.saved_substitutes_fetcher_thread.run()
 
     def category_selection_changed(self):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
         self.fetcher_thread.category = category
         self.fetcher_thread.start()
 
-    def set_list_products_model(self, products):
-        model = ProductsListModel(products)
-        self.ui.lst_products.setModel(model)
-        # self.ui.lst_products.selectionModel().currentChanged.connect(self.product_selection_changed)
-        self.ui.lst_products.doubleClicked.connect(self.product_selection_changed)
+    def set_list_products(self, products):
+        self.ui.lst_products.model().beginResetModel()
+        self.products.clear()
+        self.products += products
+        self.ui.lst_products.model().endResetModel()
 
-        index = model.index(0, 0)
+        index = self.ui.lst_products.model().index(0, 0)
 
         if index.isValid():
             self.ui.lst_products.setCurrentIndex(index)
 
-    def product_selection_changed(self, current_index: QModelIndex):
+    def product_details_requested(self, current_index: QModelIndex):
         food = current_index.data(Qt.UserRole)
         product_fetcher = SingleProductFetcherThread()
         product_fetcher.food_id = food["id_food"]
         product_fetcher.result.connect(self.open_product_details_dialog)
         product_fetcher.run()
 
-        # if sender == self.ui.lst_products.selectionModel():
-        #     self.find_substitutes_thread.product = food
-        #     category = self.ui.cmb_categories.currentData(Qt.UserRole)
-        #     self.find_substitutes_thread.category = category
-        #     self.find_substitutes_thread.run()
-
     def open_product_details_dialog(self, product_details):
         dialog = ProductDetailsDialogController(self, product_details)
         dialog.show()
 
-    def open_updater_dialog(self):
-        dialog = UpdaterDialogController(self)
-        dialog.exec_()
+    def load_substitutes(self):
+        category = self.ui.cmb_categories.currentData(Qt.UserRole)
+        self.find_substitutes_thread.category = category
+        food = self.ui.lst_products.currentIndex().data(Qt.UserRole)
+        self.find_substitutes_thread.product = food
+        self.find_substitutes_thread.run()
 
-    def set_list_substitutes_model(self, substitutes):
+    def set_list_substitutes(self, substitutes):
         self.ui.table_substitutes.model().beginResetModel()
         self.substitutes.clear()
         self.substitutes += substitutes
@@ -148,6 +135,21 @@ class MainWindowController(QMainWindow):
         self.save_substitute_thread.id_food_substitute = selected_substitute["id_food"]
         self.save_substitute_thread.run()
 
+    def set_table_saved_substitutes_model(self, substitutes):
+        self.ui.table_saved_substitutes.model().beginResetModel()
+        self.saved_substitutes.clear()
+        self.saved_substitutes += substitutes
+        self.ui.table_saved_substitutes.model().endResetModel()
+
+    def notify_already_saved(self):
+        msg = QMessageBox(QMessageBox.Information, "Information", "Ce substitut est déjà enregistré dans la base de données", QMessageBox.Ok, self)
+        msg.setWindowModality(Qt.WindowModal)
+        msg.exec_()
+
+    def open_updater_dialog(self):
+        dialog = UpdaterDialogController(self)
+        dialog.exec_()
+
 
 class PressEnterEventFilter(QObject):
     result = Signal(QModelIndex)
@@ -158,7 +160,7 @@ class PressEnterEventFilter(QObject):
                 source: QTableView = watched
                 self.result.emit((source.selectionModel().currentIndex()))
                 return True
-            else:
-                return super().eventFilter(watched, event)
+
+            return super().eventFilter(watched, event)
 
         return super().eventFilter(watched, event)
