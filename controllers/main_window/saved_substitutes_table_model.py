@@ -15,6 +15,13 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
                 return self.products_with_substitutes[index.row()]["food_name"]
             if index.column() == 1:
                 return self.products_with_substitutes[index.row()]["substitute_name"]
+
+        elif role == Qt.UserRole:
+            if index.column() == 0:
+                return self.products_with_substitutes[index.row()]["id_food"]
+            if index.column() == 1:
+                return self.products_with_substitutes[index.row()]["id_substitute"]
+
         return None
 
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:

@@ -13,6 +13,7 @@ from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
 from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
 from controllers.main_window.saved_substitutes_fetcher_thread import SavedSubstitutesFetcherThread
+from controllers.main_window.single_product_fetcher_thread import SingleProductFetcherThread
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database.models import Category
@@ -60,6 +61,7 @@ class MainWindowController(QMainWindow):
 
         self.saved_substitutes = []
         self.ui.table_saved_substitutes.setModel(SavedSubstitutesTableModel(self.saved_substitutes))
+        self.ui.table_saved_substitutes.selectionModel().currentChanged.connect(self.product_selection_changed)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
@@ -103,6 +105,12 @@ class MainWindowController(QMainWindow):
 
         elif self.sender() == self.ui.table_substitutes.selectionModel():
             food = self.ui.table_substitutes.model().data(current_index, Qt.UserRole)
+
+        elif self.sender() == self.ui.table_saved_substitutes.selectionModel():
+            food = self.ui.table_saved_substitutes.model().data(current_index, Qt.UserRole)
+            thread = SingleProductFetcherThread()
+            thread.food_id = food
+            thread.run()
 
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
