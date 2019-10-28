@@ -9,6 +9,7 @@ from views import updater_dialog
 
 
 class UpdaterDialogController(QDialog):
+
     def __init__(self, parent):
         super(UpdaterDialogController, self).__init__(parent)
 

@@ -4,7 +4,7 @@ from models.database.models import Food, BrandFood, Brand, Store, StoreFood
 
 
 class SingleProductFetcherThread(QThread):
-    result = Signal(object)
+    result = Signal(dict)
 
     def __init__(self):
         super().__init__()
@@ -24,16 +24,23 @@ class SingleProductFetcherThread(QThread):
             .dicts() \
             .execute()
 
-        stores = set()
-        brands = set()
+        stores = []
+        brands = []
 
         for item in food:
-            stores.add(item["brand_name"])
-            brands.add(item["store_name"])
+            if not any(store["id_store"] == item["id_store"] for store in stores):
+                stores.append({"id_store": item["id_store"], "store_name": item["store_name"]})
+            if not any(brand["id_brand"] == item["id_brand"] for brand in brands):
+                brands.append({"id_brand": item["id_brand"], "brand_name": item["brand_name"]})
 
-        food[0].pop("brand_name")
-        food[0].pop("store_name")
+        product = food[0]
 
-        print(food[0])
-        print(stores)
-        print(brands)
+        product.pop("id_store")
+        product.pop("store_name")
+        product.pop("id_brand")
+        product.pop("brand_name")
+
+        product["stores"] = stores
+        product["brands"] = brands
+
+        self.result.emit(product)

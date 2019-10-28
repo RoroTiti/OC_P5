@@ -18,9 +18,9 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
 
         elif role == Qt.UserRole:
             if index.column() == 0:
-                return self.products_with_substitutes[index.row()]["id_food"]
+                return self.products_with_substitutes[index.row()]
             if index.column() == 1:
-                return self.products_with_substitutes[index.row()]["id_substitute"]
+                return self.products_with_substitutes[index.row()]
 
         return None
 

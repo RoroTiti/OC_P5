@@ -1,9 +1,5 @@
-import os
-
-import markdown
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt
-from PySide2.QtGui import QPixmap, QImage
 from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox
 
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
@@ -11,10 +7,11 @@ from controllers.main_window.find_substitutes_thread import FindSubstitutesThrea
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
 from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
-from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
 from controllers.main_window.saved_substitutes_fetcher_thread import SavedSubstitutesFetcherThread
+from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
 from controllers.main_window.single_product_fetcher_thread import SingleProductFetcherThread
 from controllers.main_window.substitutes_table_model import SubstitutesTableModel
+from controllers.product_details_dialog.product_details_dialog_controller import ProductDetailsDialogController
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database.models import Category
 from views import main_window
@@ -99,89 +96,32 @@ class MainWindowController(QMainWindow):
 
     def product_selection_changed(self, current_index):
         food = None
+        sender = self.sender()
 
-        if self.sender() == self.ui.lst_products.selectionModel():
+        if sender == self.ui.lst_products.selectionModel():
             food = self.ui.lst_products.model().data(current_index, Qt.UserRole)
 
-        elif self.sender() == self.ui.table_substitutes.selectionModel():
+        elif sender == self.ui.table_substitutes.selectionModel():
             food = self.ui.table_substitutes.model().data(current_index, Qt.UserRole)
 
-        elif self.sender() == self.ui.table_saved_substitutes.selectionModel():
+        elif sender == self.ui.table_saved_substitutes.selectionModel():
             food = self.ui.table_saved_substitutes.model().data(current_index, Qt.UserRole)
-            thread = SingleProductFetcherThread()
-            thread.food_id = food
-            thread.run()
 
-        self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
+        food_id = food["id_food"]
+        product_fetcher = SingleProductFetcherThread()
+        product_fetcher.food_id = food_id
+        product_fetcher.result.connect(self.open_product_details_dialog)
+        product_fetcher.run()
 
-        palm_oil_presence = food["ingredients_from_palm_oil_n"] > 0
-
-        self.ui.lbl_palm_oil.setStyleSheet(
-            "* { background-color: red; color: white; padding: 3 px; }"
-            if palm_oil_presence else
-            "* { background-color: green; color: white; padding: 3 px; }"
-        )
-
-        self.ui.lbl_palm_oil.setText(
-            "Contient de l'huile de palme"
-            if palm_oil_presence else
-            "Ne contient pas d'huile de palme"
-        )
-
-        self.ui.lbl_allergens.setText(markdown.markdown(food["allergens"]) if food["allergens"] else "<i>Aucun</i>")
-
-        if food["energy_unit"] == "kcal":
-            kj = round(food["energy_100g"] * 4.18, 1)
-            energy_string = f"{food['energy_100g']} kcal ({kj} kj)"
-        else:
-            kcal = round(food["energy_100g"] / 4.18, 1)
-            energy_string = f"{kcal} kcal ({food['energy_100g']} kj)"
-
-        html_spaces = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-
-        nutriments = [
-            ["<b>Energie</b>", energy_string],
-            ["<b>Glucides</b>", f"{food['carbohydrates_100g']} g"],
-            [f"{html_spaces}Sucres", f"{food['sugars_100g']} g"],
-            ["<b>Matières grasses</b>", f"{food['fat_100g']} g"],
-            [f"{html_spaces}Acides gras saturés", f"{food['saturated_fat_100g']} g"],
-            ["<b>Sel</b>", f"{food['salt_100g']} g"],
-            [f"{html_spaces}Sodium", f"{food['sodium_100g']} g"],
-            ["<b>Fibres</b>", f"{food['fiber_100g']} g"],
-            ["<b>Protéines</b>", f"{food['proteins_100g']} g"]
-        ]
-
-        nutriments_table_content = "<style>td { padding: 3px; }</style>"
-
-        nutriments_table_content += "<table width=100% border=1 cellspacing=0 cellpadding=0>"
-
-        for nutriment in nutriments:
-            nutriments_table_content += "<tr>"
-            for column in nutriment:
-                nutriments_table_content += "<td>"
-                nutriments_table_content += str(column)
-                nutriments_table_content += "</td>"
-            nutriments_table_content += "</tr>"
-
-        nutriments_table_content += "</table>"
-
-        self.ui.lbl_nutriments.setText(nutriments_table_content)
-
-        current_directory = os.path.dirname(__file__)
-        filename = os.path.join(current_directory, "..", "..", "assets", f"nutriscore_{food['nutrition_grade']}.png")
-
-        image = QImage(filename)
-        pix_map = QPixmap()
-        pix_map.convertFromImage(image.scaledToHeight(100, Qt.SmoothTransformation))
-
-        self.ui.lbl_nutriscore.setPixmap(pix_map)
-        self.ui.lbl_nutriscore_number.setText(f"<b>Indice NUTRI-SCORE:</b> {food['nutriscore']}")
-
-        if self.sender() == self.ui.lst_products.selectionModel():
+        if sender == self.ui.lst_products.selectionModel():
             self.find_substitutes_thread.product = food
             category = self.ui.cmb_categories.currentData(Qt.UserRole)
             self.find_substitutes_thread.category = category
             self.find_substitutes_thread.run()
+
+    def open_product_details_dialog(self, product_details):
+        dialog = ProductDetailsDialogController(self, product_details)
+        dialog.show()
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
