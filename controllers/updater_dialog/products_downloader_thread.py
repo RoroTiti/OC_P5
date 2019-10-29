@@ -4,7 +4,7 @@ import requests
 import unidecode
 from PySide2.QtCore import QThread, Signal
 
-from models.database.models import CategoryFood, BrandFood, StoreFood, Brand, Store, Food, Category
+from models.database import CategoryFood, BrandFood, StoreFood, Brand, Store, Food, Category
 
 
 class ProductsDownloaderThread(QThread):

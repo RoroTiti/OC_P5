@@ -1,7 +1,7 @@
 import jellyfish
 from PySide2.QtCore import QThread, Signal
 
-from models.database.models import Category, CategoryFood, Food, BrandFood, Brand
+from models.database import Category, CategoryFood, Food, BrandFood, Brand
 
 
 class FindSubstitutesThread(QThread):

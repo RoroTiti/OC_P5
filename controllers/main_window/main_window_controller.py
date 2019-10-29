@@ -13,7 +13,7 @@ from controllers.main_window.single_product_fetcher_thread import SingleProductF
 from controllers.main_window.products_table_model import ProductsTableModel
 from controllers.product_details_window.product_details_window_controller import ProductDetailsWindowController
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
-from models.database.models import Category
+from models.database import Category
 from views import main_window
 
 

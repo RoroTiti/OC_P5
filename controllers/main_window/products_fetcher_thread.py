@@ -1,6 +1,6 @@
 from PySide2.QtCore import QThread, Signal
 
-from models.database.models import Food, CategoryFood, BrandFood, Brand
+from models.database import Food, CategoryFood, BrandFood, Brand
 
 
 class ProductsFetcherThread(QThread):

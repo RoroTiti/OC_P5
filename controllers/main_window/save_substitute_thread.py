@@ -1,6 +1,6 @@
 from PySide2.QtCore import QThread, Signal
 
-from models.database.models import Substitute
+from models.database import Substitute
 
 
 class SaveSubstituteThread(QThread):
