@@ -27,14 +27,14 @@ class ProductsDownloaderThread(QThread):
         Food.delete().execute()
 
         for category in self.selected_categories:
-            db_category = Category(category_name=category.name)
+            db_category = Category(category_name=category["name"])
             db_category.save()
 
             url = ("https://fr.openfoodfacts.org/cgi/search.pl?"
                    "action=process&"
                    "tagtype_0=categories&"
                    "tag_contains_0=contains&"
-                   f"tag_0={category.id}&"
+                   f"tag_0={category['id']}&"
                    "sort_by=unique_scans_n&"
                    "page_size=50&"
                    "json=1")

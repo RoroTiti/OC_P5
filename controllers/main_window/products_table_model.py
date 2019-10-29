@@ -37,9 +37,9 @@ class ProductsTableModel(QAbstractTableModel):
             if orientation == Qt.Horizontal:
                 if section == 0:
                     return "Produit"
-                if section == 1:
+                elif section == 1:
                     return "NUTRI-SCORE"
-                if section == 2:
+                elif section == 2:
                     return "Huile de palme"
             return None
         return None

@@ -38,10 +38,8 @@ class UpdaterDialogController(QDialog):
         self.ui.btn_delete_category.clicked.connect(self.delete_category)
         self.ui.btn_download_products.clicked.connect(self.download_products)
 
-        headers = ["Catégorie", "Nombre de produits"]
-
         # All categories list initialization
-        self.all_categories_table_model = CategoriesTableModel(self, self.all_categories, headers)
+        self.all_categories_table_model = CategoriesTableModel(self, self.all_categories)
 
         all_categories_proxy = QSortFilterProxyModel()
         all_categories_proxy.setSourceModel(self.all_categories_table_model)
@@ -54,7 +52,7 @@ class UpdaterDialogController(QDialog):
         self.ui.table_all_categories.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
 
         # Selected categories list initialization
-        self.selected_categories_table_model = CategoriesTableModel(self, self.selected_categories, headers)
+        self.selected_categories_table_model = CategoriesTableModel(self, self.selected_categories)
 
         selected_categories_proxy = QSortFilterProxyModel()
         selected_categories_proxy.setSourceModel(self.selected_categories_table_model)
@@ -76,29 +74,25 @@ class UpdaterDialogController(QDialog):
         self.products_downloader.finished.connect(self.products_downloader_finished)
 
     def add_category(self):
-        proxy_model: QSortFilterProxyModel = self.ui.table_all_categories.model()
-        source_model: CategoriesTableModel = proxy_model.sourceModel()
-
         self.selected_categories_table_model.beginResetModel()
 
-        for row in self.ui.table_all_categories.selectionModel().selectedRows():
-            model_index = proxy_model.index(row.row(), 0)
-            source_index = proxy_model.mapToSource(model_index).row()
-
-            if source_model.items_list[source_index] not in self.selected_categories:
-                self.selected_categories.append(source_model.items_list[source_index])
+        for index in self.ui.table_all_categories.selectionModel().selectedIndexes():
+            if index.data(Qt.UserRole) not in self.selected_categories:
+                self.selected_categories.append(index.data(Qt.UserRole))
 
         self.selected_categories_table_model.endResetModel()
 
     def delete_category(self):
-        proxy_model: QSortFilterProxyModel = self.ui.table_selected_categories.model()
-
         self.selected_categories_table_model.beginResetModel()
 
-        for row in self.ui.table_selected_categories.selectionModel().selectedRows():
-            model_index = proxy_model.index(row.row(), 0)
-            source_index = proxy_model.mapToSource(model_index).row()
-            self.selected_categories.pop(source_index)
+        selected_categories_after_filtering = self.selected_categories
+
+        for index in self.ui.table_selected_categories.selectionModel().selectedIndexes():
+            selected_categories_after_filtering = list(
+                filter(lambda x: x["id"] != index.data(Qt.UserRole)["id"], selected_categories_after_filtering))
+
+        self.selected_categories.clear()
+        self.selected_categories += selected_categories_after_filtering
 
         self.selected_categories_table_model.endResetModel()
 

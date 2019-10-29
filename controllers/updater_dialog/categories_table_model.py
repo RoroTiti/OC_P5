@@ -5,29 +5,39 @@ from PySide2.QtCore import QAbstractTableModel, Qt
 
 
 class CategoriesTableModel(QAbstractTableModel):
-    def __init__(self, parent, my_list, my_header):
+    def __init__(self, parent, categories):
         super().__init__(parent)
-        self.items_list: list = my_list
-        self.header = my_header
-
-    def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
-        return len(self.items_list)
-
-    def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
-        return len(self.header)
+        self.categories = categories
 
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> Any:
-        if not index.isValid() or role != Qt.DisplayRole:
-            return None
+        if index.isValid():
+            if role == Qt.DisplayRole:
+                if index.column() == 0:
+                    return self.categories[index.row()]["name"]
+                elif index.column() == 1:
+                    return self.categories[index.row()]["products"]
 
-        if index.column() == 0:
-            return self.items_list[index.row()].name
-        elif index.column() == 1:
-            return self.items_list[index.row()].products
+            elif role == Qt.UserRole:
+                if index.column() == 0:
+                    return self.categories[index.row()]
+                elif index.column() == 1:
+                    return self.categories[index.row()]
+
+            return None
+        return None
+
+    def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
+        return len(self.categories)
+
+    def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
+        return 2
 
     def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> Any:
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return self.header[section]
+                if section == 0:
+                    return "Catégorie"
+                elif section == 1:
+                    return "Nombre de produits"
             return None
         return None

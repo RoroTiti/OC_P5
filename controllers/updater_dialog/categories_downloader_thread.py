@@ -1,8 +1,6 @@
 import requests
 from PySide2.QtCore import Signal, QThread
 
-from models.api.category import Category
-
 
 class CategoriesDownloaderThread(QThread):
     result = Signal(list)
@@ -32,7 +30,11 @@ class CategoriesDownloaderThread(QThread):
 
         for tag in tags:
             if tag["products"] >= 5000:
-                all_categories.append(Category(tag["name"], tag["products"], tag["id"]))
+                all_categories.append({
+                    "id": tag["id"],
+                    "name": tag["name"],
+                    "products": tag["products"]
+                })
 
         if self.isInterruptionRequested():
             return
