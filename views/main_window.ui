@@ -68,6 +68,9 @@
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QTableView" name="table_saved_substitutes">
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
           <attribute name="verticalHeaderVisible">
            <bool>false</bool>
           </attribute>

@@ -15,22 +15,9 @@ class ProductsFetcherThread(QThread):
             query = BrandFood.select(
                 Food.id_food,
                 Food.food_name,
-                Brand.brand_name,
-                Food.ingredients,
-                Food.ingredients_from_palm_oil_n,
-                Food.allergens,
                 Food.nutriscore,
-                Food.nutrition_grade,
-                Food.energy_100g,
-                Food.energy_unit,
-                Food.carbohydrates_100g,
-                Food.sugars_100g,
-                Food.fat_100g,
-                Food.saturated_fat_100g,
-                Food.salt_100g,
-                Food.sodium_100g,
-                Food.fiber_100g,
-                Food.proteins_100g
+                Food.ingredients_from_palm_oil_n,
+                Brand.brand_name
             ) \
                 .join(Food) \
                 .switch(BrandFood) \

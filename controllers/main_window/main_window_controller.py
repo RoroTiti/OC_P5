@@ -70,6 +70,7 @@ class MainWindowController(QMainWindow):
         self.ui.table_saved_substitutes.doubleClicked.connect(self.product_details_requested)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_saved_substitutes.setStyleSheet("QTableView::item { padding: 5; }")
 
         event = PressEnterEventFilter(self.ui.table_products)
         self.ui.table_products.installEventFilter(event)
@@ -143,6 +144,7 @@ class MainWindowController(QMainWindow):
         self.saved_substitutes.clear()
         self.saved_substitutes += substitutes
         self.ui.table_saved_substitutes.model().endResetModel()
+        self.ui.table_saved_substitutes.resizeRowsToContents()
 
     def notify_already_saved(self):
         msg = QMessageBox(QMessageBox.Information, "Information", "Ce substitut est déjà enregistré dans la base de données", QMessageBox.Ok, self)
