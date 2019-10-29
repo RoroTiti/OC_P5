@@ -1,26 +1,28 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'views/product_details_dialog.ui',
-# licensing of 'views/product_details_dialog.ui' applies.
+# Form implementation generated from reading ui file 'views/product_details_window.ui',
+# licensing of 'views/product_details_window.ui' applies.
 #
-# Created: Mon Oct 28 09:20:43 2019
+# Created: Tue Oct 29 08:46:29 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(500, 700)
-        self.gridLayout = QtWidgets.QGridLayout(Dialog)
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(480, 640)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
-        self.scrollArea = QtWidgets.QScrollArea(Dialog)
+        self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 474, 674))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 460, 620))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_4.setObjectName("gridLayout_4")
@@ -79,19 +81,20 @@ class Ui_Dialog(object):
         self.gridLayout_4.addWidget(self.lbl_nutriscore_number, 9, 0, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtWidgets.QApplication.translate("Dialog", "Dialog", None, -1))
-        self.lbl_nutriments.setText(QtWidgets.QApplication.translate("Dialog", "TextLabel", None, -1))
-        self.lbl_allergens.setText(QtWidgets.QApplication.translate("Dialog", "TextLabel", None, -1))
-        self.lbl_ingredients.setText(QtWidgets.QApplication.translate("Dialog", "TextLabel", None, -1))
-        self.label_3.setText(QtWidgets.QApplication.translate("Dialog", "<b>Valeurs nutritionnelles pour 100g</b>", None, -1))
-        self.lbl_palm_oil.setText(QtWidgets.QApplication.translate("Dialog", "Contient de l\'huile de palme", None, -1))
-        self.label.setText(QtWidgets.QApplication.translate("Dialog", "<b>Ingrédients</b>", None, -1))
-        self.lbl_nutriscore.setText(QtWidgets.QApplication.translate("Dialog", "TextLabel", None, -1))
-        self.label_2.setText(QtWidgets.QApplication.translate("Dialog", "<b>Allergènes</b>", None, -1))
-        self.lbl_nutriscore_number.setText(QtWidgets.QApplication.translate("Dialog", "TextLabel", None, -1))
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QtWidgets.QApplication.translate("MainWindow", "MainWindow", None, -1))
+        self.lbl_nutriments.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.lbl_allergens.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.lbl_ingredients.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label_3.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Valeurs nutritionnelles pour 100g</b>", None, -1))
+        self.lbl_palm_oil.setText(QtWidgets.QApplication.translate("MainWindow", "Contient de l\'huile de palme", None, -1))
+        self.label.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Ingrédients</b>", None, -1))
+        self.lbl_nutriscore.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Allergènes</b>", None, -1))
+        self.lbl_nutriscore_number.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
 

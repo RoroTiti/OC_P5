@@ -6,13 +6,12 @@ from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox, QTabl
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
-from controllers.main_window.products_list_model import ProductsListModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
 from controllers.main_window.saved_substitutes_fetcher_thread import SavedSubstitutesFetcherThread
 from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
 from controllers.main_window.single_product_fetcher_thread import SingleProductFetcherThread
-from controllers.main_window.substitutes_table_model import SubstitutesTableModel
-from controllers.product_details_dialog.product_details_dialog_controller import ProductDetailsDialogController
+from controllers.main_window.products_table_model import ProductsTableModel
+from controllers.product_details_window.product_details_window_controller import ProductDetailsWindowController
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database.models import Category
 from views import main_window
@@ -49,13 +48,17 @@ class MainWindowController(QMainWindow):
         self.saved_substitutes_fetcher_thread.result.connect(self.set_table_saved_substitutes_model)
 
         self.products = []
-        self.ui.lst_products.setModel(ProductsListModel(self.products))
-        self.ui.lst_products.doubleClicked.connect(self.product_details_requested)
-        self.ui.lst_products.selectionModel().currentChanged.connect(self.load_substitutes)
-        self.ui.lst_products.setFocus()
+        self.ui.table_products.setModel(ProductsTableModel(self.products))
+        self.ui.table_products.doubleClicked.connect(self.product_details_requested)
+        self.ui.table_products.selectionModel().currentChanged.connect(self.load_substitutes)
+        self.ui.table_products.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.ui.table_products.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.ui.table_products.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        self.ui.table_products.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        self.ui.table_products.setFocus()
 
         self.substitutes = []
-        self.ui.table_substitutes.setModel(SubstitutesTableModel(self.substitutes))
+        self.ui.table_substitutes.setModel(ProductsTableModel(self.substitutes))
         self.ui.table_substitutes.doubleClicked.connect(self.product_details_requested)
         self.ui.table_substitutes.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.ui.table_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
@@ -68,8 +71,8 @@ class MainWindowController(QMainWindow):
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         self.ui.table_saved_substitutes.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
-        event = PressEnterEventFilter(self.ui.lst_products)
-        self.ui.lst_products.installEventFilter(event)
+        event = PressEnterEventFilter(self.ui.table_products)
+        self.ui.table_products.installEventFilter(event)
         event.result.connect(self.product_details_requested)
 
         event = PressEnterEventFilter(self.ui.table_substitutes)
@@ -90,15 +93,15 @@ class MainWindowController(QMainWindow):
         self.fetcher_thread.start()
 
     def set_list_products(self, products):
-        self.ui.lst_products.model().beginResetModel()
+        self.ui.table_products.model().beginResetModel()
         self.products.clear()
         self.products += products
-        self.ui.lst_products.model().endResetModel()
+        self.ui.table_products.model().endResetModel()
 
-        index = self.ui.lst_products.model().index(0, 0)
+        index = self.ui.table_products.model().index(0, 0)
 
         if index.isValid():
-            self.ui.lst_products.setCurrentIndex(index)
+            self.ui.table_products.setCurrentIndex(index)
 
     def product_details_requested(self, current_index: QModelIndex):
         food = current_index.data(Qt.UserRole)
@@ -108,13 +111,13 @@ class MainWindowController(QMainWindow):
         product_fetcher.run()
 
     def open_product_details_dialog(self, product_details):
-        dialog = ProductDetailsDialogController(self, product_details)
+        dialog = ProductDetailsWindowController(self, product_details)
         dialog.show()
 
     def load_substitutes(self):
         category = self.ui.cmb_categories.currentData(Qt.UserRole)
         self.find_substitutes_thread.category = category
-        food = self.ui.lst_products.currentIndex().data(Qt.UserRole)
+        food = self.ui.table_products.currentIndex().data(Qt.UserRole)
         self.find_substitutes_thread.product = food
         self.find_substitutes_thread.run()
 
@@ -128,8 +131,8 @@ class MainWindowController(QMainWindow):
         selected_substitute_index = self.ui.table_substitutes.currentIndex()
         selected_substitute = self.ui.table_substitutes.model().data(selected_substitute_index, Qt.UserRole)
 
-        selected_product_index = self.ui.lst_products.currentIndex()
-        selected_product = self.ui.lst_products.model().data(selected_product_index, Qt.UserRole)
+        selected_product_index = self.ui.table_products.currentIndex()
+        selected_product = self.ui.table_products.model().data(selected_product_index, Qt.UserRole)
 
         self.save_substitute_thread.id_food = selected_product["id_food"]
         self.save_substitute_thread.id_food_substitute = selected_substitute["id_food"]

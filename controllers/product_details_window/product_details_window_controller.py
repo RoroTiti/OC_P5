@@ -3,20 +3,20 @@ import os
 import markdown
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImage, QPixmap
-from PySide2.QtWidgets import QDialog
+from PySide2.QtWidgets import QMainWindow
 
-from views import product_details_dialog
+from views import product_details_window
 
 
-class ProductDetailsDialogController(QDialog):
+class ProductDetailsWindowController(QMainWindow):
 
     def __init__(self, parent, product_details):
-        super(ProductDetailsDialogController, self).__init__(parent)
+        super(ProductDetailsWindowController, self).__init__(parent)
         self.product_details = product_details
 
         self.setWindowModality(Qt.NonModal)
 
-        self.ui = product_details_dialog.Ui_Dialog()
+        self.ui = product_details_window.Ui_MainWindow()
         self.ui.setupUi(self)
 
         food = self.product_details

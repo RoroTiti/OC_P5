@@ -4,30 +4,30 @@ import PySide2
 from PySide2.QtCore import QAbstractTableModel, Qt
 
 
-class SubstitutesTableModel(QAbstractTableModel):
-    def __init__(self, substitutes):
+class ProductsTableModel(QAbstractTableModel):
+    def __init__(self, products):
         super().__init__()
-        self.substitutes = substitutes
+        self.products = products
 
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         if role == Qt.DisplayRole:
             if index.column() == 0:
-                return f"{self.substitutes[index.row()]['food_name']}, {self.substitutes[index.row()]['brand_name']}"
+                return f"{self.products[index.row()]['food_name']}, {self.products[index.row()]['brand_name']}"
             if index.column() == 1:
-                return self.substitutes[index.row()]["nutriscore"]
+                return self.products[index.row()]["nutriscore"]
             if index.column() == 2:
-                return "Oui" if self.substitutes[index.row()]["ingredients_from_palm_oil_n"] > 0 else "Non"
+                return "Oui" if self.products[index.row()]["ingredients_from_palm_oil_n"] > 0 else "Non"
 
         elif role == Qt.UserRole:
-            return self.substitutes[index.row()]
+            return self.products[index.row()]
 
         else:
             return None
 
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
-        if self.substitutes is None:
+        if self.products is None:
             return 0
-        return len(self.substitutes)
+        return len(self.products)
 
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         return 3
