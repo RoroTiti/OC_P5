@@ -96,7 +96,7 @@
      <string>Outils</string>
     </property>
     <addaction name="action_update"/>
-    <addaction name="action_preview"/>
+    <addaction name="action_about_data"/>
    </widget>
    <addaction name="menuOutils"/>
   </widget>
@@ -105,9 +105,9 @@
     <string>Mise à jour des données...</string>
    </property>
   </action>
-  <action name="action_preview">
+  <action name="action_about_data">
    <property name="text">
-    <string>Aperçu des données...</string>
+    <string>À propos de la base de données...</string>
    </property>
   </action>
  </widget>

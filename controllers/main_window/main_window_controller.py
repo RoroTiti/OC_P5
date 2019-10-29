@@ -3,14 +3,15 @@ from PySide2 import QtWidgets, QtCore
 from PySide2.QtCore import Qt, QObject, Signal, QModelIndex
 from PySide2.QtWidgets import QMainWindow, QAbstractItemView, QMessageBox, QTableView
 
+from controllers.about_data_window.about_data_window_controller import AboutDataDialogController
 from controllers.main_window.categories_combobox_model import CategoriesComboBoxModel
 from controllers.main_window.find_substitutes_thread import FindSubstitutesThread
 from controllers.main_window.products_fetcher_thread import ProductsFetcherThread
+from controllers.main_window.products_table_model import ProductsTableModel
 from controllers.main_window.save_substitute_thread import SaveSubstituteThread
 from controllers.main_window.saved_substitutes_fetcher_thread import SavedSubstitutesFetcherThread
 from controllers.main_window.saved_substitutes_table_model import SavedSubstitutesTableModel
 from controllers.main_window.single_product_fetcher_thread import SingleProductFetcherThread
-from controllers.main_window.products_table_model import ProductsTableModel
 from controllers.product_details_window.product_details_window_controller import ProductDetailsWindowController
 from controllers.updater_dialog.updater_dialog_controller import UpdaterDialogController
 from models.database import Category
@@ -25,6 +26,8 @@ class MainWindowController(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.action_update.triggered.connect(self.open_updater_dialog)
+        self.ui.action_about_data.triggered.connect(self.open_about_data_dialog)
+
         self.ui.tabWidget.currentChanged.connect(self.tab_changed)
         self.ui.cmb_categories.currentIndexChanged.connect(self.category_selection_changed)
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
@@ -153,6 +156,10 @@ class MainWindowController(QMainWindow):
 
     def open_updater_dialog(self):
         dialog = UpdaterDialogController(self)
+        dialog.exec_()
+
+    def open_about_data_dialog(self):
+        dialog = AboutDataDialogController(self)
         dialog.exec_()
 
 
