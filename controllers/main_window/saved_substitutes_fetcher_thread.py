@@ -20,11 +20,16 @@ class SavedSubstitutesFetcherThread(QThread):
         brand_substitute_alias = Brand.alias()
 
         substitutes = Substitute.select(
-            food_alias.food_name.alias("food_name"),
             food_alias.id_food.alias("id_food"),
+            food_alias.food_name.alias("food_name"),
+            food_alias.ingredients_from_palm_oil_n.alias("food_ingredients_from_palm_oil_n"),
+            food_alias.nutriscore.alias("food_nutriscore"),
             brand_food_alias.brand_name.alias("food_brand_name"),
-            substitute_alias.food_name.alias("substitute_name"),
+
             substitute_alias.id_food.alias("id_substitute"),
+            substitute_alias.food_name.alias("substitute_name"),
+            substitute_alias.ingredients_from_palm_oil_n.alias("substitute_ingredients_from_palm_oil_n"),
+            substitute_alias.nutriscore.alias("substitute_nutriscore"),
             brand_substitute_alias.brand_name.alias("substitute_brand_name"),
         ) \
             .join(food_alias, on=Substitute.id_food) \
@@ -47,11 +52,15 @@ class SavedSubstitutesFetcherThread(QThread):
                 "product": {
                     "id_food": substitute["id_food"],
                     "food_name": substitute["food_name"],
-                    "brand_name": substitute["food_brand_name"]
+                    "nutriscore": substitute["food_nutriscore"],
+                    "ingredients_from_palm_oil_n": substitute["food_ingredients_from_palm_oil_n"],
+                    "brand_name": substitute["food_brand_name"],
                 },
                 "substitute": {
                     "id_food": substitute["id_substitute"],
                     "food_name": substitute["substitute_name"],
+                    "nutriscore": substitute["substitute_nutriscore"],
+                    "ingredients_from_palm_oil_n": substitute["substitute_ingredients_from_palm_oil_n"],
                     "brand_name": substitute["substitute_brand_name"]
                 }
             }

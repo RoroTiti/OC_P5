@@ -14,9 +14,18 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
 
         if role == Qt.DisplayRole:
             if index.column() == 0:
-                return f"{product_with_substitute['product']['food_name']}\r\n   {product_with_substitute['product']['brand_name']}"
+                return \
+                    f"{product_with_substitute['product']['food_name']}\r\n" \
+                    f"   {product_with_substitute['product']['brand_name']}\r\n" \
+                    f"   Nutriscore : {product_with_substitute['product']['nutriscore']}\r\n" \
+                    f"   Huile de palme : {'Oui' if product_with_substitute['product']['ingredients_from_palm_oil_n'] > 0 else 'Non'}"
+
             if index.column() == 1:
-                return f"{product_with_substitute['substitute']['food_name']}\r\n   {product_with_substitute['substitute']['brand_name']}"
+                return \
+                    f"{product_with_substitute['substitute']['food_name']}\r\n" \
+                    f"   {product_with_substitute['substitute']['brand_name']}\r\n" \
+                    f"   Nutriscore : {product_with_substitute['substitute']['nutriscore']}\r\n" \
+                    f"   Huile de palme : {'Oui' if product_with_substitute['substitute']['ingredients_from_palm_oil_n'] > 0 else 'Non'}"
 
         elif role == Qt.UserRole:
             if index.column() == 0:
