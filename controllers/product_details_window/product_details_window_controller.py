@@ -9,8 +9,16 @@ from views import product_details_window
 
 
 class ProductDetailsWindowController(QMainWindow):
+    """
+    Controller of the product details window
+    """
 
-    def __init__(self, parent, product_details):
+    def __init__(self, parent: QMainWindow, product_details: dict):
+        """
+        Initialize a ProductDetailsWindowController object
+        :param parent: The parent window of the product details window
+        :param product_details: The details of the product to display
+        """
         super(ProductDetailsWindowController, self).__init__(parent)
         self.product_details = product_details
 

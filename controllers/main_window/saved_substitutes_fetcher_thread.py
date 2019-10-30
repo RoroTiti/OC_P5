@@ -4,12 +4,21 @@ from models.database import Substitute, Food, Brand, BrandFood
 
 
 class SavedSubstitutesFetcherThread(QThread):
+    """
+    Thread to fetch the saved substitutes from the database
+    """
     result = Signal(list)
 
     def __init__(self):
+        """
+        Initialize a SavedSubstitutesFetcherThread object
+        """
         super().__init__()
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Fetch the list of the saved substitutes from the database
+        """
         food_alias = Food.alias()
         substitute_alias = Food.alias()
 

@@ -5,14 +5,23 @@ from models.database import Category, CategoryFood, Food, BrandFood, Brand
 
 
 class FindSubstitutesThread(QThread):
+    """
+    Thread to fetch the substitutes from the database and compute the results to find relevant results
+    """
     result = Signal(list)
 
     def __init__(self):
+        """
+        Initializes a FindSubstitutesThread object
+        """
         super().__init__()
         self.product = None
         self.category = None
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Fetch the data information from the database and compute results
+        """
         products = Category.select(
             Food.id_food,
             Food.food_name,
@@ -53,5 +62,10 @@ class FindSubstitutesThread(QThread):
         self.result.emit(products)
 
     @staticmethod
-    def round_by_hundred(n):
+    def round_by_hundred(n: float) -> int:
+        """
+        Round a number by 100
+        :param n: The number to be rounded
+        :return: The rounded value
+        """
         return int(round(n / 100)) * 100

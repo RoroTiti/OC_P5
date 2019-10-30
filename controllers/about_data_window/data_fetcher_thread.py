@@ -3,10 +3,22 @@ from PySide2.QtCore import QThread, Signal
 from models.database import Category, Food, Store, Brand
 
 
-class DataFetcherThread(QThread):
+class DataInformationFetcherThread(QThread):
+    """
+    Thread to fetch the data information from the database
+    """
     result = Signal(list)
 
-    def run(self):
+    def __init__(self):
+        """
+        Initializes a DataFetcherThread object
+        """
+        super().__init__()
+
+    def run(self) -> None:
+        """
+        Fetch the data information from the database and compute results
+        """
         categories_count = Category.select().count()
         products_count = Food.select().count()
         stores_count = Store.select().count()

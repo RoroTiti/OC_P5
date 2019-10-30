@@ -4,13 +4,23 @@ from models.database import Food, BrandFood, Brand, Store, StoreFood
 
 
 class SingleProductFetcherThread(QThread):
+    """
+    Thread to fetch the data of one product with its ID from the database
+    """
     result = Signal(dict)
 
     def __init__(self):
+        """
+        Initialize a SingleProductFetcherThread object
+        """
         super().__init__()
         self.food_id = None
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Fetch the data of one product with its ID from the database
+        :return:
+        """
         food = Food.select(
             Food, Store, Brand
         ) \

@@ -8,14 +8,23 @@ from models.database import CategoryFood, BrandFood, StoreFood, Brand, Store, Fo
 
 
 class ProductsDownloaderThread(QThread):
+    """
+    Thread to download and save into the database the individual products from the OpenFoodFacts API
+    """
     progress = Signal(int)
 
     def __init__(self):
+        """
+        Initialize a ProductsDownloaderThread object
+        """
         super().__init__()
         self.current_progress = 0
         self.selected_categories = None
 
-    def run(self):
+    def run(self) -> None:
+        """
+        Download and save into the database the individual products from the OpenFoodFacts API
+        """
         CategoryFood.delete().execute()
         BrandFood.delete().execute()
         StoreFood.delete().execute()

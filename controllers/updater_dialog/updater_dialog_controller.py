@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets
 from PySide2.QtCore import Qt, QSortFilterProxyModel
-from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView
+from PySide2.QtWidgets import QDialog, QProgressDialog, QAbstractItemView, QMainWindow
 
 from controllers.updater_dialog.categories_downloader_thread import CategoriesDownloaderThread
 from controllers.updater_dialog.categories_table_model import CategoriesTableModel
@@ -9,8 +9,15 @@ from views import updater_dialog
 
 
 class UpdaterDialogController(QDialog):
+    """
+    Controller of the data updater dialog
+    """
 
-    def __init__(self, parent):
+    def __init__(self, parent: QMainWindow):
+        """
+        Initialize a UpdaterDialogController object
+        :param parent:
+        """
         super(UpdaterDialogController, self).__init__(parent)
 
         self.categories_progress = QProgressDialog("Récupération des catégories...", "Annuler", 0, 0, self)
@@ -73,7 +80,10 @@ class UpdaterDialogController(QDialog):
         self.products_downloader.progress.connect(self.set_products_downloader_progress)
         self.products_downloader.finished.connect(self.products_downloader_finished)
 
-    def add_category(self):
+    def add_category(self) -> None:
+        """
+        Add a category highlighted by the user into the whole categories list to the selected categories list
+        """
         self.selected_categories_table_model.beginResetModel()
 
         for index in self.ui.table_all_categories.selectionModel().selectedIndexes():
@@ -82,7 +92,10 @@ class UpdaterDialogController(QDialog):
 
         self.selected_categories_table_model.endResetModel()
 
-    def delete_category(self):
+    def delete_category(self) -> None:
+        """
+        Delete a category highlighted by the user from the selected categories list
+        """
         self.selected_categories_table_model.beginResetModel()
 
         selected_categories_after_filtering = self.selected_categories
@@ -96,37 +109,67 @@ class UpdaterDialogController(QDialog):
 
         self.selected_categories_table_model.endResetModel()
 
-    def download_categories(self):
+    def download_categories(self) -> None:
+        """
+        Download the categories from the OpenFoodFacts API
+        """
         self.categories_progress.setMaximum(self.categories_downloader.max_progress)
         self.categories_progress.show()
         self.categories_downloader.start()
 
-    def set_categories_downloader_progress(self, current_progress):
+    def set_categories_downloader_progress(self, current_progress: int) -> None:
+        """
+        Update the categories downloading progress bar
+        :param current_progress: The current progress of categories downloading
+        """
         self.categories_progress.setValue(current_progress)
 
-    def cancel_categories_downloader(self):
+    def cancel_categories_downloader(self) -> None:
+        """
+        Cancel the categories downloading
+        """
         self.categories_downloader.requestInterruption()
 
-    def categories_downloader_finished(self):
+    def categories_downloader_finished(self) -> None:
+        """
+        Reset the categories downloader progress bar once the download is finished
+        """
         self.categories_progress.reset()
 
-    def set_all_categories(self, all_categories):
+    def set_all_categories(self, all_categories: list) -> None:
+        """
+        Display the whole categories list into the all categories table
+        :param all_categories: The categories to diplay
+        """
         self.all_categories_table_model.beginResetModel()
         self.all_categories.clear()
         self.all_categories += all_categories
         self.all_categories_table_model.endResetModel()
 
-    def download_products(self):
+    def download_products(self) -> None:
+        """
+        Downland the products of the selected categories
+        """
         self.products_downloader.selected_categories = self.selected_categories
         self.products_progress.setMaximum(self.products_downloader.max_progress)
         self.products_progress.show()
         self.products_downloader.start()
 
-    def set_products_downloader_progress(self, current_progress):
+    def set_products_downloader_progress(self, current_progress: int) -> None:
+        """
+        Update the products downloading progress bar
+        :param current_progress: The current progress of products downloading
+        """
         self.products_progress.setValue(current_progress)
 
-    def cancel_products_downloader(self):
+    def cancel_products_downloader(self) -> None:
+        """
+        Cancel the products downloading
+        """
         self.products_downloader.requestInterruption()
 
-    def products_downloader_finished(self):
+    def products_downloader_finished(self) -> None:
+        """
+        Reset the predicts downloader progress bar once the download is finished
+        """
         self.products_progress.reset()
