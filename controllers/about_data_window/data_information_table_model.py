@@ -12,6 +12,7 @@ class DataInformationTableModel(QAbstractTableModel):
     def __init__(self, data_information: list):
         """
         Initializes a DataInformationTableModel object
+
         :param data_information: The list of items to display on the table
         """
         super().__init__()
@@ -20,6 +21,7 @@ class DataInformationTableModel(QAbstractTableModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         """
         Return the data for the corresponding index and role
+
         :param index: The index of the cell to display
         :param role: The role to display
         :return: If role is DisplayRole, a string. Else None.
@@ -33,6 +35,7 @@ class DataInformationTableModel(QAbstractTableModel):
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of rows to display on table
+
         :param parent:
         :return: The number of rows to display
         """
@@ -41,6 +44,7 @@ class DataInformationTableModel(QAbstractTableModel):
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of columns to display on table
+
         :param parent:
         :return: The number of columns to display
         """

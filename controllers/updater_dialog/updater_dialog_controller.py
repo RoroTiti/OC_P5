@@ -16,6 +16,7 @@ class UpdaterDialogController(QDialog):
     def __init__(self, parent: QMainWindow):
         """
         Initialize a UpdaterDialogController object
+
         :param parent:
         """
         super(UpdaterDialogController, self).__init__(parent)
@@ -120,6 +121,7 @@ class UpdaterDialogController(QDialog):
     def set_categories_downloader_progress(self, current_progress: int) -> None:
         """
         Update the categories downloading progress bar
+
         :param current_progress: The current progress of categories downloading
         """
         self.categories_progress.setValue(current_progress)
@@ -139,6 +141,7 @@ class UpdaterDialogController(QDialog):
     def set_all_categories(self, all_categories: list) -> None:
         """
         Display the whole categories list into the all categories table
+
         :param all_categories: The categories to diplay
         """
         self.all_categories_table_model.beginResetModel()
@@ -158,6 +161,7 @@ class UpdaterDialogController(QDialog):
     def set_products_downloader_progress(self, current_progress: int) -> None:
         """
         Update the products downloading progress bar
+
         :param current_progress: The current progress of products downloading
         """
         self.products_progress.setValue(current_progress)

@@ -16,6 +16,7 @@ class ProductDetailsWindowController(QMainWindow):
     def __init__(self, parent: QMainWindow, product_details: dict):
         """
         Initialize a ProductDetailsWindowController object
+
         :param parent: The parent window of the product details window
         :param product_details: The details of the product to display
         """

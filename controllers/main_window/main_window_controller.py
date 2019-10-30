@@ -100,6 +100,7 @@ class MainWindowController(QMainWindow):
     def tab_changed(self, index: int) -> None:
         """
         Handle the table changed event between Search and Saved searches tabs
+
         :param index: The index of the selected tab
         """
         if index == 1:
@@ -116,6 +117,7 @@ class MainWindowController(QMainWindow):
     def set_list_products(self, products: list) -> None:
         """
         Display the products on the products list
+
         :param products: The list of the products to display
         """
         self.ui.table_products.model().beginResetModel()
@@ -131,6 +133,7 @@ class MainWindowController(QMainWindow):
     def product_details_requested(self, current_index: QModelIndex) -> None:
         """
         Load the product details when the user request the products details, with a double click or a click + enter on an item
+
         :param current_index: The model index holding the product data
         """
         food = current_index.data(Qt.UserRole)
@@ -140,6 +143,7 @@ class MainWindowController(QMainWindow):
     def open_product_details_dialog(self, product_details: object) -> None:
         """
         Open the product details dialog after the data have been fetched by the thread
+
         :param product_details: The details of the product to display
         """
         dialog = ProductDetailsWindowController(self, product_details)
@@ -158,6 +162,7 @@ class MainWindowController(QMainWindow):
     def set_list_substitutes(self, substitutes: list) -> None:
         """
         Display the substitutes on the substitutes list
+
         :param substitutes:
         """
         self.ui.table_substitutes.model().beginResetModel()
@@ -182,6 +187,7 @@ class MainWindowController(QMainWindow):
     def set_table_saved_substitutes_model(self, substitutes: list) -> None:
         """
         Display the saved substitutes list on the saved substitutes list
+
         :param substitutes: The substitutes to display
         """
         self.ui.table_saved_substitutes.model().beginResetModel()
@@ -222,6 +228,7 @@ class PressEnterEventFilter(QObject):
     def eventFilter(self, watched: PySide2.QtCore.QObject, event: PySide2.QtCore.QEvent) -> bool:
         """
         Handle the Enter keypress event
+
         :param watched: The watched widget
         :param event: The event happened
         """

@@ -65,6 +65,7 @@ class FindSubstitutesThread(QThread):
     def round_by_hundred(n: float) -> int:
         """
         Round a number by 100
+
         :param n: The number to be rounded
         :return: The rounded value
         """

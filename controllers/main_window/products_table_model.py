@@ -12,6 +12,7 @@ class ProductsTableModel(QAbstractTableModel):
     def __init__(self, products: list):
         """
         Initialize a ProductsTableModel object
+
         :param products: The list of products to display to display on products table
         """
         super().__init__()
@@ -20,6 +21,7 @@ class ProductsTableModel(QAbstractTableModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         """
         Return the data for the corresponding index and role
+
         :param index: The index of the cell to display
         :param role: The role to display
         :return: If role is DisplayRole, a string. If role is UserRole, a product. Else None.
@@ -41,6 +43,7 @@ class ProductsTableModel(QAbstractTableModel):
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of rows to display on table
+
         :param parent:
         :return: The number of rows to display
         """
@@ -51,6 +54,7 @@ class ProductsTableModel(QAbstractTableModel):
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of columns to display on table
+
         :param parent:
         :return: The number of columns to display
         """
@@ -59,6 +63,7 @@ class ProductsTableModel(QAbstractTableModel):
     def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> typing.Any:
         """
         Return the header of the column to display
+
         :param section: The index of the column
         :param orientation: The orientation of the header to display
         :param role: The role to display

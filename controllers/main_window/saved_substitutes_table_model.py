@@ -12,6 +12,7 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def __init__(self, products_with_substitutes):
         """
         Initialize a SavedSubstitutesTableModel object
+
         :param products_with_substitutes: The list of product ID + substitute ID to save into the database
         """
         super().__init__()
@@ -20,6 +21,7 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         """
         Return the data for the corresponding index and role
+
         :param index: The index of the cell to display
         :param role: The role to display
         :return: If role is DisplayRole, a string. If role is UserRole, a product. Else None.
@@ -53,6 +55,7 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of rows to display on table
+
         :param parent:
         :return: The number of rows to display
         """
@@ -63,6 +66,7 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def columnCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of columns to display on table
+
         :param parent:
         :return: The number of columns to display
         """
@@ -71,6 +75,7 @@ class SavedSubstitutesTableModel(QAbstractTableModel):
     def headerData(self, section: int, orientation: PySide2.QtCore.Qt.Orientation, role: int = ...) -> typing.Any:
         """
         Return the header of the column to display
+
         :param section: The index of the column
         :param orientation: The orientation of the header to display
         :param role: The role to display

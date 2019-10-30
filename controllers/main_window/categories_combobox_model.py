@@ -12,6 +12,7 @@ class CategoriesComboBoxModel(QAbstractListModel):
     def __init__(self, categories: list):
         """
         Initialize a CategoriesComboBoxModel object
+
         :param categories: The list of the categories to display on the combobox
         """
         super().__init__()
@@ -20,6 +21,7 @@ class CategoriesComboBoxModel(QAbstractListModel):
     def data(self, index: PySide2.QtCore.QModelIndex, role: int = ...) -> typing.Any:
         """
         Return the data for the corresponding index and role
+
         :param index: The index of the cell to display
         :param role: The role to display
         :return: If role is DisplayRole, a string. If role is UserRole, a category. Else None.
@@ -35,6 +37,7 @@ class CategoriesComboBoxModel(QAbstractListModel):
     def rowCount(self, parent: PySide2.QtCore.QModelIndex = ...) -> int:
         """
         Return the number of rows to display on table
+
         :param parent:
         :return: The number of rows to display
         """

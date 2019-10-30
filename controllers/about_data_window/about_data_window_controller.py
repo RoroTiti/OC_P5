@@ -15,6 +15,7 @@ class DataInformationDialogController(QDialog):
     def __init__(self, parent: QMainWindow):
         """
         Initializes an about data dialog controller
+
         :param parent: The parent window of the dialog
         """
         super(DataInformationDialogController, self).__init__(parent)
@@ -36,6 +37,7 @@ class DataInformationDialogController(QDialog):
     def set_table_data_information(self, data_information: list) -> None:
         """
         Update the data of the data information table after the data has been fetched by the thread
+
         :param data_information: The list of the data information items
         """
         self.ui.table_informations.model().beginResetModel()
