@@ -9,6 +9,7 @@ Subpackages
    controllers.about_data_window
    controllers.main_window
    controllers.product_details_window
+   controllers.updater_dialog
 
 Module contents
 ---------------
