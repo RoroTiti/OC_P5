@@ -77,6 +77,24 @@ Since the tool only download the products with complete details, if a product is
 
 NutriChecker is now ready, you can start exploring the data and find substitutes for any product you search !
 
+### Explore the data
+
+Navigation is easy. Here is a guide about how to use NutriChecker :
+
+- First of all, select a category. Categories are listed into the list right below the ``Recharger les données`` button.
+When you select a category, all known products for this category are displayed on the products list.
+- Once you have a list of products with their primary brand and some details, like the NUTRI-SCORE, 
+you can view the details of a product by either double-clicking on it on the list or by selecting a product and then pressing Enter.
+This will open a details window separated from the main window, so you can open any amount of details window as you want.
+This is useful when you want to compare multiple products together.
+- When you select a product on the list, you will see some relevant substitutes on the list below.
+You can interact with the substitutes list like the products list.
+- When you find a great substitute for a given product, you can it in order to access it quickly later.
+In order to save a product with its substitute, select a substitute and click the ``Enregistrer le substitut`` button.
+- You can find the saved substitute from the ``Mes substituts enregistrés`` tab.
+It will display the list of all the saved products with their corresponding substitutes together with some details.
+Again, you can interact with it like with the products or the substitutes lists described before.  
+
 ## Working environment
 - Windows 10 or macOS Mojave and upper
 - Python 3.7.4
