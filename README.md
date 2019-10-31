@@ -73,8 +73,9 @@ To access it, go to ``Outils``, ``Mise à jour des données...``
 If you want to remove an item from the selected categories list, simply select it and click on ``Supprimer``.
 - Once you are done, click on ``Télécharger les produits``. You can watch the progression and eventual issues on your Python console.
 Since the tool only download the products with complete details, if a product is not downloaded, the reason will be displayed on the Python console.
+- Close the updater tool and click on ``Recharger les données``, to fetch the freshly downloaded data from the MySQL database.
 
-NutriChecker is now ready, you can start exploring the data on the application window !
+NutriChecker is now ready, you can start exploring the data and find substitutes for any product you search !
 
 ## Working environment
 - Windows 10 or macOS Mojave and upper
