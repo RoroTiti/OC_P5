@@ -8,7 +8,7 @@
 
 To run the application, it's recommended to setup a virtual environment. We will use virtualenv.
 
-- Move to the source code root directory
+- Move to the source root directory
 ```
 cd "/the/app/directory"
 ```
@@ -29,20 +29,19 @@ virtualenv venv
 source venv/bin/
 ```
 
-- Install the app dependencies
+- Install NutriChecker dependencies
 ```
 pip install -r requirements.txt
 ```
 
 ### Database setup
 
-The app requires a MySQL database in order to save its data. 
+NutriChecker requires a MySQL database in order to save its data. 
 Follow the steps in order to obtain a working database setup. 
 
 - Execute the ``create_tables.sql`` file on the MySQL database where you want to host the data of the application.
 
-To communicate with the database, the app uses the Peewee ORM.
-You have 2 possibilities to configure the app connection to the database.
+To communicate with the database, NutriChecker uses the Peewee ORM. You have 2 options to configure the connection to the database.
 
 **Option 1 : regenerate the Peewee model file (recommended and reliable)** 
 
@@ -51,7 +50,7 @@ You have 2 possibilities to configure the app connection to the database.
 python -m pwiz -e mysql -H {database host} -p {database port} -u {database user} -P {database name} > models/database.py
 ````
 
-**Option 2 : update the model template credentials (may be unreliable according to your database setup)** 
+**Option 2 : update the model template credentials (may be unreliable according to your database setup or encoding)** 
 
 - Modify ``models/database.py`` and update the database connection credentials :
   - ``host`` : the database IP address
@@ -59,14 +58,14 @@ python -m pwiz -e mysql -H {database host} -p {database port} -u {database user}
   - ``user`` : the user who has access to the database created previously
   - ``password`` the password of the user
 
-### Run the app and populate the database
+### Run NutriChecker and populate the database
 
-- You can now start the app with the following command
+- You can now start NutriChecker with the following command
 ```
-python .\main.py
+python main.py
 ```
 
-In order to populate the data from the OpenFoodFacts API, the app contains an user friendly assistant helping you to download the data.
+In order to populate the data from the OpenFoodFacts API, NutriChecker contains an user friendly assistant helping you to download the data.
 To access it, go to ``Outils``, ``Mise à jour des données...``
 
 - On the window which will open, click on ``Charger la liste``. It will fetch relevant categories from the OpenFoodFacts API.
@@ -75,7 +74,7 @@ If you want to remove an item from the selected categories list, simply select i
 - Once you are done, click on ``Télécharger les produits``. You can watch the progression and eventual issues on your Python console.
 Since the tool only download the products with complete details, if a product is not downloaded, the reason will be displayed on the Python console.
 
-The app is now ready, you can start exploring the data on the application window !
+NutriChecker is now ready, you can start exploring the data on the application window !
 
 ## Working environment
 - Windows 10 or macOS Mojave and upper
