@@ -40,6 +40,9 @@ class MainWindowController(QMainWindow):
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
         self.ui.btn_reload_data.clicked.connect(self.reload_data)
 
+        self.updater_dialog = UpdaterDialogController(self)
+        self.updater_dialog.finished.connect(self.reload_data)
+
         self.fetcher_thread = ProductsFetcherThread()
         self.fetcher_thread.result.connect(self.set_list_products)
 
@@ -104,6 +107,9 @@ class MainWindowController(QMainWindow):
             self.saved_substitutes_fetcher_thread.run()
 
     def reload_data(self) -> None:
+        """
+        Refresh the categories list from the database and resets the products list
+        """
         categories = list(Category.select().dicts().execute())
         categories.sort(key=lambda x: x["category_name"])
         model = CategoriesComboBoxModel(categories)
@@ -211,8 +217,7 @@ class MainWindowController(QMainWindow):
         """
         Open the database updater tool dialog
         """
-        dialog = UpdaterDialogController(self)
-        dialog.exec_()
+        self.updater_dialog.exec_()
 
     def open_data_information_dialog(self) -> None:
         """

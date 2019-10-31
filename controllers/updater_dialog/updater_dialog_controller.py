@@ -45,7 +45,7 @@ class UpdaterDialogController(QDialog):
         self.ui.btn_add_category.clicked.connect(self.add_category)
         self.ui.btn_delete_category.clicked.connect(self.delete_category)
         self.ui.btn_download_products.clicked.connect(self.download_products)
-        self.ui.btn_close.clicked.connect(self.close)
+        self.ui.btn_close.clicked.connect(self.close_dialog)
 
         # All categories list initialization
         self.all_categories_table_model = CategoriesTableModel(self, self.all_categories)
@@ -178,3 +178,15 @@ class UpdaterDialogController(QDialog):
         Reset the predicts downloader progress bar once the download is finished
         """
         self.products_progress.reset()
+
+    def close_dialog(self) -> None:
+        """
+        Handle click on close button
+        """
+        self.done(0)
+
+    def reject(self) -> None:
+        """
+        Handle escape key press
+        """
+        self.done(0)
