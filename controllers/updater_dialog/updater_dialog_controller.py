@@ -45,6 +45,7 @@ class UpdaterDialogController(QDialog):
         self.ui.btn_add_category.clicked.connect(self.add_category)
         self.ui.btn_delete_category.clicked.connect(self.delete_category)
         self.ui.btn_download_products.clicked.connect(self.download_products)
+        self.ui.btn_close.clicked.connect(self.close)
 
         # All categories list initialization
         self.all_categories_table_model = CategoriesTableModel(self, self.all_categories)

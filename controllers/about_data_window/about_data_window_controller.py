@@ -25,6 +25,8 @@ class DataInformationDialogController(QDialog):
 
         self.setWindowModality(Qt.WindowModal)
 
+        self.ui.btn_close.clicked.connect(self.close)
+
         self.data_information = []
         self.ui.table_informations.setModel(DataInformationTableModel(self.data_information))
         self.ui.table_informations.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)

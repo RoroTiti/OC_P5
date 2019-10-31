@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/main_window.ui',
 # licensing of 'views/main_window.ui' applies.
 #
-# Created: Thu Oct 31 12:01:09 2019
+# Created: Thu Oct 31 17:16:49 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -87,5 +87,5 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtWidgets.QApplication.translate("MainWindow", "Mes substituts enregistrés", None, -1))
         self.menuOutils.setTitle(QtWidgets.QApplication.translate("MainWindow", "Outils", None, -1))
         self.action_update.setText(QtWidgets.QApplication.translate("MainWindow", "Mise à jour des données...", None, -1))
-        self.action_about_data.setText(QtWidgets.QApplication.translate("MainWindow", "À propos de la base de données...", None, -1))
+        self.action_about_data.setText(QtWidgets.QApplication.translate("MainWindow", "À propos des données...", None, -1))
 

@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/about_data_dialog.ui',
 # licensing of 'views/about_data_dialog.ui' applies.
 #
-# Created: Wed Oct 30 08:14:40 2019
+# Created: Thu Oct 31 17:15:37 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,6 +28,9 @@ class Ui_Dialog(object):
         self.table_informations.verticalHeader().setVisible(False)
         self.gridLayout_2.addWidget(self.table_informations, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
+        self.btn_close = QtWidgets.QPushButton(Dialog)
+        self.btn_close.setObjectName("btn_close")
+        self.gridLayout.addWidget(self.btn_close, 1, 0, 1, 1)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -35,4 +38,5 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtWidgets.QApplication.translate("Dialog", "Dialog", None, -1))
         self.groupBox.setTitle(QtWidgets.QApplication.translate("Dialog", "Informations sur les données", None, -1))
+        self.btn_close.setText(QtWidgets.QApplication.translate("Dialog", "Fermer", None, -1))
 
