@@ -38,15 +38,12 @@ class MainWindowController(QMainWindow):
         self.ui.tabWidget.currentChanged.connect(self.tab_changed)
         self.ui.cmb_categories.currentIndexChanged.connect(self.category_selection_changed)
         self.ui.btn_save_substitute.clicked.connect(self.save_substitute)
+        self.ui.btn_reload_data.clicked.connect(self.reload_data)
 
         self.fetcher_thread = ProductsFetcherThread()
         self.fetcher_thread.result.connect(self.set_list_products)
 
-        query = Category.select().dicts().execute()
-        categories = list(query)
-        categories.sort(key=lambda x: x["category_name"])
-        model = CategoriesComboBoxModel(categories)
-        self.ui.cmb_categories.setModel(model)
+        self.reload_data()
 
         self.find_substitutes_thread = FindSubstitutesThread()
         self.find_substitutes_thread.result.connect(self.set_list_substitutes)
@@ -105,6 +102,12 @@ class MainWindowController(QMainWindow):
         """
         if index == 1:
             self.saved_substitutes_fetcher_thread.run()
+
+    def reload_data(self) -> None:
+        categories = list(Category.select().dicts().execute())
+        categories.sort(key=lambda x: x["category_name"])
+        model = CategoriesComboBoxModel(categories)
+        self.ui.cmb_categories.setModel(model)
 
     def category_selection_changed(self) -> None:
         """

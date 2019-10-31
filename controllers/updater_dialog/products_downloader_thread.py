@@ -4,7 +4,7 @@ import requests
 import unidecode
 from PySide2.QtCore import QThread, Signal
 
-from models.database import CategoryFood, BrandFood, StoreFood, Brand, Store, Food, Category
+from models.database import CategoryFood, BrandFood, StoreFood, Brand, Store, Food, Category, Substitute
 
 
 class ProductsDownloaderThread(QThread):
@@ -25,6 +25,8 @@ class ProductsDownloaderThread(QThread):
         """
         Download and save into the database the individual products from the OpenFoodFacts API
         """
+        Substitute.delete().execute()
+
         CategoryFood.delete().execute()
         BrandFood.delete().execute()
         StoreFood.delete().execute()
