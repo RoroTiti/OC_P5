@@ -77,7 +77,7 @@ Since the tool only download the products with complete details, if a product is
 
 NutriChecker is now ready, you can start exploring the data and find substitutes for any product you search !
 
-### Explore the data
+### Exploring the data
 
 Navigation is easy. Here is a guide about how to use NutriChecker :
 
@@ -98,3 +98,4 @@ Again, you can interact with it like with the products or the substitutes lists 
 ## Working environment
 - Windows 10 or macOS Mojave and upper
 - Python 3.7.4
+- MySQL 8.0.17 and upper
