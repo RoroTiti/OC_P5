@@ -54,7 +54,7 @@ python -m pwiz -e mysql -H {database host} -p {database port} -u {database user}
 
 - Modify ``models/database.py`` and update the database connection credentials :
   - ``host`` : the database IP address
-  - ``port`` : the database IP address
+  - ``port`` : the database port
   - ``user`` : the user who has access to the database created previously
   - ``password`` the password of the user
 
