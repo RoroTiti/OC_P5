@@ -115,12 +115,13 @@ make.bat html
 make html
 ````
 
-You will now find the generated documentation into ``_build/html`` directory.
+You will now find the generated documentation in ``_build/html`` directory.
 Simply open the ``index.html`` in a web browser and you can start exploring the source code documentation. 
 
 You can also generate PDF documentation easily. You must first install ``latexmk``.
 See the guide about how to install it here : [Unofficial Latexmk documentation](https://mg.readthedocs.io/latexmk.html).
-Then, use the same commands as to generate HTML documentation, but replace ``html`` by ``latexpdf``
+Then, use the same commands as to generate HTML documentation, but replace ``html`` by ``latexpdf``.
+The result PDF will be saved in ``_build/latex``
 
 ## Working environment
 - Windows 10 or macOS Mojave and upper
