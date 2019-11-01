@@ -1,10 +1,10 @@
-.. NutriChecker documentation master file, created by
-   sphinx-quickstart on Wed Oct 30 18:33:35 2019.
+.. Project_5_Pur_Beurre documentation master file, created by
+   sphinx-quickstart on Fri Nov  1 09:44:56 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to NutriChecker's documentation!
-========================================
+Welcome to Project_5_Pur_Beurre's documentation!
+================================================
 
 .. toctree::
    :maxdepth: 4
@@ -12,6 +12,7 @@ Welcome to NutriChecker's documentation!
 
    controllers
    main
+   views
 
 
 Indices and tables
