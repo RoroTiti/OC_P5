@@ -67,13 +67,13 @@ class FindSubstitutesThread(QThread):
             if current_similarity_threshold == 0:
                 break
 
-            substitutes = list(filter(lambda x: x["similarity"] >= current_similarity_threshold, products))
+            possible_substitutes = list(filter(lambda x: x["similarity"] >= current_similarity_threshold, products))
 
             good_substitutes = list(
                 filter(lambda x:
                        x["nutriscore"] < self.product["nutriscore"] and
                        x["ingredients_from_palm_oil_n"] <= self.product["ingredients_from_palm_oil_n"],
-                       substitutes)
+                       possible_substitutes)
             )
 
             if len(good_substitutes) > 0:
