@@ -52,14 +52,37 @@ class FindSubstitutesThread(QThread):
             .dicts() \
             .execute()
 
+        # Adding the similarity property to the product object
         for product in products:
             product["similarity"] = self.round_by_hundred(jellyfish.jaro_distance(self.product["food_name"], product["food_name"]) * 1000)
 
-        products = filter(lambda x: x["id_food"] != self.product["id_food"], products)
-        products = filter(lambda x: x["similarity"] >= 700, products)
-        products = sorted(products, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
+        # Removing the product we are searching a substitute for from the list
+        products = list(filter(lambda x: x["id_food"] != self.product["id_food"], products))
 
-        self.result.emit(products)
+        # Finding the best similarity level to obtain at least 1 good substitute
+        current_similarity_threshold = 1000
+        good_substitutes = []
+
+        while True:
+            if current_similarity_threshold == 0:
+                break
+
+            substitutes = list(filter(lambda x: x["similarity"] >= current_similarity_threshold, products))
+
+            good_substitutes = list(
+                filter(lambda x:
+                       x["nutriscore"] < self.product["nutriscore"] and
+                       x["ingredients_from_palm_oil_n"] <= self.product["ingredients_from_palm_oil_n"],
+                       substitutes)
+            )
+
+            if len(good_substitutes) > 0:
+                good_substitutes = sorted(good_substitutes, key=lambda x: (x["nutriscore"], -x["similarity"], x["ingredients_from_palm_oil_n"]))
+                break
+            else:
+                current_similarity_threshold -= 100
+
+        self.result.emit(good_substitutes)
 
     @staticmethod
     def round_by_hundred(n: float) -> int:
