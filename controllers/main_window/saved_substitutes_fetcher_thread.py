@@ -52,8 +52,6 @@ class SavedSubstitutesFetcherThread(QThread):
             .group_by(food_alias.id_food, substitute_alias.id_food) \
             .execute()
 
-        print(substitutes)
-
         products_with_substitutes = []
 
         for substitute in substitutes:

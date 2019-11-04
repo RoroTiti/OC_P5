@@ -138,10 +138,6 @@ class ProductsDownloaderThread(QThread):
 
                                 CategoryFood.create(id_category=db_category.id_category, id_food=food.id_food)
 
-                                print(food.id_food)
-                                print(brands_list)
-                                print(stores_list)
-
                                 if force_insert:
                                     for index, (brand_name, store_name) in enumerate(zip_longest(brands_list, stores_list)):
                                         if brand_name is not None:
