@@ -1,4 +1,5 @@
 import os
+import webbrowser
 
 import markdown
 from PySide2.QtCore import Qt
@@ -31,6 +32,8 @@ class ProductDetailsWindowController(QMainWindow):
         food = self.product_details
 
         self.setWindowTitle(food["food_name"])
+
+        self.ui.btn_openfoodfacts.clicked.connect(self.open_web_page)
 
         brands_list_content = "<b>Marques : </b>"
 
@@ -112,3 +115,9 @@ class ProductDetailsWindowController(QMainWindow):
 
         self.ui.lbl_nutriscore.setPixmap(pix_map)
         self.ui.lbl_nutriscore_number.setText(f"<b>Indice NUTRI-SCORE:</b> {food['nutriscore']}")
+
+    def open_web_page(self) -> None:
+        """
+        Open the full OpenFoodFacts product details page on default web browser
+        """
+        webbrowser.open(f"https://fr.openfoodfacts.org/produit/{self.product_details['food_code']}")  # Go to example.com

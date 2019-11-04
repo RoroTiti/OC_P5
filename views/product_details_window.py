@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'views/product_details_window.ui',
 # licensing of 'views/product_details_window.ui' applies.
 #
-# Created: Mon Nov  4 08:54:45 2019
+# Created: Mon Nov  4 11:05:09 2019
 #      by: pyside2-uic  running on PySide2 5.13.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,6 +89,9 @@ class Ui_MainWindow(object):
         self.lbl_brands.setWordWrap(True)
         self.lbl_brands.setObjectName("lbl_brands")
         self.gridLayout_4.addWidget(self.lbl_brands, 0, 0, 1, 1)
+        self.btn_openfoodfacts = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
+        self.btn_openfoodfacts.setObjectName("btn_openfoodfacts")
+        self.gridLayout_4.addWidget(self.btn_openfoodfacts, 14, 0, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -110,4 +113,5 @@ class Ui_MainWindow(object):
         self.lbl_nutriscore.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
         self.label_2.setText(QtWidgets.QApplication.translate("MainWindow", "<b>Allergènes</b>", None, -1))
         self.lbl_brands.setText(QtWidgets.QApplication.translate("MainWindow", "TextLabel", None, -1))
+        self.btn_openfoodfacts.setText(QtWidgets.QApplication.translate("MainWindow", "Voir la fiche complète sur OpenFoodFacts", None, -1))
 

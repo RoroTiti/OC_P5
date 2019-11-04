@@ -175,6 +175,13 @@
           </property>
          </widget>
         </item>
+        <item row="14" column="0">
+         <widget class="QPushButton" name="btn_openfoodfacts">
+          <property name="text">
+           <string>Voir la fiche complète sur OpenFoodFacts</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>
