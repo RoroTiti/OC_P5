@@ -32,6 +32,22 @@ class ProductDetailsWindowController(QMainWindow):
 
         self.setWindowTitle(food["food_name"])
 
+        brands_list_content = "<b>Marques : </b>"
+
+        for brand in food["brands"]:
+            brands_list_content += f"{brand['brand_name']}, "
+
+        self.ui.lbl_brands.setText(brands_list_content[:-2])
+
+        stores_list_content = "<ul>"
+
+        for store in food["stores"]:
+            stores_list_content += f"<li>{store['store_name']}</li>"
+
+        stores_list_content += "</ul>"
+
+        self.ui.lbl_stores.setText(stores_list_content)
+
         self.ui.lbl_ingredients.setText(markdown.markdown(food["ingredients"]))
 
         palm_oil_presence = food["ingredients_from_palm_oil_n"] > 0
