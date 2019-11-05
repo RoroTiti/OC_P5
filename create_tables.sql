@@ -1,26 +1,28 @@
-create table if not exists brand
+create table brand
 (
     id_brand   int auto_increment,
     brand_name longtext null,
     constraint company_id_company_uindex
         unique (id_brand)
-);
+)
+    charset = utf8mb4;
 
 alter table brand
     add primary key (id_brand);
 
-create table if not exists category
+create table category
 (
     id_category   int auto_increment,
     category_name longtext null,
     constraint category_id_category_uindex
         unique (id_category)
-);
+)
+    charset = utf8mb4;
 
 alter table category
     add primary key (id_category);
 
-create table if not exists food
+create table food
 (
     id_food                     int auto_increment,
     food_code                   longtext null,
@@ -42,12 +44,13 @@ create table if not exists food
     proteins_100g               double   null,
     constraint food_id_food_uindex
         unique (id_food)
-);
+)
+    charset = utf8mb4;
 
 alter table food
     add primary key (id_food);
 
-create table if not exists brand_food
+create table brand_food
 (
     id_brand int not null,
     id_food  int not null,
@@ -56,9 +59,10 @@ create table if not exists brand_food
         foreign key (id_brand) references brand (id_brand),
     constraint brand_food_food_id_food_fk
         foreign key (id_food) references food (id_food)
-);
+)
+    charset = utf8mb4;
 
-create table if not exists category_food
+create table category_food
 (
     id_category int not null,
     id_food     int not null,
@@ -67,20 +71,22 @@ create table if not exists category_food
         foreign key (id_category) references category (id_category),
     constraint category_food_food_id_food_fk
         foreign key (id_food) references food (id_food)
-);
+)
+    charset = utf8mb4;
 
-create table if not exists store
+create table store
 (
     id_store   int auto_increment,
     store_name longtext null,
     constraint store_id_store_uindex
         unique (id_store)
-);
+)
+    charset = utf8mb4;
 
 alter table store
     add primary key (id_store);
 
-create table if not exists store_food
+create table store_food
 (
     id_store int not null,
     id_food  int not null,
@@ -89,9 +95,10 @@ create table if not exists store_food
         foreign key (id_food) references food (id_food),
     constraint sell_store_id_store_fk
         foreign key (id_store) references store (id_store)
-);
+)
+    charset = utf8mb4;
 
-create table if not exists substitute
+create table substitute
 (
     id_food            int not null,
     id_food_substitute int not null,
@@ -100,5 +107,7 @@ create table if not exists substitute
         foreign key (id_food) references food (id_food),
     constraint substitutes_food_id_food_fk_2
         foreign key (id_food_substitute) references food (id_food)
-);
+)
+    charset = utf8mb4;
+
 
